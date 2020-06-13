@@ -4,14 +4,13 @@ import javax.inject.Singleton
 import java.io.File
 
 import models.{Assessment, Exam, _}
-import play.api.libs.json._
-import play.api.libs.json.Reads._
+import java.time.{LocalDate, LocalTime}
 
+import play.api.libs.json.Reads._
 import play.api.libs.json._
 
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, SortedSet}
-
 import scala.io.Source
 
 
@@ -22,6 +21,7 @@ trait GenExamSimulator{
   def checkUserAnswers(assessmentId:Int,questionId:Int,candAnsw:CandidateAnswer):Boolean
   def getReportOnAssessment(assessmentId:Int):List[CandidateAnswerReport]
   def getTotalQuestionaInAssessment(assessmentId:Int):Int
+  def getAssessmentInfo(assessmentId:Int,prop:Int):Any
 }
 
 @Singleton
@@ -39,8 +39,9 @@ class ExamSimulator extends GenExamSimulator {
       val q=(value \ "question").as[String]
       val choices=value("choices").as[JsArray].value.map(x=>mapAnswer(x)).toList
       val answers=value("answers").as[JsArray].value.map(x=>x.as[String]).toList
-      val ref=(value \ "reference").as[String]
-      Question(valIndex,q,choices,answers,ref)
+      val ref=(value \ "reference").asOpt[String].getOrElse("")
+      val valid=(value \ "valid").as[Boolean]
+      Question(valIndex,q,choices,answers,ref,valid)
     }
       var exam=new Exam()
       val src=Source.fromFile(fileName)
@@ -68,7 +69,8 @@ exam=Exam(prop,questions)
     val subsetQuestions=new mutable.LinkedHashSet[Question]()
     while (subsetQuestions.size<questionsN){
       val q=exam.listQuestion(r.nextInt(exam.listQuestion.length))
-      subsetQuestions.add(Question(subsetQuestions.size+1,q.Text,q.Answers,q.CorrectAnswers,q.Explanation))
+      if (q.Valid)
+        subsetQuestions.add(Question(subsetQuestions.size+1,q.Text,q.Answers,q.CorrectAnswers,q.Explanation,q.Valid))
     }
     Exam(exam.properties,subsetQuestions.toList)
   }
@@ -104,7 +106,7 @@ exam=Exam(prop,questions)
 
   override def checkUserAnswers(assessmentId:Int,questionId:Int,candAnsw:CandidateAnswer):Boolean={
     val res=getQuestionInAssessment(assessmentId,questionId)
-    val isAnswersCorrect= res._2.CorrectAnswers.intersect(candAnsw.placeHolders).nonEmpty && candAnsw.placeHolders.length==res._2.CorrectAnswers.length
+    val isAnswersCorrect: Boolean = res._2.CorrectAnswers.intersect(candAnsw.placeHolders).length==res._2.CorrectAnswers.length
     res._1.candidateAnswers.addOne(CandidateAnswer(questionId,candAnsw.placeHolders,isAnswersCorrect))
     isAnswersCorrect
   }
@@ -112,7 +114,8 @@ exam=Exam(prop,questions)
   override def getReportOnAssessment (assessmentId: Int): List[CandidateAnswerReport] = {
     def CandidateAnswer2CandidateAnswerReport(c:CandidateAnswer,e:Exam):CandidateAnswerReport={
       val t=e.listQuestion.find(x=>x.Id==c.Id).getOrElse(new Question())
-      CandidateAnswerReport(t.Id,t.Text,c.placeHolders,c.Correct,t.CorrectAnswers)
+      val answers=t.Answers.map(x=> s"${x.placeHolder}. ${x.Text}")
+      CandidateAnswerReport(t.Id,t.Text,answers,c.placeHolders,c.Correct,t.CorrectAnswers)
     }
     val assessment= availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment)
     assessment.candidateAnswers.map(x=>CandidateAnswer2CandidateAnswerReport(x,assessment.exam)).toList
@@ -120,5 +123,15 @@ exam=Exam(prop,questions)
 
   override def getTotalQuestionaInAssessment (assessmentId: Int): Int = {
     availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment).exam.listQuestion.length
+  }
+
+  override def getAssessmentInfo (assessmentId: Int,prop:Int): Any = {
+    val assessment=availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment)
+    assessment.setUpdateTime(LocalTime .now())
+    prop match {
+      case 1 =>   assessment.getPassedTime()
+      case _ => ""
+    }
+
   }
 }

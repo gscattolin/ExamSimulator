@@ -60,7 +60,8 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
         (JsPath \ "Text").write[String] and
         (JsPath \ "Answers").write[Seq[PossibleAnswer]] and
         (JsPath \ "CorrectAnswers").write[Seq[String]] and
-        (JsPath \ "Explanation").write[String]
+        (JsPath \ "Explanation").write[String] and
+        (JsPath \ "Valid").write[Boolean]
       )(unlift(Question.unapply))
     val questionAssessmentT=exs.getQuestionInAssessment(assessmentId,questionsId)
     val res=Json.toJson(questionAssessmentT._2)
@@ -77,10 +78,16 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(Json.toJson(Map("isCorrect"->correct)))
   }
 
+  def getAssessmentReportInfo(assessmentId:Int,prop:Int)=Action { request =>
+    val timeInSeconds= exs.getAssessmentInfo(assessmentId,prop).toString
+    Ok(Json.toJson(Map("timeinseconds"->timeInSeconds)))
+  }
+
   def getAssessmentReport(assessmentId:Int)=Action{ request =>
     implicit val candidateAnswerWrites: Writes[CandidateAnswerReport] = (
         (JsPath \ "Id").write[Int] and
           (JsPath \ "Text").write[String] and
+          (JsPath \ "Answers").write[Seq[String]] and
         (JsPath \ "placeHolders").write[Seq[String]] and
           (JsPath \ "Correct").write[Boolean] and
           (JsPath \ "correctPlaceHolders").write[Seq[String]]

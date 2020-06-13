@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import { Redirect,Route } from 'react-router-dom'
-import Question from "./Question";
+import config from './config'
 
 class SelectExam extends Component{
     constructor() {
@@ -16,10 +16,9 @@ class SelectExam extends Component{
     }
 
 
-
     componentDidMount()
         {
-            fetch('http://localhost:9000/exam')
+            fetch(config.baseUrl+'exam')
                 .then(res => res.json()).then(data => {
                             this.setState({
                                 error:null,
@@ -102,8 +101,9 @@ class SelectExam extends Component{
                             <div className="form-group">
                                 <div className="list-group">
                                     {exams.map(ex => (
-                                        <button type="button" title={ex.code} key={ex.id} name={ex.id}  onClick={this.handleSelect}
+                                        <button type="button" key={ex.id} name={ex.id}  onClick={this.handleSelect}
                                                 className="list-group-item d-flex justify-content-between align-items-center">
+                                            {ex.code}
                                             <span className="badge badge-primary badge-pill">Questions={ex.questions}</span>
                                         </button>
                                     ))}

@@ -1,4 +1,5 @@
 import React,{Component} from "react";
+import config from "./config";
 
 class Report extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class Report extends Component {
 
     getAssessmentReport(assessmentId){
         // console.log("Getting data question"+questionId)
-        const url='http://localhost:9000/assessment/'+assessmentId+'/report'
+        const url=config.baseUrl+'assessment/'+assessmentId+'/report'
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({
@@ -30,19 +31,39 @@ class Report extends Component {
         )
     }
 
-    componentDidMount() {
-        this.getAssessmentReport(this.state.assessmentId)
+    getAssessmentTime(assessmentId){
+        const url=config.baseUrl+'assessment/'+assessmentId+'/info/1'
+        fetch(url)
+            .then(res => res.json()).then(data => {
+                this.setState({
+                        error: null,
+                        timeInSec: data['timeinseconds'],
+                    }
+                )
+            },
+            (error) => {
+                console.log("ERROR Getting data question"+error)
+                this.setState({
+                    error:error
+                });
+            }
+        )
     }
 
-    // mapRepostResult(v){
-    //     var cln="list-group-item list-group-item-"
-    //     if (v.Correct) cln+="success" else cln+="danger"
-    //
-    //     return{
-    //         "cln":cln
-    //     }
-    //
-    // }
+    timeFromSec2Format(d){
+        var h = Math.floor(d / 3600);
+        var m = Math.floor(d % 3600 / 60);
+        var s = Math.floor(d % 3600 % 60);
+        if (h>0)
+            return h+" h "+m+" min "+s+" s"
+        else
+            return m+" min "+s+" s"
+    }
+
+    componentDidMount() {
+        this.getAssessmentTime(this.state.assessmentId)
+        this.getAssessmentReport(this.state.assessmentId)
+    }
 
 
     render() {
@@ -52,21 +73,34 @@ class Report extends Component {
         } else if (!this.state.isLoaded) {
             return <div>Loading data......</div>;
         } else {
-        //     const gReports=lstReport.map(rep =>{
-        //
-        //     }
-        // )
             debugger
+            const passedTime=this.timeFromSec2Format(this.state.timeInSec)
             return(
                 <div className="container ">
                     <div className="row ml-lg-0">
                         <h2>Report and Results </h2>
                     </div>
                     <div className="row ml-lg-0">
+                        <div className="col-sm">
+                            Total Correct/Total Questions={lstReport.filter((item) => item.Correct).length}/{lstReport.length}
+                        </div>
+                        <div className="col-sm">
+                            % Total Correct={(lstReport.filter((item) => item.Correct).length)/lstReport.length*100}%
+                        </div>
+                        <div className="col-sm">
+                            Time Spent={passedTime}
+                        </div>
+                    </div>
+                    <div className="row ml-lg-0">
                         <ul className="list-group">
                             {lstReport.map(rep=>(
                                 <li key={rep.Id} className={"list-group-item list-group-item-"+(rep.Correct?"success":"danger")}>
-                                    {rep.Id} . {rep.Text}
+                                    <b>{rep.Id} . {rep.Text}</b>
+                                    <ul className="list-group">
+                                    {rep.Answers.map( a=>
+                                        <li className="list-group-item list-group-item-info" key={a.charAt(0)}>{a}</li>
+                                    )}
+                                    </ul>
                                     <h5 className ="mb-1">Your Answer= {(rep.placeHolders.join(","))} </h5>
                                     <h5 className ="mb-1">Correct Answer= {(rep.correctPlaceHolders.join(","))} </h5>
                                     <label>{console.log(JSON.stringify(rep))}</label>
@@ -75,7 +109,6 @@ class Report extends Component {
                         </ul>
                     </div>
                 </div>
-
             )
         }
     }

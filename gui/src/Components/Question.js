@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import {Redirect} from "react-router-dom";
-
+import Timer from 'react-compound-timer'
+import config from './config'
 
 
 class Question extends Component {
@@ -8,12 +9,16 @@ class Question extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        const now=Date.now()
         this.state = {
             assessmentId:props.match.params.assessmentId,
             questionId:props.match.params.questionId,
             isLoaded:false,
             render: true,
             redirect:false,
+            submitEnable:false,
+            startDate:now,
+            timer:null,
             answersUser:[]
         }
     }
@@ -31,10 +36,21 @@ class Question extends Component {
     //     return true;
     // }
 
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        const diff= new Date()-this.state.startDate
+        this.setState({
+            timer: diff
+        });
+    }
+
     getNewQuestion(questionId){
         this.setState({isLoaded:false})
         // console.log("Getting data question"+questionId)
-        const url='http://localhost:9000/assessment/'+this.state.assessmentId+'/question/'+questionId
+        const url=config.baseUrl+'assessment/'+this.state.assessmentId+'/question/'+questionId
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({
@@ -57,11 +73,12 @@ class Question extends Component {
 
     getTotalQuestions(assessmentId){
         // console.log("Getting data question"+questionId)
-        const url='http://localhost:9000/assessment/'+assessmentId+'/question'
+        const url=config.baseUrl+'assessment/'+assessmentId+'/question'
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({
                         error: null,
+                        submitEnable:false,
                         totalQuestions: data.TotalQuestions,
                     }
                 )
@@ -77,13 +94,20 @@ class Question extends Component {
 
     componentDidMount()
     {
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+        this.setState({
+            startDate:new Date(),
+            timer:null,
+        })
         this.getNewQuestion(1)
         this.getTotalQuestions(this.state.assessmentId)
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.match.params.questionId !== prevProps.match.params.questionId) {
-            console.log("componentDidUpdate "+this.props.match.params.questionId)
             this.getNewQuestion(this.props.match.params.questionId)
         }
     }
@@ -93,11 +117,19 @@ class Question extends Component {
         const a=this.state.answersUser
         if(event.target.checked){
             if (a.indexOf(value)<0){
-            this.state.answersUser.push(value);
+                this.setState(previousState => ({
+                    answersUser: [...previousState.answersUser, value],
+                    submitEnable:true,
+                }));
             }
         }else{
-            if (a.indexOf(value)<0){
-                this.state.answersUser.splice(a.indexOf(value),1);
+            if (a.indexOf(value)>-1){
+                this.setState(prevState => {
+                    const newA=prevState.answersUser.filter(a => a !==value)
+                        return {
+                            answersUser:newA,
+                            submitEnable:newA.length>0,
+                    }});
             }
         }
 
@@ -105,7 +137,7 @@ class Question extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log("Send submit ass="+this.state.assessmentId+'/question='+this.state.questionId)
+        //console.log("Send submit ass="+this.state.assessmentId+'/question='+this.state.questionId)
         const url='http://localhost:9000/assessment/'+this.state.assessmentId+'/question/'+this.state.questionId
         const aws=this.state.answersUser
         fetch(url, {
@@ -125,6 +157,13 @@ class Question extends Component {
         }
         })
 
+    }
+
+    timeFromSec2Format(d){
+        var h = Math.floor(d / 3600);
+        var m = Math.floor(d % 3600 / 60);
+        var s = Math.floor(d % 3600 % 60);
+        return h+" h "+m+" min "+s+" s"
     }
 
     render() {
@@ -153,6 +192,14 @@ class Question extends Component {
         } else {
             // console.log("rendering question state="+JSON.stringify(this.state))
             const answers = question.Answers
+            var timePassed=0
+            if (this.state.timer){
+                // sec=this.state.timer.getSeconds()
+                // min=this.state.timer.getMinutes()
+                // hours=this.state.timer.getHours()
+                timePassed=this.timeFromSec2Format(this.state.timer/1000)
+            }
+
             return (
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group" >
@@ -162,7 +209,11 @@ class Question extends Component {
                             <div className="col">
                                 <h2>Question N. {this.state.question.Id}/{this.state.totalQuestions}</h2>
                             </div>
-                                <div className="col"/>
+                                <div className="col">
+                                    {/*Time= {this.state.timer.getHours()} H {this.state.timer.getMinutes()} min*/}
+                                    {/*{this.state.timer.getSeconds()} s*/}
+                                    Timer={timePassed}
+                                </div>
                         </div>
                             <div className="row ml-lg-0">
                                 <div className="col m-3">
@@ -185,7 +236,7 @@ class Question extends Component {
                             <div className="row ml-lg-0">
                                 <div className="col"/>
                                 <div className="col">
-                                    <button type="submit" className="btn btn-primary">Submit Answer</button>
+                                    <button type="submit" className="btn btn-primary" disabled={!this.state.submitEnable}>Submit Answer</button>
                                 </div>
                                 <div className="col"/>
                             </div>

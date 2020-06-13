@@ -24,6 +24,8 @@ GET     /assessment/:assessmentId/report    controllers.ExamSimulatorController.
 
 GET     /assessment/:assessmentId/question              controllers.ExamSimulatorController.getAssessmentQuestions(assessmentId:Int)
 
+GET     /assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:Int,infoId:Int)
+
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
 
 # Map static resources from the /public folder to the /assets URL path
