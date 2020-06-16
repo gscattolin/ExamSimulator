@@ -103,6 +103,7 @@ class Report extends Component {
                                     </ul>
                                     <h5 className ="mb-1">Your Answer= {(rep.placeHolders.join(","))} </h5>
                                     <h5 className ="mb-1">Correct Answer= {(rep.correctPlaceHolders.join(","))} </h5>
+                                    <h6>{rep.Explanation}</h6>
                                     <label>{console.log(JSON.stringify(rep))}</label>
                                 </li>
                             ))}

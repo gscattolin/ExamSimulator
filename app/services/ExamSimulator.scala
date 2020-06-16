@@ -6,6 +6,7 @@ import java.io.File
 import models.{Assessment, Exam, _}
 import java.time.{LocalDate, LocalTime}
 
+import play.api.Logging
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
@@ -14,7 +15,7 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer, SortedSet}
 import scala.io.Source
 
 
-trait GenExamSimulator{
+trait GenExamSimulator extends Logging {
   def exploreExams(folder:String,extension:String):List[Exam]
   def createAssessment(examId: Int,questionsNumber:Int,candidate:String):Assessment
   def getQuestionInAssessment(assessmentId:Int,questionId:Int): (Assessment,Question)
@@ -30,6 +31,13 @@ class ExamSimulator extends GenExamSimulator {
   private var availableExams:List[Exam] =List[Exam]()
 
   private var availableAssessment:ListBuffer[Assessment] =ListBuffer[Assessment]()
+
+
+  private def getExamFolder(relFolder:String):File={
+    val examFolder=new File(new File(".").getAbsolutePath()).getCanonicalPath()+"/"+relFolder
+    logger.info(s"Exploring $examFolder .. looking for exams")
+    new File(examFolder)
+  }
 
   private def loadExam(fileName:File,valueIndex:Int):Exam={
     def mapAnswer(value:JsValue):PossibleAnswer={
@@ -78,12 +86,13 @@ exam=Exam(prop,questions)
   override def exploreExams (folder: String,extension:String): List[Exam] = {
     def extractExtension(filename:String):String=filename.substring(filename.lastIndexOf('.')+1)
 
-    val d = new File(folder)
+    val d = getExamFolder(folder)
     if (d.exists && d.isDirectory) {
       val filesInFolder:List[File]=d.listFiles.filter(_.isFile).filter(f => extractExtension(f.toString)==extension).toList
       availableExams=filesInFolder.zipWithIndex.map({case (x,valIndex)=>loadExam(x,valIndex+1)})
       availableExams
     } else {
+      logger.warn(s"Cannot find the folder ${d.getCanonicalPath} . Return empty exam list")
       List[Exam]()
     }
   }
@@ -115,7 +124,7 @@ exam=Exam(prop,questions)
     def CandidateAnswer2CandidateAnswerReport(c:CandidateAnswer,e:Exam):CandidateAnswerReport={
       val t=e.listQuestion.find(x=>x.Id==c.Id).getOrElse(new Question())
       val answers=t.Answers.map(x=> s"${x.placeHolder}. ${x.Text}")
-      CandidateAnswerReport(t.Id,t.Text,answers,c.placeHolders,c.Correct,t.CorrectAnswers)
+      CandidateAnswerReport(t.Id,t.Text,answers,c.placeHolders,c.Correct,t.CorrectAnswers,t.Explanation)
     }
     val assessment= availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment)
     assessment.candidateAnswers.map(x=>CandidateAnswer2CandidateAnswerReport(x,assessment.exam)).toList

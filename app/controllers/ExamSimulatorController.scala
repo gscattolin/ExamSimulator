@@ -23,7 +23,10 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
 
 
   def getExamList()=Action{
-    val lstExams=exs.exploreExams("app\\examData",defaultExtension)
+
+    var folder="app\\examData"
+    if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
+    val lstExams=exs.exploreExams(folder,defaultExtension)
     val lstExamsMap:List[Map[String,String]]=lstExams.map(
       x=>Map(
         "id" -> x.properties.Id.toString,
@@ -90,7 +93,8 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
           (JsPath \ "Answers").write[Seq[String]] and
         (JsPath \ "placeHolders").write[Seq[String]] and
           (JsPath \ "Correct").write[Boolean] and
-          (JsPath \ "correctPlaceHolders").write[Seq[String]]
+          (JsPath \ "correctPlaceHolders").write[Seq[String]] and
+            (JsPath \ "Explanation").write[String]
       )(unlift(CandidateAnswerReport.unapply))
     Ok(Json.toJson(exs.getReportOnAssessment(assessmentId)))
   }
