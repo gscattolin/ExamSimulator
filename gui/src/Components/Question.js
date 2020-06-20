@@ -8,7 +8,8 @@ class Question extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputChangeCheckBox = this.handleInputChangeCheckBox.bind(this);
+        this.handleInputChangeRadio = this.handleInputChangeRadio.bind(this);
         const now=Date.now()
         this.state = {
             assessmentId:props.match.params.assessmentId,
@@ -112,7 +113,7 @@ class Question extends Component {
         }
     }
 
-    handleInputChange(event) {
+    handleInputChangeCheckBox(event) {
         const value = event.target.value;
         const a=this.state.answersUser
         if(event.target.checked){
@@ -135,6 +136,18 @@ class Question extends Component {
 
     }
 
+    handleInputChangeRadio(event) {
+        if(event.target.value)
+        {
+            this.setState({
+                answersUser: [event.target.value],
+                submitEnable:true,
+                }
+            )
+        }
+
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         //console.log("Send submit ass="+this.state.assessmentId+'/question='+this.state.questionId)
@@ -153,7 +166,7 @@ class Question extends Component {
         }
         else
         {
-            this.setState({redirect :true})
+            this.setState({redirect :true,submitEnable:false,})
         }
         })
 
@@ -192,14 +205,11 @@ class Question extends Component {
         } else {
             // console.log("rendering question state="+JSON.stringify(this.state))
             const answers = question.Answers
+            const [isOneAnswer,handleEvent]=question.CorrectAnswers.length===1 ? ["radio",this.handleInputChangeRadio] : ["checkbox",this.handleInputChangeCheckBox]
             var timePassed=0
             if (this.state.timer){
-                // sec=this.state.timer.getSeconds()
-                // min=this.state.timer.getMinutes()
-                // hours=this.state.timer.getHours()
                 timePassed=this.timeFromSec2Format(this.state.timer/1000)
             }
-
             return (
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group" >
@@ -224,7 +234,7 @@ class Question extends Component {
                                 <div className="col m-3">
                                         {answers.map(aws => (
                                             <div key={aws.placeHolder} className="form-check my-3">
-                                            <input  className="form-check-input " type="checkbox"  onChange={this.handleInputChange}
+                                            <input  className="form-check-input " name="radioAnswers" type={isOneAnswer}  onChange={handleEvent}
                                                    value={aws.placeHolder} id={aws.placeHolder}/>
                                                 <label className="form-check-label " htmlFor={aws.placeHolder}>
                                                     {aws.Text}

@@ -54,7 +54,7 @@ abstract class CandidateAnswerBase{
 
 case class CandidateAnswer(Id:Int,placeHolders:List[String], Correct:Boolean) extends CandidateAnswerBase
 
-case class CandidateAnswerReport(Id:Int,Text:String,Answers:List[String],placeHolders:List[String], Correct:Boolean,correctPlaceHolders:List[String])
+case class CandidateAnswerReport(Id:Int,Text:String,Answers:List[String],placeHolders:List[String], Correct:Boolean,correctPlaceHolders:List[String],Explanation:String)
   extends CandidateAnswerBase
 
 

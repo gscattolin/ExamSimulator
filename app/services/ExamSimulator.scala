@@ -77,7 +77,7 @@ exam=Exam(prop,questions)
     val subsetQuestions=new mutable.LinkedHashSet[Question]()
     while (subsetQuestions.size<questionsN){
       val q=exam.listQuestion(r.nextInt(exam.listQuestion.length))
-      if (q.Valid)
+      if (q.Valid && ! subsetQuestions.contains(q))
         subsetQuestions.add(Question(subsetQuestions.size+1,q.Text,q.Answers,q.CorrectAnswers,q.Explanation,q.Valid))
     }
     Exam(exam.properties,subsetQuestions.toList)
