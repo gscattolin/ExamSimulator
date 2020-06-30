@@ -4,10 +4,12 @@ import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalTime}
 import java.util.Calendar
 
-import models.CandidateAnswer
+import models.{CandidateAnswer, totalAnswers}
 import org.scalatestplus.play.PlaySpec
+import play.api.libs.json.{JsArray, JsPath, JsString, JsSuccess, JsValue, Json, Reads}
 
-import scala.collection.immutable.Nil
+import scala.collection.immutable.{HashMap, Nil}
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
 class ExamSimulatorTest extends PlaySpec{
@@ -90,6 +92,94 @@ class ExamSimulatorTest extends PlaySpec{
 
     }
   }
+
+//  implicit val tReads: Reads[Map[Int,totalAnswers]]=(json:JsValue) =>
+//    JsSuccess(json.as[Map[Int,totalAnswers]].map {
+//      case (k, v) => k.toInt -> totalAnswers(k.toInt, v.asInstanceOf[Seq[String]].toList)
+//    })
+//
+//  "ExamSimulator.readJson" must   {
+//    "convert map results" in {
+//      val json: JsValue = Json.parse("""
+//        {
+//          "1" :  [
+//            "A","B"
+//          ],
+//          "2" :  [
+//            "B"
+//          ],
+//          "3" :  [
+//            "D","C"
+//          ]
+//        }
+//        """)
+//      //val json = Json.toJson(Map(1 -> List("A","B"), 2 -> List("B"), 3 -> List("C","D")))
+//      val userAnswersRes=json.as[Map[Int,totalAnswers]]
+//      userAnswersRes.size mustBe(3)
+//    }
+
+  "ExamSimulator.json convertor" must {
+    "convert map results using basic " in {
+      val json: JsValue = Json.parse(
+        """
+        {
+          "1" :  [
+            "A","B"
+          ],
+          "2" :  [
+            "B"
+          ],
+          "3" :  [
+            "D","C"
+          ]
+        }
+        """)
+      //val json = Json.toJson(Map(1 -> List("A","B"), 2 -> List("B"), 3 -> List("C","D")))
+      var i: Int = 1
+      var valid: Boolean = true
+      var userAnswersRes: mutable.Map[Int, totalAnswers] = mutable.HashMap.empty
+      while (valid) {
+        if (json.\(i.toString).isEmpty) {
+          valid = false
+        }
+        else {
+          val tA = totalAnswers(i, json.\(i.toString).get.as[List[String]])
+          userAnswersRes = userAnswersRes + (i -> tA)
+          i += 1
+        }
+      }
+      userAnswersRes.size mustBe (3)
+    }
+
+    "convert map results using 2 attempt " in {
+      val json: JsValue = Json.parse(
+        """
+        [
+          ["1" ,  [
+            "A","B"
+          ]],
+          ["2" ,  [
+            "B"
+          ]],
+          ["3" ,  [
+            "D","C"
+          ]]
+        ]
+        """)
+      def v2I(jsValue: JsValue):Int={
+        Integer.parseInt(jsValue.asInstanceOf[JsString].value)
+      }
+
+      def v2Lst(jsValue: JsValue):List[String]={
+        val aa=jsValue.asInstanceOf[JsArray].value.map(x=> x.as[String]).toList
+        aa
+      }
+      val userAnswersRes:Map[Int,totalAnswers] = json.as[List[JsArray]].map(x=> v2I(x.value(0))  -> totalAnswers(v2I(x.value(0)),v2Lst(x.value(1)))).toMap
+      userAnswersRes.size mustBe (3)
+    }
+  }
+
+
 
 
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="examsimulator"
+		module="examsimulator$sources_2.13"
+		revision="1.0"
+		conf="scala-tool"
+		confs="universal, universal-docs, universal-src, compile, runtime, test, provided, optional, windows, docker, linux, web-assets, web-assets-test, web-plugin, rpm, debian, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20200621091723"/>
+	<dependencies>
+		<module organisation="org.scala-lang" name="scala-compiler">
+			<revision name="2.13.2" status="release" pubdate="20200423080940" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-compiler/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, optional, optional(default), master" position="4">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3282" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.13.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.2/scala-compiler-2.13.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="scala-tool" rev="2.13.2" rev-constraint-default="2.13.2" rev-constraint-dynamic="2.13.2" callerrev="1.0" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-compiler/"/>
+				<artifacts>
+					<artifact name="scala-compiler" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1908917" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-compiler/srcs/scala-compiler-2.13.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.2/scala-compiler-2.13.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.jline" name="jline">
+			<revision name="3.14.1" status="release" pubdate="20200408161828" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="2">
+				<license name="The BSD License" url="https://opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="10734" time="0" location="/Users/giancarlo/.ivy2/cache/org.jline/jline/ivy-3.14.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/jline/jline/3.14.1/jline-3.14.1.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="scala-tool" rev="3.14.1" rev-constraint-default="3.14.1" rev-constraint-dynamic="3.14.1" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="jline" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="490624" time="0" location="/Users/giancarlo/.ivy2/cache/org.jline/jline/srcs/jline-3.14.1-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/jline/jline/3.14.1/jline-3.14.1-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="net.java.dev.jna" name="jna">
+			<revision name="5.3.1" status="release" pubdate="20190428141301" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/java-native-access/jna" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="3">
+				<license name="LGPL, version 2.1" url="http://www.gnu.org/licenses/licenses.html"/>
+				<license name="Apache License v2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2567" time="0" location="/Users/giancarlo/.ivy2/cache/net.java.dev.jna/jna/ivy-5.3.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="scala-tool" rev="5.3.1" rev-constraint-default="5.3.1" rev-constraint-dynamic="5.3.1" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="jna" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="155499" time="0" location="/Users/giancarlo/.ivy2/cache/net.java.dev.jna/jna/srcs/jna-5.3.1-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-reflect">
+			<revision name="2.13.2" status="release" pubdate="20200423080220" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-reflect/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="1">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2859" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.13.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.2/scala-reflect-2.13.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="scala-tool" rev="2.13.2" rev-constraint-default="2.13.2" rev-constraint-dynamic="2.13.2" callerrev="1.0" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-reflect/"/>
+				<artifacts>
+					<artifact name="scala-reflect" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="636583" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.13.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.2/scala-reflect-2.13.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.13.2" status="release" pubdate="20200423080229" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, optional, optional(default), compile(*), master" position="0">
+				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2659" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-library/ivy-2.13.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.2/scala-library-2.13.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="scala-tool" rev="2.13.2" rev-constraint-default="2.13.2" rev-constraint-dynamic="2.13.2" callerrev="1.0" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/"/>
+				<artifacts>
+					<artifact name="scala-library" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1001408" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.13.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.2/scala-library-2.13.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

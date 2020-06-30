@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question}
-import play.api.libs.json.{JsPath, JsResult, JsSuccess, JsValue, Json, Writes}
+import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, totalAnswers}
+import play.api.libs.json.{JsArray, JsObject, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import services.GenExamSimulator
@@ -46,7 +46,6 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
       val v2 = (json \ "questions").as[String]
       JsSuccess(formAnswer(v1.toInt, v2.toInt))
     }
-
     val json = request.body.asJson.get
     val frmAnsw = json.as[formAnswer](reads)
     val assessment=exs.createAssessment(frmAnsw.examId,frmAnsw.questionsNumber,"CandidateFakeName")
@@ -81,6 +80,36 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(Json.toJson(Map("isCorrect"->correct)))
   }
 
+
+
+  def collectAnswers(assessmentId:Int)=Action { request =>
+    def convertJson2Answers(jsValue: JsValue):Map[Int,totalAnswers]={
+      def v2I(jsValue: JsValue):Int={
+        Integer.parseInt(jsValue.asInstanceOf[JsString].value)
+      }
+
+      def v2Lst(jsValue: JsValue):List[String]={
+        val aa=jsValue.asInstanceOf[JsArray].value.map(x=> x.as[String]).toList
+        aa
+      }
+      val userAnswersRes:Map[Int,totalAnswers] = jsValue.as[List[JsArray]].map(x=> v2I(x.value(0))  -> totalAnswers(v2I(x.value(0)),v2Lst(x.value(1)))).toMap
+      userAnswersRes
+    }
+
+    val json = request.body.asJson.get
+    if ((json \ "answers").isEmpty){
+      NotAcceptable("Incorrect Json Format")
+    }
+    else{
+      val userAnswersRes=convertJson2Answers((json \ "answers").get)
+      //val userAnswersRes:Map[Int,totalAnswers] = json.as[Map[String, JsValue]].map(x => x._1.toInt -> totalAnswers(x._1.toInt, x._2.as[List[String]]))
+      if (userAnswersRes.isEmpty)
+        Ok(Json.toJson(Map("verifiedAnswered"->0)))
+      userAnswersRes.foreach(x=>exs.checkUserAnswers(assessmentId,x._1,CandidateAnswer(x._1,x._2.Answers,false)))
+      Ok(Json.toJson(Map("verifiedAnswered"->userAnswersRes.size)))
+    }
+  }
+
   def getAssessmentReportInfo(assessmentId:Int,prop:Int)=Action { request =>
     val timeInSeconds= exs.getAssessmentInfo(assessmentId,prop).toString
     Ok(Json.toJson(Map("timeinseconds"->timeInSeconds)))
@@ -96,7 +125,8 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
           (JsPath \ "correctPlaceHolders").write[Seq[String]] and
             (JsPath \ "Explanation").write[String]
       )(unlift(CandidateAnswerReport.unapply))
-    Ok(Json.toJson(exs.getReportOnAssessment(assessmentId)))
+    val t=exs.getReportOnAssessment(assessmentId)
+    Ok(Json.toJson(t))
   }
 
   def getAssessmentQuestions(assessmentId:Int)=Action { request =>

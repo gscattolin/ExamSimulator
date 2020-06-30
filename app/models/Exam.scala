@@ -57,5 +57,5 @@ case class CandidateAnswer(Id:Int,placeHolders:List[String], Correct:Boolean) ex
 case class CandidateAnswerReport(Id:Int,Text:String,Answers:List[String],placeHolders:List[String], Correct:Boolean,correctPlaceHolders:List[String],Explanation:String)
   extends CandidateAnswerBase
 
-
+case class totalAnswers(Id:Int,Answers:List[String])
 
