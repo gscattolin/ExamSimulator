@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import { Redirect,Route } from 'react-router-dom'
+import {Tab,Row,Col,ListGroup} from 'react-bootstrap';
 import config from './config'
 
 class SelectExam extends Component{
@@ -16,8 +17,7 @@ class SelectExam extends Component{
     }
 
 
-    componentDidMount()
-        {
+    componentDidMount() {
             fetch(config.baseUrl+'exam')
                 .then(res => res.json()).then(data => {
                             this.setState({
@@ -91,31 +91,47 @@ class SelectExam extends Component{
             return <div>Loading...</div>;
         } else {
             return(
-                <div className="row">
-                    <div className="col"/>
-                    <div className="col">
-                        <form  onSubmit={this.handleSubmit}>
-                            <div className="form-group">
-                                <label htmlFor="ExamAv">Exams Available</label>
-                            </div>
-                            <div className="form-group">
-                                <div className="list-group">
-                                    {exams.map(ex => (
-                                        <button type="button" key={ex.id} name={ex.id}  onClick={this.handleSelect}
-                                                className="list-group-item d-flex justify-content-between align-items-center">
-                                            {ex.code}
-                                            <span className="badge badge-primary badge-pill">Questions={ex.questions}</span>
-                                        </button>
-                                    ))}
-                                    <input id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" onChange={this.handleSelect} />
-                                    <button type="submit" className="btn btn-primary">Create Assessment</button>
-                                </div>
-                            </div>
-                        </form>
+                <div className="container-fluid">
+                    <div className="row my-lg-2">
+                        <div className="col-8">
+                            <Tab.Container id="list-group-tabs-exams" defaultActiveKey="#1">
+                                <Row>
+                                    <Col sm={4}>
+                                        <ListGroup>
+                                            {exams.map(ex => (
+                                                    <ListGroup.Item key={ex.id} action href={"#"+ex.id} >
+                                                        {ex.code}---
+                                                        Questions={ex.questions}
+                                                    </ListGroup.Item>
+                                                ))}
+                                        </ListGroup>
+                                    </Col>
+                                    <Col sm={8}>
+                                        <Tab.Content>
+                                            {exams.map(ex => (
+                                                <Tab.Pane eventKey={"#"+ex.id} key={ex.id}>
+                                                    {ex.title}-{ex.version}
+                                                </Tab.Pane>
+                                            ))}
+                                        </Tab.Content>
+                                    </Col>
+                                </Row>
+                            </Tab.Container>
+                        </div>
+                        <div className="col-4"/>
                     </div>
-                    <div className="col"/>
-                    <div className="col"/>
-                    <div className="col"/>
+                    <div className="row my-lg-2"/>
+                    <div className="row my-lg-2">
+                        <div className="col-2">
+                            <button type="submit" className="btn btn-primary">Create Assessment</button>
+
+                        </div>
+                        <div className="col-4">
+                            Questions in Assessment:
+                            <input id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" onChange={this.handleSelect} />
+                        </div>
+                    </div>
+                    <div className="col-6"/>
                 </div>
             )
         }
