@@ -223,7 +223,8 @@ class Question extends Component {
                 this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
             const percQuestions=Math.floor(this.state.question.Id/this.state.totalQuestions*100)
             const iconForTimer=this.state.TimerStatus==='PLAYING' ? pauseIcon: resumeIcon
-
+            const submitEnable=this.state.answersUser.has(this.state.questionId.toString()) ?
+                this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
             return (
                 <div className="form-group" >
                     <div className="container-fluid ">
@@ -300,7 +301,7 @@ class Question extends Component {
                             <div className="col"/>
                             <div className="col m-5">
                                 <div className={this.state.submitEnable?"visible":"invisible"}>
-                                    <button className="btn btn-outline-primary" onClick={this.handleSubmit} disabled={!rightEnable}>Submit Answers</button>
+                                    <button className="btn btn-outline-primary" onClick={this.handleSubmit} disabled={!submitEnable}>Submit Answers</button>
                                 </div>
                             </div>
                             <div className="col"/>
