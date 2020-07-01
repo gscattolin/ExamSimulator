@@ -4,6 +4,9 @@ import update from 'immutability-helper';
 import config from './config'
 import leftArrow from '../Images/icons8-previous-48.png';
 import rightArrow from '../Images/icons8-next-48.png';
+import pauseIcon from '../Images/icons8-pause-48.png';
+import resumeIcon from '../Images/icons8-resume-button-48.png';
+import Timer from 'react-compound-timer'
 
 
 class Question extends Component {
@@ -12,8 +15,10 @@ class Question extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClickNextForward =this.handleClickNextForward.bind(this);
         this.handleInputChange =this.handleInputChange.bind(this);
+        this.onPauseResumeTime =this.onPauseResumeTime.bind(this);
         const now=Date.now()
         const urlR="/Question/"+props.match.params.assessmentId+"/"+props.match.params.questionId
+        this.TimerRef = React.createRef();
         this.state = {
             assessmentId:props.match.params.assessmentId,
             questionId:props.match.params.questionId,
@@ -23,7 +28,8 @@ class Question extends Component {
             redirect:false,
             submitEnable:false,
             startDate:now,
-            timer:null,
+            TimerValue: 0,
+            TimerStatus:'PLAYING',
             answersUser: new Map()
         }
     }
@@ -32,16 +38,18 @@ class Question extends Component {
         return "inputAnswers";
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timerID);
+
+
+    onPauseResumeTime(){
+        if (this.state.TimerStatus==='PLAYING'){
+            this.TimerRef.current.pause()
+            this.setState({TimerStatus:'PAUSED'})
+        }else{
+            this.TimerRef.current.resume()
+            this.setState({TimerStatus:'PLAYING'})
+        }
     }
 
-    tick() {
-        const diff= new Date()-this.state.startDate
-        this.setState({
-            timer: diff
-        });
-    }
 
     getNewQuestion(questionId){
         this.setState({isLoaded:false})
@@ -89,10 +97,6 @@ class Question extends Component {
     }
 
     componentDidMount() {
-        this.timerID = setInterval(
-            () => this.tick(),
-            1000
-        );
         this.setState({
             startDate:new Date(),
             timer:null,
@@ -168,11 +172,13 @@ class Question extends Component {
     handleClickNextForward(event){
         const delta = event.target.alt==="back" ? -1: 1
         const nextQ=parseInt(this.state.questionId)+delta
+        const timePassed=this.TimerRef.current ? this.TimerRef.current.getTime() :0
         if(nextQ<parseInt(this.state.totalQuestions)){
             const url="/Question/"+this.state.assessmentId+"/"+nextQ
             this.setState({
                 questionId:nextQ,
                 url:url,
+                TimerValue:timePassed,
                 redirect:true,
             })
         }else if (nextQ===parseInt(this.state.totalQuestions))
@@ -182,6 +188,7 @@ class Question extends Component {
                 questionId:nextQ,
                 url:url,
                 redirect:true,
+                TimerValue:timePassed,
                 submitEnable:true
             })
         }
@@ -207,27 +214,57 @@ class Question extends Component {
         } else if (!isLoaded || !this.state.render) {
             return <div>Loading...</div>;
         } else {
+
             // console.log("rendering question state url="+JSON.stringify(this.state))
             this.preFillAnswers(question)
             const isOneAnswer=question.CorrectAnswers.length===1 ? "radio" : "checkbox"
             const leftEnable=this.state.questionId!==1
-            const rightEnable=this.state.answersUser.has(this.state.questionId.toString()) ? this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
-            var timePassed=0
-            if (this.state.timer){
-                timePassed=this.timeFromSec2Format(this.state.timer/1000)
-            }
+            const rightEnable=this.state.answersUser.has(this.state.questionId.toString()) && this.state.questionId<this.state.totalQuestions  ?
+                this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
+            const percQuestions=Math.floor(this.state.question.Id/this.state.totalQuestions*100)
+            const iconForTimer=this.state.TimerStatus==='PLAYING' ? pauseIcon: resumeIcon
+
             return (
                 <div className="form-group" >
                     <div className="container-fluid ">
                          <div className="row my-lg-2">
-                        <div className="col"/>
                         <div className="col">
-                            <h2>Question N. {this.state.question.Id}/{this.state.totalQuestions}</h2>
+                            <h5>Question N. {this.state.question.Id}/{this.state.totalQuestions}</h5>
                         </div>
-                            <div className="col">
-                                {/*Time= {this.state.timer.getHours()} H {this.state.timer.getMinutes()} min*/}
-                                {/*{this.state.timer.getSeconds()} s*/}
-                                Timer={timePassed}
+                        <div className="col">
+                            <div className="progress" style={{height: '30px'}}>
+                                <div className="progress-bar" role="progressbar" style={{width: percQuestions+'%'}}
+                                     aria-valuenow={percQuestions} aria-valuemin="0" aria-valuemax="100" >{percQuestions}%</div>
+                            </div>
+                        </div>
+                             <div className="col">
+                                 <div className="row justify-content-md-center">
+                                     <Timer ref={this.TimerRef}
+                                            initialTime={this.state.TimerValue}>
+                                            <React.Fragment>
+                                                <div className="col">
+                                                    <div className={this.state.TimerValue>(36000*1000)?"visible":"invisible"}>
+                                                        <Timer.Hours /> h
+                                                    </div>
+                                                </div>
+                                                <div className="col">
+                                                    <Timer.Minutes className="m-3"/> m
+                                                </div>
+                                                <div className="col">
+                                                    <Timer.Seconds /> s
+                                                </div>
+                                                <div className="col">
+                                                    <div>
+                                                        <button type="button" className="btn btn-light" data-toggle="button"
+                                                                aria-pressed="false" onClick={this.onPauseResumeTime}>
+                                                            <img className="img-fluid w-90" src={iconForTimer} alt="pause"/>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="col-6"/>
+                                            </React.Fragment>
+                                    </Timer>
+                                </div>
                             </div>
                     </div>
                         <div className="row ml-lg-0">
@@ -239,8 +276,8 @@ class Question extends Component {
                             <div className="col m-3">
                                     {question.Answers.map(aws => (
                                         <div key={aws.placeHolder} className="form-check my-3">
-                                        <input  className="form-check-input " name={this.inputName()} type={isOneAnswer} onChange={this.handleInputChange}
-                                               value={aws.placeHolder} id={aws.placeHolder} checked={aws.checked}/>
+                                        <input  className="form-check-input " name={this.inputName()} type={isOneAnswer} onClick={this.handleInputChange}
+                                               value={aws.placeHolder} id={aws.placeHolder} defaultChecked={aws.checked}/>
                                             <label className="form-check-label " htmlFor={aws.placeHolder}>
                                                 {aws.Text}
                                             </label>
