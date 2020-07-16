@@ -16,17 +16,17 @@ GET     /exam            controllers.ExamSimulatorController.getExamList
 
 POST    /assessment        controllers.ExamSimulatorController.createAssessment
 
-GET     /assessment/:assessmentId/question/:questionId controllers.ExamSimulatorController.getQuestionByAssessment(assessmentId:Int,questionId:Int)
+GET     /assessment/:assessmentId/question/:questionId controllers.ExamSimulatorController.getQuestionByAssessment(assessmentId:java.util.UUID,questionId:Int)
 
-PUT     /assessment/:assessmentId/question/:questionId  controllers.ExamSimulatorController.checkAnswerByAssessment(assessmentId:Int,questionId:Int)
+PUT     /assessment/:assessmentId/question/:questionId  controllers.ExamSimulatorController.checkAnswerByAssessment(assessmentId:java.util.UUID,questionId:Int)
 
-GET     /assessment/:assessmentId/report    controllers.ExamSimulatorController.getAssessmentReport(assessmentId:Int)
+GET     /assessment/:assessmentId/report    controllers.ExamSimulatorController.getAssessmentReport(assessmentId:java.util.UUID)
 
-GET     /assessment/:assessmentId/question              controllers.ExamSimulatorController.getAssessmentQuestions(assessmentId:Int)
+GET     /assessment/:assessmentId/question              controllers.ExamSimulatorController.getAssessmentQuestions(assessmentId:java.util.UUID)
 
-GET     /assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:Int,infoId:Int)
+GET     /assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:java.util.UUID,infoId:Int)
 
-PUT    /assessment/:assessmentId                       controllers.ExamSimulatorController.collectAnswers(assessmentId:Int)
+PUT    /assessment/:assessmentId                       controllers.ExamSimulatorController.collectAnswers(assessmentId:java.util.UUID)
 
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
 

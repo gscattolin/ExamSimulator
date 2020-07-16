@@ -1,7 +1,10 @@
 package controllers
 
+import java.util.UUID
+
 import javax.inject.{Inject, Singleton}
-import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, totalAnswers}
+import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, dataDb, totalAnswers}
+import play.api.Configuration
 import play.api.libs.json.{JsArray, JsObject, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -10,26 +13,45 @@ import services.GenExamSimulator
 
 
 @Singleton
-class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSimulator) extends AbstractController(cc) {
+class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerComponents,exs: GenExamSimulator) extends AbstractController(cc) {
 
-  val defaultExtension:String="json"
-  case class formAnswer(examId:Int,questionsNumber:Int)
+  private val configDataSources:String="datasources"
+
+  private val configDataSourcesFile:String="files"
+  private val configFileFolder:String="folder"
+  private val configFileExtension:String="extension"
 
 
-  def index = Action {
-    val lstExams=exs.exploreExams("app\\examData",defaultExtension)
-    Ok(views.html.index("TEST"))
-  }
+  private val configDataSourcesDb:String="db"
+  private val configDbHost:String="host"
+  private val configDbUser:String="username"
+  private val configDbPwd:String="password"
+  private val configDbName:String="dbName"
+  private val configDbMainTable:String="MainTable"
+
+
+  private val availableConfigSources:Set[String]=Set(configDataSourcesDb,configDataSourcesFile)
+
+  case class formAnswer(examId:UUID,questionsNumber:Int)
+
 
 
   def getExamList()=Action{
-
-    var folder="app\\examData"
-    if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
-    val lstExams=exs.exploreExams(folder,defaultExtension)
-    val lstExamsMap:List[Map[String,String]]=lstExams.map(
+    var lstExams:List[Exam]=List()
+    val source=config.getAndValidate(configDataSources,availableConfigSources)
+    if (source==configDataSourcesDb){
+      val f=config.get[Map[String,String]](configDataSourcesDb)
+      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable))
+      lstExams=exs.exploreExamsFromDb(d)
+    }else {
+      val f=config.get[Map[String,String]](configDataSourcesFile)
+      var folder=f(configFileFolder)
+      if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
+      lstExams=exs.exploreExamsFromPath(folder,f(configFileExtension))
+    }
+    val lstExamsMap=lstExams.map(
       x=>Map(
-        "id" -> x.properties.Id.toString,
+        "id" -> x.Id.toString,
         "code"->x.properties.Code,
         "version" -> x.properties.Version,
         "title" -> x.properties.Title,
@@ -42,9 +64,9 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
 
   def createAssessment()=Action{ request =>
     def reads(json: JsValue): JsResult[formAnswer] = {
-      val v1 = (json \ "examId").as[String]
-      val v2 = (json \ "questions").as[String]
-      JsSuccess(formAnswer(v1.toInt, v2.toInt))
+      val v1 = (json \ "examId").as[UUID]
+      val v2 = (json \ "questions").as[Int]
+      JsSuccess(formAnswer(v1, v2))
     }
     val json = request.body.asJson.get
     val frmAnsw = json.as[formAnswer](reads)
@@ -52,7 +74,7 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(Json.toJson(Map("assessmentId"->assessment.Id)))
   }
 
-  def getQuestionByAssessment(assessmentId:Int,questionsId:Int)=Action{req =>
+  def getQuestionByAssessment(assessmentId:UUID,questionsId:Int)=Action{req =>
     implicit val possibleAnswerWrites: Writes[PossibleAnswer] = (
       (JsPath \ "placeHolder").write[String] and
         (JsPath \ "Text").write[String]
@@ -70,7 +92,7 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(res)
   }
 
-  def checkAnswerByAssessment(assessmentId:Int,questionsId:Int)=Action { request =>
+  def checkAnswerByAssessment(assessmentId:UUID,questionsId:Int)=Action { request =>
     val json = request.body.asJson.get
     val userAnswersRes=(json \ "answers").as[Seq[String]].toList
     if (userAnswersRes.isEmpty)
@@ -80,14 +102,11 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(Json.toJson(Map("isCorrect"->correct)))
   }
 
-
-
-  def collectAnswers(assessmentId:Int)=Action { request =>
+  def collectAnswers(assessmentId:UUID)=Action { request =>
     def convertJson2Answers(jsValue: JsValue):Map[Int,totalAnswers]={
       def v2I(jsValue: JsValue):Int={
-        Integer.parseInt(jsValue.asInstanceOf[JsString].value)
+        jsValue.asInstanceOf[JsString].value.toInt
       }
-
       def v2Lst(jsValue: JsValue):List[String]={
         val aa=jsValue.asInstanceOf[JsArray].value.map(x=> x.as[String]).toList
         aa
@@ -110,12 +129,12 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     }
   }
 
-  def getAssessmentReportInfo(assessmentId:Int,prop:Int)=Action { request =>
+  def getAssessmentReportInfo(assessmentId:UUID,prop:Int)=Action { request =>
     val timeInSeconds= exs.getAssessmentInfo(assessmentId,prop).toString
     Ok(Json.toJson(Map("timeinseconds"->timeInSeconds)))
   }
 
-  def getAssessmentReport(assessmentId:Int)=Action{ request =>
+  def getAssessmentReport(assessmentId:UUID)=Action{ request =>
     implicit val candidateAnswerWrites: Writes[CandidateAnswerReport] = (
         (JsPath \ "Id").write[Int] and
           (JsPath \ "Text").write[String] and
@@ -129,7 +148,7 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     Ok(Json.toJson(t))
   }
 
-  def getAssessmentQuestions(assessmentId:Int)=Action { request =>
+  def getAssessmentQuestions(assessmentId:UUID)=Action { request =>
     Ok(Json.toJson(Map("TotalQuestions"->exs.getTotalQuestionaInAssessment(assessmentId))))
   }
 

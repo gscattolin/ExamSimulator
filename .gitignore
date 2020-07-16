@@ -2,6 +2,7 @@
 ### Scala template
 *.class
 *.log
+*.xml
 logs/*
 .idea/.gitignore
 .idea/codeStyles/
@@ -21,6 +22,15 @@ project/project/
 project/target/
 target/.history
 target/scala-2.13/*
+target/scala-2.11/*
 target/streams/
 target/web/
 
+node_modules
+npm-debug.log
+build
+.dockerignore
+**/.git
+**/.DS_Store
+**/node_modules
+app/examData/asset/

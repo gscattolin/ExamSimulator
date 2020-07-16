@@ -7,6 +7,7 @@ import rightArrow from '../Images/icons8-next-48.png';
 import pauseIcon from '../Images/icons8-pause-48.png';
 import resumeIcon from '../Images/icons8-resume-button-48.png';
 import Timer from 'react-compound-timer'
+import parse from 'html-react-parser';
 
 
 class Question extends Component {
@@ -225,6 +226,7 @@ class Question extends Component {
             const iconForTimer=this.state.TimerStatus==='PLAYING' ? pauseIcon: resumeIcon
             const submitEnable=this.state.answersUser.has(this.state.questionId.toString()) ?
                 this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
+            const htmlText=parse(this.state.question.Text)
             return (
                 <div className="form-group" >
                     <div className="container-fluid ">
@@ -270,7 +272,7 @@ class Question extends Component {
                     </div>
                         <div className="row ml-lg-0">
                             <div className="col m-3">
-                                <label>{this.state.question.Text} </label>
+                                {htmlText}
                             </div>
                         </div>
                         <div className="row ml-lg-0">
