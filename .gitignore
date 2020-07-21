@@ -20,9 +20,10 @@ logs/*
 gui/node_modules/
 project/project/
 project/target/
+target/
 target/.history
-target/scala-2.13/*
-target/scala-2.11/*
+target/scala-2.13/
+target/scala-2.11/
 target/streams/
 target/web/
 
@@ -34,3 +35,4 @@ build
 **/.DS_Store
 **/node_modules
 app/examData/asset/
+

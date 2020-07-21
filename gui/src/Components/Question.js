@@ -25,6 +25,7 @@ class Question extends Component {
             questionId:props.match.params.questionId,
             url:urlR,
             isLoaded:false,
+            isSaving:false,
             render: false,
             redirect:false,
             submitEnable:false,
@@ -39,6 +40,9 @@ class Question extends Component {
         return "inputAnswers";
     }
 
+    savingButtonName() {
+        return "savingAssessment";
+    }
 
 
     onPauseResumeTime(){
@@ -113,12 +117,20 @@ class Question extends Component {
         }
     }
 
+
     handleInputChange(event) {
+        console.log("Update answers ===="+JSON.stringify(this.state.answersUser))
+        let newA=null
         const valuesSelected = Array
             .from(document.getElementsByName(this.inputName()))
             .filter((el) => el.checked)
             .map((el) => el.value);
-        const newA=update(this.state.answersUser,{[this.state.questionId]:{$set: valuesSelected}})
+        if (this.state.questionId in this.state.answersUser){
+            newA=update(this.state.answersUser[this.state.questionId],valuesSelected)
+        }
+        else{
+            newA=update(this.state.answersUser,{[this.state.questionId]:{$set: valuesSelected}})
+        }
         this.setState({
             answersUser:newA,
             render:true,
@@ -128,6 +140,13 @@ class Question extends Component {
     handleSubmit(event) {
         event.preventDefault();
         //console.log("Send submit ass="+this.state.assessmentId+'/question='+this.state.questionId)
+        this.setState({
+            isSaving:true
+        })
+        let closeAssessment=false
+        if(event.target.name!==this.savingButtonName()){
+            closeAssessment=true
+        }
         const url=config.baseUrl+'assessment/'+this.state.assessmentId
         const aws=this.state.answersUser
         const bodyT=JSON.stringify({"answers": Array.from(aws.entries())})
@@ -144,12 +163,17 @@ class Question extends Component {
         }
         else
         {
-            const url="/Report/"+this.state.assessmentId
-            this.setState({
-                redirect:true,
-                url:url,
-            })
+            if (closeAssessment){
+                const url="/Report/"+this.state.assessmentId
+                this.setState({
+                    redirect:true,
+                    url:url,
+                })
+            }
         }
+        this.setState({
+            isSaving:false
+        })
         })
 
     }
@@ -234,13 +258,13 @@ class Question extends Component {
                         <div className="col">
                             <h5>Question N. {this.state.question.Id}/{this.state.totalQuestions}</h5>
                         </div>
-                        <div className="col">
+                         <div className="col">
                             <div className="progress" style={{height: '30px'}}>
                                 <div className="progress-bar" role="progressbar" style={{width: percQuestions+'%'}}
                                      aria-valuenow={percQuestions} aria-valuemin="0" aria-valuemax="100" >{percQuestions}%</div>
                             </div>
                         </div>
-                             <div className="col">
+                         <div className="col">
                                  <div className="row justify-content-md-center">
                                      <Timer ref={this.TimerRef}
                                             initialTime={this.state.TimerValue}>
@@ -269,6 +293,10 @@ class Question extends Component {
                                     </Timer>
                                 </div>
                             </div>
+                             <div className="col">
+                                 <button variant="secondary" disabled={this.state.isSaving} name={this.savingButtonName()} onClick={!this.state.isSaving ? this.handleSubmit : null} >
+                                     {this.state.isSaving ? 'is Saving…' : 'Save Assessment'}</button>
+                             </div>
                     </div>
                         <div className="row ml-lg-0">
                             <div className="col m-3">

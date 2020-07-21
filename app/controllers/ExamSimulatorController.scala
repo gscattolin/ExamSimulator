@@ -4,7 +4,7 @@ import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
 import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, dataDb, totalAnswers}
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsArray, JsObject, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -28,20 +28,22 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
   private val configDbPwd:String="password"
   private val configDbName:String="dbName"
   private val configDbMainTable:String="MainTable"
+  private val configDbAssessmentTable:String="AssessmentTable"
 
 
   private val availableConfigSources:Set[String]=Set(configDataSourcesDb,configDataSourcesFile)
 
+  protected val LOGGER: Logger = Logger(this.getClass)
+
   case class formAnswer(examId:UUID,questionsNumber:Int)
 
-
-
   def getExamList()=Action{
+    LOGGER.info("Starting getting Total Exams")
     var lstExams:List[Exam]=List()
     val source=config.getAndValidate(configDataSources,availableConfigSources)
     if (source==configDataSourcesDb){
       val f=config.get[Map[String,String]](configDataSourcesDb)
-      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable))
+      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
       lstExams=exs.exploreExamsFromDb(d)
     }else {
       val f=config.get[Map[String,String]](configDataSourcesFile)
@@ -60,7 +62,6 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     )
     Ok(Json.toJson(lstExamsMap))
   }
-
 
   def createAssessment()=Action{ request =>
     def reads(json: JsValue): JsResult[formAnswer] = {
@@ -98,38 +99,49 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     if (userAnswersRes.isEmpty)
       Ok(Json.toJson(Map("isCorrect"->false)))
     val candAnsws=CandidateAnswer(questionsId,userAnswersRes,Correct = false)
-    val correct=exs.checkUserAnswers(assessmentId,questionsId,candAnsws)
+    val correct=exs.checkUserAnswer(assessmentId,questionsId,candAnsws)
     Ok(Json.toJson(Map("isCorrect"->correct)))
   }
 
-  def collectAnswers(assessmentId:UUID)=Action { request =>
+  private def getAnswersFromJson(assessmentId:UUID,jsValue:JsValue):Map[Int,totalAnswers]={
     def convertJson2Answers(jsValue: JsValue):Map[Int,totalAnswers]={
       def v2I(jsValue: JsValue):Int={
         jsValue.asInstanceOf[JsString].value.toInt
       }
       def v2Lst(jsValue: JsValue):List[String]={
-        val aa=jsValue.asInstanceOf[JsArray].value.map(x=> x.as[String]).toList
+        val aa=jsValue.asInstanceOf[JsArray].value.map(x=> x.as[String].charAt(0).toString).toList
         aa
       }
       val userAnswersRes:Map[Int,totalAnswers] = jsValue.as[List[JsArray]].map(x=> v2I(x.value(0))  -> totalAnswers(v2I(x.value(0)),v2Lst(x.value(1)))).toMap
       userAnswersRes
     }
 
+    if ((jsValue \ "answers").isEmpty){
+      Map[Int,totalAnswers]()
+    }
+    else{
+      convertJson2Answers((jsValue \ "answers").get)
+    }
+
+  }
+
+  def collectAnswers(assessmentId:UUID)=Action { request =>
     val json = request.body.asJson.get
     if ((json \ "answers").isEmpty){
       NotAcceptable("Incorrect Json Format")
     }
-    else{
-      val userAnswersRes=convertJson2Answers((json \ "answers").get)
-      //val userAnswersRes:Map[Int,totalAnswers] = json.as[Map[String, JsValue]].map(x => x._1.toInt -> totalAnswers(x._1.toInt, x._2.as[List[String]]))
-      if (userAnswersRes.isEmpty)
-        Ok(Json.toJson(Map("verifiedAnswered"->0)))
-      userAnswersRes.foreach(x=>exs.checkUserAnswers(assessmentId,x._1,CandidateAnswer(x._1,x._2.Answers,false)))
-      Ok(Json.toJson(Map("verifiedAnswered"->userAnswersRes.size)))
+    val userAnswersRes=getAnswersFromJson(assessmentId,json)
+    if (userAnswersRes.isEmpty)
+      Ok(Json.toJson(Map("verifiedAnswered"->0)))
+
+    userAnswersRes.foreach(x=>exs.checkUserAnswer(assessmentId,x._1,CandidateAnswer(x._1,x._2.Answers,false)))
+    if (userAnswersRes.size!=exs.getTotalQuestionaInAssessment(assessmentId)){
+      exs.saveAssessment(assessmentId)
     }
+    Ok(Json.toJson(Map("verifiedAnswered"->userAnswersRes.size)))
   }
 
-  def getAssessmentReportInfo(assessmentId:UUID,prop:Int)=Action { request =>
+  def getAssessmentReportInfo(assessmentId:UUID,prop:Int)=Action {
     val timeInSeconds= exs.getAssessmentInfo(assessmentId,prop).toString
     Ok(Json.toJson(Map("timeinseconds"->timeInSeconds)))
   }
@@ -152,4 +164,16 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     Ok(Json.toJson(Map("TotalQuestions"->exs.getTotalQuestionaInAssessment(assessmentId))))
   }
 
+
+  def getAllAssessment()=Action {
+    case class AssessmentInfo(Id:UUID,Code:String,Started:String,QuestionsNumber:Int)
+    implicit val AssessmentInfoWrites: Writes[AssessmentInfo] = (
+      (JsPath \ "Id").write[UUID] and
+        (JsPath \ "Code").write[String] and
+        (JsPath \ "Started").write[String] and
+        (JsPath \ "QuestionsNumber").write[Int]
+    )(unlift(AssessmentInfo.unapply))
+    val lstAssessmentIds=exs.getAllAssessment().map(x=>AssessmentInfo(x.Id,x.exam.properties.Code,x.startTime.toString,x.exam.listQuestion.length))
+    Ok(Json.toJson(lstAssessmentIds))
+  }
 }

@@ -1,13 +1,13 @@
 package services
 
-import javax.inject.{Singleton}
+import javax.inject.Singleton
 import java.io.File
 
 import models.{Assessment, Exam, _}
 import java.time.{LocalDate, LocalTime}
 import java.util.UUID
 
-import play.api.{Configuration, Logging}
+import play.api.{Configuration, Logger, Logging}
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import repositories.RepoExamSimulator
@@ -22,10 +22,13 @@ trait GenExamSimulator extends Logging {
   def exploreExamsFromDb(data:dataDb):List[Exam]
   def createAssessment(examId: UUID,questionsNumber:Int,candidate:String):Assessment
   def getQuestionInAssessment(assessmentId:UUID,questionId:Int): (Assessment,Question)
-  def checkUserAnswers(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean
+  def checkUserAnswer(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean
   def getReportOnAssessment(assessmentId:UUID):List[CandidateAnswerReport]
   def getTotalQuestionaInAssessment(assessmentId:UUID):Int
   def getAssessmentInfo(assessmentId:UUID,prop:Int):Any
+  def saveAssessment(assessmentId:UUID):Long
+  def getAllAssessment():List[Assessment]
+  def loadAssessment(assessmentId:UUID):Assessment
 }
 
 @Singleton
@@ -34,7 +37,7 @@ class ExamSimulator
 
   private var availableExams:List[Exam] =List[Exam]()
 
-  private var availableAssessment:ListBuffer[Assessment] =ListBuffer[Assessment]()
+  private val availableAssessment:ListBuffer[Assessment] =ListBuffer[Assessment]()
 
   private val repoExamSimulator= new RepoExamSimulator()
 
@@ -122,10 +125,18 @@ class ExamSimulator
     (a,b)
   }
 
-  override def checkUserAnswers(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean={
+  override def checkUserAnswer(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean={
     val res=getQuestionInAssessment(assessmentId,questionId)
     val isAnswersCorrect: Boolean = res._2.CorrectAnswers.intersect(candAnsw.placeHolders).length==res._2.CorrectAnswers.length
-    res._1.candidateAnswers.addOne(CandidateAnswer(questionId,candAnsw.placeHolders,isAnswersCorrect))
+    val existingAnswer=res._1.candidateAnswers.find(x=>x.Id==questionId)
+    if (existingAnswer.nonEmpty){
+      res._1.candidateAnswers.remove(res._1.candidateAnswers.indexOf(existingAnswer.head))
+      res._1.candidateAnswers.addOne(CandidateAnswer(questionId,candAnsw.placeHolders,isAnswersCorrect))
+    }
+    else{
+      res._1.candidateAnswers.addOne(CandidateAnswer(questionId,candAnsw.placeHolders,isAnswersCorrect))
+    }
+
     isAnswersCorrect
   }
 
@@ -136,7 +147,7 @@ class ExamSimulator
       CandidateAnswerReport(t.Id,t.Text,answers,c.placeHolders,c.Correct,t.CorrectAnswers,t.Explanation)
     }
     val assessment= availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment)
-    assessment.candidateAnswers.map(x=>CandidateAnswer2CandidateAnswerReport(x,assessment.exam)).toList
+    assessment.candidateAnswers.sortBy(x=> x.Id).map(x=>CandidateAnswer2CandidateAnswerReport(x,assessment.exam)).toList
   }
 
   override def getTotalQuestionaInAssessment (assessmentId: UUID): Int = {
@@ -151,5 +162,40 @@ class ExamSimulator
       case _ => ""
     }
 
+  }
+
+  override def saveAssessment(assessmentId: UUID): Long = {
+    val assessments=availableAssessment.find(x=> x.Id==assessmentId)
+    if(assessments.isEmpty) -1
+    val assessment=assessments.head
+    if (repoExamSimulator.checkAssessmentExists(assessmentId))
+      {
+        val res=repoExamSimulator.updateAssessment(assessment)
+        logger.info(s"upodate $res docs")
+        res
+      }
+    else
+    {
+      repoExamSimulator.saveAssessment(assessment)
+    }
+
+  }
+
+  override def getAllAssessment(): List[Assessment] = {
+    repoExamSimulator.getAllAssessment
+  }
+
+  override def loadAssessment(assessmentId: UUID): Assessment = {
+    val assessments=availableAssessment.find(x=> x.Id==assessmentId)
+    if(assessments.isDefined)
+    {
+      assessments.get
+    }
+    else{
+      repoExamSimulator.loadAssessment(assessmentId) match {
+        case Right(value) => value
+        case Left(value) =>  new Assessment()
+      }
+    }
   }
 }
