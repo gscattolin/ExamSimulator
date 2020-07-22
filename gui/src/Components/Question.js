@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import {Redirect} from "react-router-dom";
+import {Redirect}  from 'react-router-dom'
 import update from 'immutability-helper';
 import config from './config'
 import leftArrow from '../Images/icons8-previous-48.png';
@@ -17,22 +17,20 @@ class Question extends Component {
         this.handleClickNextForward =this.handleClickNextForward.bind(this);
         this.handleInputChange =this.handleInputChange.bind(this);
         this.onPauseResumeTime =this.onPauseResumeTime.bind(this);
-        const now=Date.now()
         const urlR="/Question/"+props.match.params.assessmentId+"/"+props.match.params.questionId
         this.TimerRef = React.createRef();
         this.state = {
             assessmentId:props.match.params.assessmentId,
             questionId:props.match.params.questionId,
+            question:{},
             url:urlR,
             isLoaded:false,
             isSaving:false,
             render: false,
             redirect:false,
             submitEnable:false,
-            startDate:now,
             TimerValue: 0,
             TimerStatus:'PLAYING',
-            answersUser: new Map()
         }
     }
 
@@ -64,11 +62,13 @@ class Question extends Component {
             .then(res => res.json()).then(data => {
                 this.setState({
                     error:null,
+                    question:data,
                     questionId:questionId,
-                    isLoaded: true,
                     redirect:false,
+                    isLoaded: true,
                     render:true,
-                    question:data})
+                    })
+            // console.log("received question Id "+questionId+" data "+JSON.stringify(data))
             },
             (error) => {
                 console.log("ERROR Getting data question"+error)
@@ -85,9 +85,14 @@ class Question extends Component {
         const url=config.baseUrl+'assessment/'+assessmentId+'/question'
         fetch(url)
             .then(res => res.json()).then(data => {
+                let mapV=new Map()
+                for(let n=0; n<data.AnswersUser.length; n++){
+                    mapV.set((data.AnswersUser[n][0]).toString(),data.AnswersUser[n][1])
+                }
                 this.setState({
                         error: null,
                         submitEnable:false,
+                        answersUser: mapV,
                         totalQuestions: data.TotalQuestions,
                     }
                 )
@@ -95,7 +100,8 @@ class Question extends Component {
             (error) => {
                 console.log("ERROR Getting data question"+error)
                 this.setState({
-                    error:error
+                    error:error,
+                    isLoaded: true
                 });
             }
         )
@@ -106,7 +112,7 @@ class Question extends Component {
             startDate:new Date(),
             timer:null,
         })
-        this.getNewQuestion(1)
+        this.getNewQuestion(this.state.questionId)
         this.getTotalQuestions(this.state.assessmentId)
     }
 
@@ -117,10 +123,8 @@ class Question extends Component {
         }
     }
 
-
     handleInputChange(event) {
-        console.log("Update answers ===="+JSON.stringify(this.state.answersUser))
-        let newA=null
+        let newA
         const valuesSelected = Array
             .from(document.getElementsByName(this.inputName()))
             .filter((el) => el.checked)
@@ -166,6 +170,7 @@ class Question extends Component {
             if (closeAssessment){
                 const url="/Report/"+this.state.assessmentId
                 this.setState({
+                    isLoaded:false,
                     redirect:true,
                     url:url,
                 })
@@ -180,11 +185,11 @@ class Question extends Component {
 
     preFillAnswers(question){
         let answers=question.Answers
-        if (this.state.answersUser.has(this.state.questionId.toString()))
+        if (this.state.answersUser.has(this.state.questionId))
         {
-            const preAnsw=this.state.answersUser.get(this.state.questionId.toString())
+            const preAnsw=this.state.answersUser.get(this.state.questionId)
             for (let i = 0; i < answers.length; i++) {
-                answers[i].checked=preAnsw.includes(answers[i].placeHolder)
+                answers[i].checked=preAnsw.includes(answers[i].placeHolder.charAt(0))
             }
         }
         else{
@@ -204,6 +209,7 @@ class Question extends Component {
                 questionId:nextQ,
                 url:url,
                 TimerValue:timePassed,
+                isLoaded:false,
                 redirect:true,
             })
         }else if (nextQ===parseInt(this.state.totalQuestions))
@@ -212,6 +218,7 @@ class Question extends Component {
             this.setState({
                 questionId:nextQ,
                 url:url,
+                isLoaded:false,
                 redirect:true,
                 TimerValue:timePassed,
                 submitEnable:true
@@ -230,26 +237,28 @@ class Question extends Component {
     }
 
     render() {
-        const {error, isLoaded, question} = this.state;
+        const error=this.state.error
+        const isLoaded=this.state.isLoaded
+        const question=this.state.question
         if (this.state.redirect === true) {
             return <Redirect to={this.state.url} />
         }
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded || !this.state.render) {
+        } else if (!isLoaded || !this.state.render || !this.state.answersUser) {
             return <div>Loading...</div>;
         } else {
-
-            // console.log("rendering question state url="+JSON.stringify(this.state))
+            // console.log("IsLoaded "+this.state.isLoaded)
+            // console.log("rendering question state url="+JSON.stringify(this.state.question))
             this.preFillAnswers(question)
             const isOneAnswer=question.CorrectAnswers.length===1 ? "radio" : "checkbox"
-            const leftEnable=this.state.questionId!==1
+            const leftEnable=this.state.questionId!=="1"
             const rightEnable=this.state.answersUser.has(this.state.questionId.toString()) && this.state.questionId<this.state.totalQuestions  ?
                 this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
             const percQuestions=Math.floor(this.state.question.Id/this.state.totalQuestions*100)
             const iconForTimer=this.state.TimerStatus==='PLAYING' ? pauseIcon: resumeIcon
-            const submitEnable=this.state.answersUser.has(this.state.questionId.toString()) ?
-                this.state.answersUser.get(this.state.questionId.toString()).length>0 : false
+            const submitEnable=this.state.answersUser.has(this.state.questionId) ?
+                this.state.answersUser.get(this.state.questionId).length>0 : false
             const htmlText=parse(this.state.question.Text)
             return (
                 <div className="form-group" >

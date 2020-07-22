@@ -5,14 +5,15 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.FrontendController.index
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
 
 GET     /summary                controllers.HomeController.appSummary
 
+
 GET     /exam            controllers.ExamSimulatorController.getExamList
+
+GET    /assessment        controllers.ExamSimulatorController.getAllAssessment
 
 POST    /assessment        controllers.ExamSimulatorController.createAssessment
 
@@ -27,6 +28,10 @@ GET     /assessment/:assessmentId/question              controllers.ExamSimulato
 GET     /assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:java.util.UUID,infoId:Int)
 
 PUT    /assessment/:assessmentId                       controllers.ExamSimulatorController.collectAnswers(assessmentId:java.util.UUID)
+
+GET     /assessment/:assessmentId                      controllers.ExamSimulatorController.loadAssessment(assessmentId:java.util.UUID)
+
+
 
 GET     /*file                      controllers.FrontendController.assetOrDefault(file)
 

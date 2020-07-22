@@ -221,14 +221,14 @@ class RepoExamSimulator(){
     var qs = ArrayBuffer[PossibleAnswer]()
     for (ch <- 0 until doc.asArray().size()) {
       val vv = doc.asArray().get(ch).asDocument()
-      qs += PossibleAnswer(vv.get("placeHolder"), vv.get("choiceValue"))
+      qs += PossibleAnswer(vv.get("placeHolder").asString().getValue.head.toString, vv.get("choiceValue"))
     }
     qs.toList
   }
 
   private def mapPossibleAnswer2Doc(pAnswers: List[PossibleAnswer]): BsonArray ={
     val bsonArray = new BsonArray()
-    for (v <- pAnswers) bsonArray.add(BsonDocument("placeHolder"->v.placeHolder,"choiceValue" -> v.Text))
+    for (v <- pAnswers) bsonArray.add(BsonDocument("placeHolder"->v.placeHolder.charAt(0).toString,"choiceValue" -> v.Text))
     bsonArray
   }
 

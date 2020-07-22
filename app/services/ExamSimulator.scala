@@ -24,7 +24,7 @@ trait GenExamSimulator extends Logging {
   def getQuestionInAssessment(assessmentId:UUID,questionId:Int): (Assessment,Question)
   def checkUserAnswer(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean
   def getReportOnAssessment(assessmentId:UUID):List[CandidateAnswerReport]
-  def getTotalQuestionaInAssessment(assessmentId:UUID):Int
+  def getTotalQuestionsInAssessment(assessmentId:UUID):Int
   def getAssessmentInfo(assessmentId:UUID,prop:Int):Any
   def saveAssessment(assessmentId:UUID):Long
   def getAllAssessment():List[Assessment]
@@ -120,9 +120,9 @@ class ExamSimulator
   }
 
   override def getQuestionInAssessment (assessmentId: UUID, questionId: Int): (Assessment,Question) = {
-    val a= availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment)
-    val b = a.exam.listQuestion.find(x=>x.Id==questionId).getOrElse(new Question())
-    (a,b)
+    val assessment= availableAssessment.find(x=> x.Id==assessmentId).getOrElse(loadAssessment(assessmentId))
+    val b = assessment.exam.listQuestion.find(x=>x.Id==questionId).getOrElse(new Question())
+    (assessment,b)
   }
 
   override def checkUserAnswer(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean={
@@ -150,7 +150,7 @@ class ExamSimulator
     assessment.candidateAnswers.sortBy(x=> x.Id).map(x=>CandidateAnswer2CandidateAnswerReport(x,assessment.exam)).toList
   }
 
-  override def getTotalQuestionaInAssessment (assessmentId: UUID): Int = {
+  override def getTotalQuestionsInAssessment (assessmentId: UUID): Int = {
     availableAssessment.find(x=> x.Id==assessmentId).getOrElse(new Assessment).exam.listQuestion.length
   }
 
@@ -193,7 +193,7 @@ class ExamSimulator
     }
     else{
       repoExamSimulator.loadAssessment(assessmentId) match {
-        case Right(value) => value
+        case Right(value) => logger.info(s"Loaded successfully a new assessment Id=$assessmentId");  availableAssessment.addOne(value); value
         case Left(value) =>  new Assessment()
       }
     }

@@ -3,7 +3,7 @@ package controllers
 import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
-import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, dataDb, totalAnswers}
+import models.{Assessment, CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, dataDb, totalAnswers}
 import play.api.{Configuration, Logger}
 import play.api.libs.json.{JsArray, JsObject, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
@@ -93,6 +93,11 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     Ok(res)
   }
 
+  def loadAssessment(assessmentId:UUID)=Action {
+    val assessment=exs.loadAssessment(assessmentId)
+    Ok(Json.toJson(Map("questionId"->assessment.candidateAnswers.maxBy(x => x.Id).Id.toString)))
+  }
+
   def checkAnswerByAssessment(assessmentId:UUID,questionsId:Int)=Action { request =>
     val json = request.body.asJson.get
     val userAnswersRes=(json \ "answers").as[Seq[String]].toList
@@ -135,7 +140,7 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
       Ok(Json.toJson(Map("verifiedAnswered"->0)))
 
     userAnswersRes.foreach(x=>exs.checkUserAnswer(assessmentId,x._1,CandidateAnswer(x._1,x._2.Answers,false)))
-    if (userAnswersRes.size!=exs.getTotalQuestionaInAssessment(assessmentId)){
+    if (userAnswersRes.size!=exs.getTotalQuestionsInAssessment(assessmentId)){
       exs.saveAssessment(assessmentId)
     }
     Ok(Json.toJson(Map("verifiedAnswered"->userAnswersRes.size)))
@@ -160,8 +165,15 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     Ok(Json.toJson(t))
   }
 
-  def getAssessmentQuestions(assessmentId:UUID)=Action { request =>
-    Ok(Json.toJson(Map("TotalQuestions"->exs.getTotalQuestionaInAssessment(assessmentId))))
+  def getAssessmentQuestions(assessmentId:UUID)=Action {
+    case class AssessmentWithAnswers(TotalQuestions:Int,AnswersUser:Map[Int,Seq[String]])
+    implicit val assessmentWithAnswersWrite: Writes[AssessmentWithAnswers] = (
+      (JsPath \ "TotalQuestions").write[Int] and
+        (JsPath \ "AnswersUser").write[Map[Int,Seq[String]]]
+      )(unlift(AssessmentWithAnswers.unapply))
+    val userAns=exs.loadAssessment(assessmentId).candidateAnswers.map(x=>x.Id -> x.placeHolders).toMap
+    val assessmentWithAnswers=AssessmentWithAnswers(exs.getTotalQuestionsInAssessment(assessmentId),userAns)
+    Ok(Json.toJson(assessmentWithAnswers))
   }
 
 
