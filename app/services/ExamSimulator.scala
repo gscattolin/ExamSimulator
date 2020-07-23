@@ -1,54 +1,71 @@
 package services
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 import java.io.File
 
 import models.{Assessment, Exam, _}
-import java.time.{LocalDate, LocalTime}
+import java.time.{LocalTime}
 import java.util.UUID
 
-import play.api.{Configuration, Logger, Logging}
+import models.SourceType.SourceType
+import play.api.{Configuration}
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import repositories.RepoExamSimulator
 
 import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer, SortedSet}
+import scala.collection.mutable.{ ListBuffer}
 import scala.io.Source
 
 
-trait GenExamSimulator extends Logging {
-  def exploreExamsFromPath(folder: String,extension:String): List[Exam]
-  def exploreExamsFromDb(data:dataDb):List[Exam]
-  def createAssessment(examId: UUID,questionsNumber:Int,candidate:String):Assessment
-  def getQuestionInAssessment(assessmentId:UUID,questionId:Int): (Assessment,Question)
-  def checkUserAnswer(assessmentId:UUID,questionId:Int,candAnsw:CandidateAnswer):Boolean
-  def getReportOnAssessment(assessmentId:UUID):List[CandidateAnswerReport]
-  def getTotalQuestionsInAssessment(assessmentId:UUID):Int
-  def getAssessmentInfo(assessmentId:UUID,prop:Int):Any
-  def saveAssessment(assessmentId:UUID):Long
-  def getAllAssessment():List[Assessment]
-  def loadAssessment(assessmentId:UUID):Assessment
-}
+
 
 @Singleton
-class ExamSimulator
+class ExamSimulator @Inject() (config:Configuration)
   extends GenExamSimulator {
 
+  private val configDataSources:String="datasources"
+
+  private val configDataSourcesFile:String="files"
+  private val configFileFolder:String="folder"
+  private val configFileExtension:String="extension"
+
+  private val configDataSourcesDb:String="db"
+  private val configDbHost:String="host"
+  private val configDbUser:String="username"
+  private val configDbPwd:String="password"
+  private val configDbName:String="dbName"
+  private val configDbMainTable:String="MainTable"
+  private val configDbAssessmentTable:String="AssessmentTable"
+
+  private val availableConfigSources:Set[String]=Set(configDataSourcesDb,configDataSourcesFile)
   private var availableExams:List[Exam] =List[Exam]()
 
   private val availableAssessment:ListBuffer[Assessment] =ListBuffer[Assessment]()
 
-  private val repoExamSimulator= new RepoExamSimulator()
+  private val dataSource=initService()
+
+  lazy val repoExamSimulator= new RepoExamSimulator()
+
+  def initService():SourceType={
+    val source=config.getAndValidate(configDataSources,availableConfigSources)
+    if (source==configDataSourcesDb){
+      val f=config.get[Map[String,String]](configDataSourcesDb)
+      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
+      repoExamSimulator.connect(d)
+      SourceType.Dbs
+    }else {
+      SourceType.Files
+    }
+  }
 
   private def getExamFolder(relFolder:String):File={
-    val examFolder=new File(new File(".").getAbsolutePath()).getCanonicalPath()+"/"+relFolder
-    logger.info(s"Exploring $examFolder .. looking for exams")
+    val examFolder=new File(new File(".").getAbsolutePath).getCanonicalPath+"/"+relFolder
+    logger.debug(s"Exploring $examFolder .. looking for exams")
     new File(examFolder)
   }
 
-  def exploreExamsFromDb(db:dataDb):List[Exam]={
-    repoExamSimulator.connect(db)
+  private def exploreExamsFromDb():List[Exam]={
     availableExams=repoExamSimulator.getAllAvailableExams
     availableExams
   }
@@ -86,9 +103,12 @@ class ExamSimulator
     exam
   }
 
-  def exploreExamsFromPath(folder: String,extension:String): List[Exam] = {
+  def exploreExamsFromPath(): List[Exam] = {
     def extractExtension(filename:String):String=filename.substring(filename.lastIndexOf('.')+1)
-
+    val f=config.get[Map[String,String]](configDataSourcesFile)
+    var folder=f(configFileFolder)
+    val extension=f(configFileExtension)
+    if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
     val d = getExamFolder(folder)
     if (d.exists && d.isDirectory) {
       val filesInFolder:List[File]=d.listFiles.filter(_.isFile).filter(f => extractExtension(f.toString)==extension).toList
@@ -98,6 +118,14 @@ class ExamSimulator
       logger.warn(s"Cannot find the folder ${d.getCanonicalPath} . Return empty exam list")
       List[Exam]()
     }
+  }
+
+  override def getAllExams(): List[Exam] = {
+    dataSource match {
+      case SourceType.Files => exploreExamsFromPath()
+      case SourceType.Dbs =>  exploreExamsFromDb()
+    }
+
   }
 
   def createExamWithNumberedQuestions(exam:Exam,questionsN:Int):Exam={
@@ -198,4 +226,7 @@ class ExamSimulator
       }
     }
   }
+
+
+
 }

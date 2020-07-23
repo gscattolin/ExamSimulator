@@ -3,9 +3,9 @@ package controllers
 import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
-import models.{Assessment, CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, dataDb, totalAnswers}
-import play.api.{Configuration, Logger}
-import play.api.libs.json.{JsArray, JsObject, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Reads, Writes}
+import models.{CandidateAnswer, CandidateAnswerReport,  PossibleAnswer, Question, totalAnswers}
+import play.api.{Logger}
+import play.api.libs.json.{JsArray, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import services.GenExamSimulator
@@ -13,25 +13,7 @@ import services.GenExamSimulator
 
 
 @Singleton
-class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerComponents,exs: GenExamSimulator) extends AbstractController(cc) {
-
-  private val configDataSources:String="datasources"
-
-  private val configDataSourcesFile:String="files"
-  private val configFileFolder:String="folder"
-  private val configFileExtension:String="extension"
-
-
-  private val configDataSourcesDb:String="db"
-  private val configDbHost:String="host"
-  private val configDbUser:String="username"
-  private val configDbPwd:String="password"
-  private val configDbName:String="dbName"
-  private val configDbMainTable:String="MainTable"
-  private val configDbAssessmentTable:String="AssessmentTable"
-
-
-  private val availableConfigSources:Set[String]=Set(configDataSourcesDb,configDataSourcesFile)
+class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSimulator) extends AbstractController(cc) {
 
   protected val LOGGER: Logger = Logger(this.getClass)
 
@@ -39,18 +21,7 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
 
   def getExamList()=Action{
     LOGGER.info("Starting getting Total Exams")
-    var lstExams:List[Exam]=List()
-    val source=config.getAndValidate(configDataSources,availableConfigSources)
-    if (source==configDataSourcesDb){
-      val f=config.get[Map[String,String]](configDataSourcesDb)
-      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
-      lstExams=exs.exploreExamsFromDb(d)
-    }else {
-      val f=config.get[Map[String,String]](configDataSourcesFile)
-      var folder=f(configFileFolder)
-      if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
-      lstExams=exs.exploreExamsFromPath(folder,f(configFileExtension))
-    }
+    val lstExams=exs.getAllExams()
     val lstExamsMap=lstExams.map(
       x=>Map(
         "id" -> x.Id.toString,
@@ -176,7 +147,6 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
     Ok(Json.toJson(assessmentWithAnswers))
   }
 
-
   def getAllAssessment()=Action {
     case class AssessmentInfo(Id:UUID,Code:String,Started:String,QuestionsNumber:Int)
     implicit val AssessmentInfoWrites: Writes[AssessmentInfo] = (
@@ -185,7 +155,8 @@ class ExamSimulatorController @Inject() (config: Configuration,cc: ControllerCom
         (JsPath \ "Started").write[String] and
         (JsPath \ "QuestionsNumber").write[Int]
     )(unlift(AssessmentInfo.unapply))
-    val lstAssessmentIds=exs.getAllAssessment().map(x=>AssessmentInfo(x.Id,x.exam.properties.Code,x.startTime.toString,x.exam.listQuestion.length))
+    val assessments=exs.getAllAssessment()
+    val lstAssessmentIds=assessments.map(x=>AssessmentInfo(x.Id,x.exam.properties.Code,x.startTime.toString,x.exam.listQuestion.length))
     Ok(Json.toJson(lstAssessmentIds))
   }
 }
