@@ -1,14 +1,4 @@
 
-
-lazy val ExamImporting: Project = (project in file("./app/examData/")).enablePlugins(PlayScala).dependsOn(ExamSim %  "compile->compile")
-  .settings(
-    name := "ExamImporting",
-    scalaVersion := "2.13.2",
-    libraryDependencies += guice,
-    libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
-    version := "1.0"
-  )
-
 lazy val ExamSim = (project in file(".")).enablePlugins(PlayScala)
   .settings(
     name := "ExamSimulator",
