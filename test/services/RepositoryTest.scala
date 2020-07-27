@@ -1,7 +1,11 @@
 package services
 
-import models.{Assessment, CandidateAnswer, dataDb}
+import java.io.File
+
+import com.typesafe.config.ConfigFactory
+import models.{Assessment, CandidateAnswer, Exam, dataDb}
 import org.scalatestplus.play.PlaySpec
+import play.api.Configuration
 import repositories.RepoExamSimulator
 
 class RepositoryTest extends PlaySpec{
@@ -9,24 +13,29 @@ class RepositoryTest extends PlaySpec{
   val db=dataDb("localhost:27017","mongoadmin","mongoadmin","examsim","exams","assessments")
   val repo = new RepoExamSimulator()
   val dataB=repo.connect(db)
+  val dbConf=Map("host" ->"localhost:27017","username" ->"mongoadmin","password" -> "mongoadmin","dbName" -> "examsim","MainTable" -> "exams", "AssessmentTable" -> "assessments")
+  val dbSources=Map("db" -> dbConf, "files" -> "disabled")
+//  lazy val testConfiguration: Configuration =
+//    Configuration("datasources" -> dbSources)
+  val testConfiguration: Configuration= Configuration(ConfigFactory.load("conf/application.test.conf"))
+  val exs=new ExamSimulator(testConfiguration)
 
   "RepoExamSimulator.getAllAvailableExams" must {
     "get all available exams by MongoDb exams lst" in {
-      val lst = repo.getAllAvailableExams
+      val lst = repo.getAllAvailableExamsFromDb
       lst.length must be >= 2
     }
     "get all available exams by MongoDb questions in exam" in {
       val repo = new RepoExamSimulator()
       repo.connect(db)
-      val lst = repo.getAllAvailableExams
+      val lst = repo.getAllAvailableExamsFromDb
       lst.head.listQuestion.length must be > 2
     }
   }
 
   "RepoExamSimulator.Assessments" must {
     "save/delete assessment" in {
-      val exs=new ExamSimulator()
-      val exams=exs.exploreExamsFromDb(db)
+      val exams=exs.getAllExams()
       val assessment=exs.createAssessment(exams.head.Id,10,"TestCandidate")
       val res = repo.saveAssessment(assessment)
       res mustBe 1
@@ -34,8 +43,7 @@ class RepositoryTest extends PlaySpec{
       resD mustBe(1)
     }
     "load assessment" in {
-      val exs=new ExamSimulator()
-      val exams=exs.exploreExamsFromDb(db)
+      val exams=exs.getAllExams()
       val assessment=exs.createAssessment(exams.head.Id,10,"TestCandidate")
       val res = repo.saveAssessment(assessment)
       val lst = repo.getAllAssessment
@@ -44,8 +52,7 @@ class RepositoryTest extends PlaySpec{
       repo.deleteAssessment(assessment)
     }
     "update assessment" in {
-      val exs=new ExamSimulator()
-      val exams=exs.exploreExamsFromDb(db)
+      val exams=exs.getAllExams()
       val assessment:Assessment=exs.createAssessment(exams.head.Id,10,"TestCandidate")
       val res = repo.saveAssessment(assessment)
       assessment.candidateAnswers.addOne(CandidateAnswer(1,List("A","B"),true))
@@ -54,6 +61,19 @@ class RepositoryTest extends PlaySpec{
       savedA.candidateAnswers.head.placeHolders.length.mustBe(2)
       resUpdate mustBe 1
       repo.deleteAssessment(assessment)
+    }
+  }
+
+  "RepoExamSimulator.Import" must {
+    "import exam" in {
+      val file2Import=new File("test/testData/exam3Test.json")
+      val fileX:Exam=repo.importExamFromFile2Mongo(file2Import).getOrElse(new Exam())
+      val newEx:Exam = repo.loadSingleExamByCode(fileX.properties.Code)
+      repo.deleteExam(newEx)
+      newEx.properties.Code mustBe("SAA-CX")
+      newEx.properties.Title mustBe("Test Importing")
+      newEx.properties.TimeLimit.mustBe(125)
+      newEx.listQuestion.length mustBe(3)
     }
   }
 

@@ -1,5 +1,6 @@
 package repositories
 
+import java.io.File
 import java.util.UUID
 
 import models.{Assessment, _}
@@ -8,17 +9,18 @@ import org.mongodb.scala.bson.collection.immutable.Document
 import org.mongodb.scala.result.{DeleteResult, UpdateResult}
 import org.mongodb.scala.{Completed, MongoClient, MongoCollection, MongoDatabase, bson}
 import play.api.Logger
+import play.api.libs.json.{JsArray, JsValue, Json}
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 class RepoExamSimulator(){
 
   //  var tableMap: Map[String, MongoCollection[Document]] =Map[String,MongoCollection[Document]]()
   var database: MongoDatabase = _
-  var mainTable: MongoCollection[Exam] = _
   var examRep: MongoCollection[Document] = _
   var assessmentRep: MongoCollection[Document] = _
 
@@ -26,6 +28,62 @@ class RepoExamSimulator(){
 
   protected val LOGGER: Logger = Logger(this.getClass)
 
+
+  def loadExamFromFile(fileName:File):Exam={
+    def mapAnswer(value:JsValue):PossibleAnswer={
+      PossibleAnswer((value \ "placeHolder").as[String].take(1),(value \ "choiceValue").as[String])
+    }
+    def mapJson2Question(value:JsValue,valIndex:Int):Question={
+      val q=(value \ "question").as[String]
+      val choices=value("choices").as[JsArray].value.map(x=>mapAnswer(x)).toList
+      val answers=value("answers").as[JsArray].value.map(x=>x.as[String]).toList
+      val ref=(value \ "reference").asOpt[String].getOrElse("")
+      val valid=(value \ "valid").as[Boolean]
+      Question(valIndex,q,choices,answers,ref,valid)
+    }
+    var exam=new Exam()
+    val src=Source.fromFile(fileName)
+
+    try{
+      val json=Json.parse(src.getLines().mkString)
+      var uid=UUID.randomUUID()
+      if ((json \ "Id").isDefined) {
+        uid=UUID.fromString((json \ "Id").validate[String].get)
+      }
+      val title=(json \ "Title").validate[String].getOrElse("")
+      val code=(json \ "Code").validate[String].getOrElse("")
+      val version=(json \ "Version").validate[String].getOrElse("")
+      val timeLimit=(json \ "TimeLimit").validate[Int].getOrElse(0)
+      val instruction=(json \ "Instructions").validate[String].getOrElse("")
+      val questionsJson= (json \ "Questions").as[List[JsValue]]
+      val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)})
+      val prop=ExamProperties(title,code,version,timeLimit,instruction)
+      exam=Exam(uid,prop,questions)
+    }finally {
+      src.close()
+    }
+
+    exam
+  }
+
+  def getExamFolder(relFolder:String):File={
+    val examFolder=new File(new File(".").getAbsolutePath).getCanonicalPath+"/"+relFolder
+    LOGGER.debug(s"Exploring $examFolder .. looking for exams")
+    new File(examFolder)
+  }
+
+  def getAllAvailableExamsFromFolder(folder:String,extension:String): List[Exam] = {
+    def extractExtension(filename:String):String=filename.substring(filename.lastIndexOf('.')+1)
+    val d = getExamFolder(folder)
+    if (d.exists && d.isDirectory) {
+      val filesInFolder:List[File]=d.listFiles.filter(_.isFile).filter(f => extractExtension(f.toString)==extension).toList
+      val availableExams=filesInFolder.map({x=>loadExamFromFile(x)})
+      availableExams
+    } else {
+      LOGGER.warn(s"Cannot find the folder ${d.getCanonicalPath} . Return empty exam list")
+      List[Exam]()
+    }
+  }
 
   def connect(db: dataDb): MongoDatabase = {
     if (database == null) {
@@ -39,20 +97,8 @@ class RepoExamSimulator(){
     database
   }
 
-  //  def getAllAvailableExams():List[Exam] = {
-  //    examRep.getAll() match {
-  //      case Right(examDbLst) => examDbLst.map(examDb=> {
-  //        questionsRep= new Repository[Question](database.getCollection[Question](examDb.QuestionDbName))
-  //        questionsRep.getAll() match {
-  //          case Right(questionsLst) => Exam(UUID.randomUUID(),ExamProperties(examDb.Title,examDb.Code,examDb.Version,examDb.TimeLimit,examDb.Instructions),questionsLst)
-  //          case Left(v) =>{ logger.error(s"Error reading questions db  ${examDb.QuestionDbName} ErrorId= $v") ; new Exam()}
-  //        }
-  //      })
-  //      case Left(v) =>{ logger.error("Error reading exams ErrorId="+v) ;List[Exam]()}
-  //    }
-  //  }
 
-  def getAllAvailableExams: List[Exam] = {
+  def getAllAvailableExamsFromDb: List[Exam] = {
     Try(Await.ready(examRep.find().toFuture(), maxTimeout)) match {
       case Success(f) => f.value.get match {
         case Success(v) => v.map(mapDoc2Exam).toList
@@ -116,12 +162,44 @@ class RepoExamSimulator(){
     applyFutureSingle(f)
   }
 
+  def loadSingleExamByCode(code:String):Exam={
+    val f=examRep.find(Document("Code" ->code.toUpperCase)).toFuture()
+    val h=new Exam()
+    Try(Await.ready(f, maxTimeout)) match {
+      case Success(f) => f.value.get match {
+        case Success(v) => LOGGER.info(s"operation success $v"); if (v.nonEmpty) mapDoc2Exam(v.head) else h
+        case Failure(exception) =>
+          LOGGER.error(s"Error  $exception")
+         h
+      }
+      case Failure(exception) =>
+        LOGGER.error(s"Error on  getAllAvailableExams $exception")
+        h
+    }
+  }
+
+  def deleteExam(exam: Exam):Long={
+    val qC=s"Q-${exam.properties.Code}".toLowerCase
+    val collection=database.getCollection(qC)
+    applyFutureSingle(collection.drop().toFuture())
+    val f= examRep.deleteOne(Document("Id" -> exam.Id.toString)).toFuture()
+    applyFutureSingle(f)
+  }
+
   def updateExamId(exam:Exam): Long ={
     val f=examRep.updateOne(Document("Code" -> exam.properties.Code),Document("$set" -> Document("Id" -> exam.Id.toString))).toFuture()
     applyFutureSingle(f)
   }
 
-  def importExam(file: java.io.File): Int = ???
+  def importExamFromFile2Mongo(file: java.io.File): Either[Int,Exam] = {
+    if (!file.isFile) {
+      LOGGER.error(s"Cannot load file ${file.getName} for importing")
+      return Left(-1)
+    }
+    val exam=loadExamFromFile(file)
+    saveExam(exam)
+    Right(exam)
+  }
 
   implicit def b2s(v: BsonValue): String = {
     v.asString().getValue
@@ -155,7 +233,7 @@ class RepoExamSimulator(){
     }
   }
 
-  private def applyFutureSequence(f:Future[Seq[Completed]]):Seq[Completed]={
+  private def applyFutureSequence(f:Future[Seq[Any]]):Seq[Any]={
     Try(Await.ready(f, maxTimeout)) match {
       case Success(f) => f.value.get match {
         case Success(v) => v
@@ -163,10 +241,9 @@ class RepoExamSimulator(){
           LOGGER.error(s"Error on  getAllAvailableExams $exception")
           List[Completed]()
       }
-      case Failure(exception) => {
+      case Failure(exception) =>
         LOGGER.error(s"Error on  getAllAvailableExams $exception")
         List[Completed]()
-      }
     }
   }
 
@@ -267,4 +344,26 @@ class RepoExamSimulator(){
     }
     Exam(UUID.fromString(doc("Id")), ExamProperties(doc("Title"), doc("Code"), doc("Version"), doc("TimeLimit"), doc("Instructions")), questions)
   }
+
+  private def saveExam(exam:Exam): Int = {
+  val questionsColl=s"q-${exam.properties.Code.toLowerCase}"
+   val newExam= Document("Id" -> exam.Id.toString,"Title" -> exam.properties.Title,"Code" -> exam.properties.Code,"Version" -> exam.properties.Version
+      ,"TimeLimit" -> exam.properties.TimeLimit,"Instructions" -> exam.properties.Instructions,"Q" -> questionsColl)
+    val questionsSeq= for (q <- exam.listQuestion) yield mapQuestion2Doc(q)
+    val existingCollections=applyFutureSequence(database.listCollectionNames().toFuture()).map(x=> x.toString).toList
+    if(existingCollections.contains(questionsColl)){
+      LOGGER.warn(s"Deleting all existing documents of questions $questionsColl")
+      applyFutureSingle(database.getCollection(questionsColl).deleteMany(Document()).toFuture())
+    }
+    else{
+      applyFutureSingle(database.createCollection(questionsColl).toFuture())
+    }
+    val resK=applyFutureSingle(database.getCollection(questionsColl).insertMany(questionsSeq).toFuture())
+    if (resK>0){
+      val fe=examRep.insertOne(newExam).toFuture()
+      applyFutureSingle(fe)
+      }
+    1
+  }
+
 }

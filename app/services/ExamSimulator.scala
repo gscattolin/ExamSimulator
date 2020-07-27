@@ -1,7 +1,6 @@
 package services
 
 import javax.inject.{Inject, Singleton}
-import java.io.File
 
 import models.{Assessment, Exam, _}
 import java.time.{LocalTime}
@@ -9,14 +8,10 @@ import java.util.UUID
 
 import models.SourceType.SourceType
 import play.api.{Configuration}
-import play.api.libs.json.Reads._
-import play.api.libs.json._
 import repositories.RepoExamSimulator
 
 import scala.collection.mutable
 import scala.collection.mutable.{ ListBuffer}
-import scala.io.Source
-
 
 
 
@@ -59,70 +54,25 @@ class ExamSimulator @Inject() (config:Configuration)
     }
   }
 
-  private def getExamFolder(relFolder:String):File={
-    val examFolder=new File(new File(".").getAbsolutePath).getCanonicalPath+"/"+relFolder
-    logger.debug(s"Exploring $examFolder .. looking for exams")
-    new File(examFolder)
-  }
 
   private def exploreExamsFromDb():List[Exam]={
-    availableExams=repoExamSimulator.getAllAvailableExams
+    availableExams=repoExamSimulator.getAllAvailableExamsFromDb
     availableExams
   }
 
-  private def loadExamFromFile(fileName:File,valueIndex:Int):Exam={
-    def mapAnswer(value:JsValue):PossibleAnswer={
-      PossibleAnswer((value \ "placeHolder").as[String].take(1),(value \ "choiceValue").as[String])
-    }
-    def mapJson2Question(value:JsValue,valIndex:Int):Question={
-      val q=(value \ "question").as[String]
-      val choices=value("choices").as[JsArray].value.map(x=>mapAnswer(x)).toList
-      val answers=value("answers").as[JsArray].value.map(x=>x.as[String]).toList
-      val ref=(value \ "reference").asOpt[String].getOrElse("")
-      val valid=(value \ "valid").as[Boolean]
-      Question(valIndex,q,choices,answers,ref,valid)
-    }
-      var exam=new Exam()
-      val src=Source.fromFile(fileName)
-
-      try{
-        val json=Json.parse(src.getLines().mkString)
-        val title=(json \ "Title").validate[String].getOrElse("")
-        val code=(json \ "Code").validate[String].getOrElse("")
-        val version=(json \ "Version").validate[String].getOrElse("")
-        val timeLimit=(json \ "Timelimit").validate[Int].getOrElse(0)
-        val instruction=(json \ "Instructions").validate[String].getOrElse("")
-        val questionsJson= (json \ "Questions").as[List[JsValue]]
-        val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex)})
-        val prop=ExamProperties(title,code,version,timeLimit,instruction)
-          exam=Exam(UUID.randomUUID(),prop,questions)
-      }finally {
-        src.close()
-      }
-
-    exam
-  }
-
-  def exploreExamsFromPath(): List[Exam] = {
-    def extractExtension(filename:String):String=filename.substring(filename.lastIndexOf('.')+1)
+  private def exploreExamsFromFolder():List[Exam]={
     val f=config.get[Map[String,String]](configDataSourcesFile)
     var folder=f(configFileFolder)
     val extension=f(configFileExtension)
     if (! System.getProperty("os.name").contains("Window")) folder=folder.replace('\\', '/')
-    val d = getExamFolder(folder)
-    if (d.exists && d.isDirectory) {
-      val filesInFolder:List[File]=d.listFiles.filter(_.isFile).filter(f => extractExtension(f.toString)==extension).toList
-      availableExams=filesInFolder.zipWithIndex.map({case (x,valIndex)=>loadExamFromFile(x,valIndex+1)})
-      availableExams
-    } else {
-      logger.warn(s"Cannot find the folder ${d.getCanonicalPath} . Return empty exam list")
-      List[Exam]()
-    }
+    availableExams=repoExamSimulator.getAllAvailableExamsFromFolder(folder,extension)
+    availableExams
   }
+
 
   override def getAllExams(): List[Exam] = {
     dataSource match {
-      case SourceType.Files => exploreExamsFromPath()
+      case SourceType.Files => exploreExamsFromFolder()
       case SourceType.Dbs =>  exploreExamsFromDb()
     }
 

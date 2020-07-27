@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  ################################
+  #   Setup react js container
+  ################################
+  gui:
+    build: ./gui
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./gui:/app
+  ################################
+  #   Setup nginx load balancer
+  ################################
+  nginx:
+    image: library/nginx:1.17.10 # this will use the latest version of 1.17.10
+    ports:
+      - '80:80' # expose 80 on host and sent to 80 in container
+    depends_on:
+      - gui
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  ################################
+  #   Setup mongo db
+  ################################
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "mongoadmin"
+      MONGO_INITDB_ROOT_PASSWORD: "mongoadmin"
+      MONGO_INITDB_DATABASE: "examsim"
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
