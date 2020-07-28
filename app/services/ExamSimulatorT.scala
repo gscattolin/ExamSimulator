@@ -1,5 +1,6 @@
 package services
 
+import java.io.File
 import java.util.UUID
 
 import models.SourceType.SourceType
@@ -19,4 +20,5 @@ trait GenExamSimulator extends Logging {
   def saveAssessment(assessmentId:UUID):Long
   def getAllAssessment():List[Assessment]
   def loadAssessment(assessmentId:UUID):Assessment
+  def importExamByFile(file:File):Either[Int,Exam]
 }

@@ -4,14 +4,26 @@ services:
   ################################
   #   Setup react js container
   ################################
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ExamSim_app
+    ports:
+      - 9000:9000
+  ################################
+  #   Setup react js container
+  ################################
   gui:
-    build: ./gui
-    expose:
-      - 3000
+    build:
+      context: ./gui
+      dockerfile: Dockerfile
+    container_name: ExamSim_gui
     ports:
       - 3000:3000
     volumes:
-      - ./gui:/app
+#      - ./gui:/gui
+      - /gui/node_modules
   ################################
   #   Setup nginx load balancer
   ################################
@@ -27,6 +39,7 @@ services:
   #   Setup mongo db
   ################################
   mongo:
+    container_name: ExamSim_mongo
     image: mongo:latest
     restart: always
     environment:

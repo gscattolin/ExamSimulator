@@ -13,6 +13,8 @@ GET     /summary                controllers.HomeController.appSummary
 
 GET     /exam            controllers.ExamSimulatorController.getExamList
 
+PUT     /exam           controllers.ExamSimulatorController.importExam
+
 GET    /assessment        controllers.ExamSimulatorController.getAllAssessment
 
 POST    /assessment        controllers.ExamSimulatorController.createAssessment

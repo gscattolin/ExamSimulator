@@ -1,10 +1,11 @@
 package controllers
 
+import java.io.File
 import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
-import models.{CandidateAnswer, CandidateAnswerReport,  PossibleAnswer, Question, totalAnswers}
-import play.api.{Logger}
+import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, totalAnswers}
+import play.api.Logger
 import play.api.libs.json.{JsArray, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -158,5 +159,14 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     val assessments=exs.getAllAssessment()
     val lstAssessmentIds=assessments.map(x=>AssessmentInfo(x.Id,x.exam.properties.Code,x.startTime.toString,x.exam.listQuestion.length))
     Ok(Json.toJson(lstAssessmentIds))
+  }
+
+  def importExam()= Action(parse.temporaryFile) { request =>
+    val tmpFolder=System.getProperty("java.io.tmpdir")
+    val file2process = new File(s"${tmpFolder}file2Import.json")
+    request.body.moveTo(file2process, replace = true)
+    val examImported=exs.importExamByFile(file2process).getOrElse(new Exam())
+    val res:Map[String,String]=Map("message"->"File imported successfully","questions" -> examImported.listQuestion.length.toString,"code" -> examImported.properties.Code)
+    Ok(Json.toJson(res))
   }
 }

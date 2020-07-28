@@ -1,6 +1,6 @@
 FROM node:latest as web-build
 
-#Setting the working directory as /app
+#Setting the working directory as /gui
 WORKDIR /gui
 
 # add `/app/node_modules/.bin` to $PATH
@@ -14,6 +14,5 @@ RUN npm install --silent
 
 COPY . ./
 
-EXPOSE 3000
 # Running the dev server.
 CMD ["npm", "start"]

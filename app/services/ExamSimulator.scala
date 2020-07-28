@@ -1,17 +1,18 @@
 package services
 
-import javax.inject.{Inject, Singleton}
+import java.io.File
 
+import javax.inject.{Inject, Singleton}
 import models.{Assessment, Exam, _}
-import java.time.{LocalTime}
+import java.time.LocalTime
 import java.util.UUID
 
 import models.SourceType.SourceType
-import play.api.{Configuration}
+import play.api.Configuration
 import repositories.RepoExamSimulator
 
 import scala.collection.mutable
-import scala.collection.mutable.{ ListBuffer}
+import scala.collection.mutable.ListBuffer
 
 
 
@@ -177,6 +178,7 @@ class ExamSimulator @Inject() (config:Configuration)
     }
   }
 
-
-
+  override def importExamByFile(file: File): Either[Int,Exam] = {
+    repoExamSimulator.importExamFromFile2Mongo(file)
+  }
 }

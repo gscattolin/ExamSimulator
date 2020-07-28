@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import { Redirect } from 'react-router-dom'
-import {Tab,Row,Col,ListGroup,Toast,ToastBody,ToastHeader} from 'react-bootstrap';
+import {Tab,Row,Col,ListGroup,Toast} from 'react-bootstrap';
 import config from './config'
 
 class SelectExam extends Component{
@@ -8,6 +8,7 @@ class SelectExam extends Component{
         super();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAssessmentList = this.handleAssessmentList.bind(this);
+        this.handleImportFile= this.handleImportFile.bind(this)
         this.loadAssessment = this.loadAssessment.bind(this);
         this.TabExamsId = React.createRef();
         this.questionsNumber = React.createRef();
@@ -22,6 +23,32 @@ class SelectExam extends Component{
         }
     }
 
+    handleImportFile(e){
+        const  url=config.baseUrl+'exam'
+        fetch(url,{
+            method: 'PUT',
+            body: e.target.files[0],
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json()).then(data => {
+                this.setState({
+                    showToastImport:true,
+                    fileImportedToast:data,
+                })
+                console.log("file imported successfully="+data['message'])
+            },
+            (error) => {
+                console.log("ERROR"+error.message)
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        )
+    }
 
     fetchExams(){
         fetch(config.baseUrl+'exam')
@@ -76,6 +103,7 @@ class SelectExam extends Component{
                     questionId:data['questionId'],
                     redirectToReferrer : true
                 })
+                this.fetchExams()
                 console.log("Get last question="+data['questionId'])
             },
             (error) => {
@@ -145,6 +173,7 @@ class SelectExam extends Component{
         const { error, isLoaded,exams,assessments } = this.state;
         let disableCreate=true
         let disableAssessmentButtons=true
+        let  showToastImport=false
         if (this.state.redirectToReferrer === true) {
             const url="/Question/"+this.state.selectedAssessmentId+"/"+this.state.questionId
             return <Redirect to={url} />
@@ -166,29 +195,56 @@ class SelectExam extends Component{
                         <div className="col-6">
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title">Exams List Available</h5>
-                                    <Tab.Container id="list-group-tabs-exams" defaultActiveKey="#1">
-                                        <Row>
-                                            <Col sm={4}>
-                                                <ListGroup>
-                                                    {exams.map(ex => (
-                                                            <ListGroup.Item key={ex.id} action href={"#"+ex.id} >
-                                                                {ex.code}
-                                                            </ListGroup.Item>
+                                    <div className="col-6">
+                                        <h5 className="card-title">Exams List Available</h5>
+                                        <Tab.Container id="list-group-tabs-exams" defaultActiveKey="#1">
+                                            <Row>
+                                                <Col sm={4}>
+                                                    <ListGroup>
+                                                        {exams.map(ex => (
+                                                                <ListGroup.Item key={ex.id} action href={"#"+ex.id} >
+                                                                    {ex.code}
+                                                                </ListGroup.Item>
+                                                            ))}
+                                                    </ListGroup>
+                                                </Col>
+                                                <Col sm={8}>
+                                                    <Tab.Content>
+                                                        {exams.map(ex => (
+                                                            <Tab.Pane eventKey={"#"+ex.id} key={ex.id} ref={this.TabExamsId} >
+                                                                <b>{ex.title}</b><br/>Version={ex.version}<br/>Total Pool Questions={ex.questions}
+                                                            </Tab.Pane>
                                                         ))}
-                                                </ListGroup>
-                                            </Col>
-                                            <Col sm={8}>
-                                                <Tab.Content>
-                                                    {exams.map(ex => (
-                                                        <Tab.Pane eventKey={"#"+ex.id} key={ex.id} ref={this.TabExamsId} >
-                                                            <b>{ex.title}</b><br/>Version={ex.version}<br/>Total Pool Questions={ex.questions}
-                                                        </Tab.Pane>
-                                                    ))}
-                                                </Tab.Content>
-                                            </Col>
-                                        </Row>
-                                    </Tab.Container>
+                                                    </Tab.Content>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <button type="submit" disabled={disableCreate} className="btn btn-primary" onClick={this.handleSubmit}>Create Assessment</button>
+                                                    </div>
+                                                    <input className="w-25" id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" ref={this.questionsNumber}/>
+                                                </div>
+
+                                            </Row>
+                                            <Row>
+                                                <div className="input-group mb-3">
+                                                    <div className="custom-file">
+                                                        <input type="file" className="custom-file-input"
+                                                               id="file2Upload" accept=".json" onChange={this.handleImportFile}/>
+                                                            <label className="custom-file-label"
+                                                                   htmlFor="file2Upload"
+                                                                   aria-describedby="inputGroupFileAddon02">Choose
+                                                                file  to Import</label>
+                                                    </div>
+                                                    <div className="input-group-append">
+                                                        <span className="input-group-text"
+                                                              id="file2Upload">Upload</span>
+                                                    </div>
+                                                </div>
+                                            </Row>
+                                        </Tab.Container>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -222,17 +278,28 @@ class SelectExam extends Component{
                             </div>
                         </div>
                     </div>
-                    <div className="row my-lg-2"/>
-                    <div className="row my-lg-2">
-                        <div className="col-2">
-                            <button type="submit" disabled={disableCreate} className="btn btn-primary" onClick={this.handleSubmit}>Create Assessment</button>
-                        </div>
-                        <div className="col-4">
-                            Questions in Assessment:
-                            <input id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" ref={this.questionsNumber}/>
-                        </div>
-                    </div>
-                    <div className="col-6"/>
+                    <Toast onClose={() => {window.location.reload()}} show={!!this.state.fileImportedToast} delay={6000} autohide={true} animation={true}
+                           style={{
+                               position: 'relative',
+                               top: 100,
+                               left: 100,
+                           }}>
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded mr-2"
+                                alt=""
+                            />
+                            <strong className="mr-auto">File Imported</strong>
+                            <small>question imported ={this.state.fileImportedToast ? this.state.fileImportedToast.questions : ""}</small>
+                        </Toast.Header>
+                        <Toast.Body>{this.state.fileImportedToast ? this.state.fileImportedToast.message :""}
+                        <br/>
+                        {this.state.fileImportedToast ? "Code "+this.state.fileImportedToast.code:""}
+                        <br/>
+                            {this.state.fileImportedToast ? "Total Question imported "+this.state.fileImportedToast.questions:""}
+                        </Toast.Body>
+                    </Toast>
                 </div>
             )
         }

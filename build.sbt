@@ -2,6 +2,7 @@
 lazy val ExamSim = (project in file(".")).enablePlugins(PlayScala)
   .settings(
     name := "ExamSimulator",
+    maintainer := "Giancarlo Scattolin",
     scalaVersion := "2.13.2",
       libraryDependencies += guice,
     javaHome := Some(file("/usr/")),
