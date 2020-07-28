@@ -7,10 +7,46 @@
 		revision="1.0"
 		conf="compile"
 		confs="universal, universal-docs, universal-src, compile, runtime, test, provided, optional, windows, docker, linux, web-assets, web-assets-test, web-plugin, rpm, debian, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20200621091723"/>
+		date="20200727124658"/>
 	<dependencies>
+		<module organisation="org.reactivemongo" name="play2-reactivemongo_2.13">
+			<revision name="0.20.11-play27" status="release" pubdate="20200604234452" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="https://reactivemongo.github.io/Play-ReactiveMongo/0.20/api/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="46">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="4632" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/play2-reactivemongo_2.13/ivy-0.20.11-play27.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/play2-reactivemongo_2.13/0.20.11-play27/play2-reactivemongo_2.13-0.20.11-play27.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11-play27" rev-constraint-default="0.20.11-play27" rev-constraint-dynamic="0.20.11-play27" callerrev="1.0" extra-info.apiURL="https://reactivemongo.github.io/Play-ReactiveMongo/0.20/api/"/>
+				<artifacts>
+					<artifact name="play2-reactivemongo_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="13004" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/play2-reactivemongo_2.13/srcs/play2-reactivemongo_2.13-0.20.11-play27-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/play2-reactivemongo_2.13/0.20.11-play27/play2-reactivemongo_2.13-0.20.11-play27-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-play-json_2.13">
+			<revision name="0.20.11-play27" status="release" pubdate="20200604200209" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="63">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3547" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-play-json_2.13/ivy-0.20.11-play27.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-play-json_2.13/0.20.11-play27/reactivemongo-play-json_2.13-0.20.11-play27.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11-play27" rev-constraint-default="0.20.11-play27" rev-constraint-dynamic="0.20.11-play27" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="reactivemongo-play-json_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="17291" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-play-json_2.13/srcs/reactivemongo-play-json_2.13-0.20.11-play27-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-play-json_2.13/0.20.11-play27/reactivemongo-play-json_2.13-0.20.11-play27-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-akkastream_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604141940" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="https://reactivemongo.github.io/ReactiveMongo-Streaming/0.12/akka-stream/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="44">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="4487" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-akkastream_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-akkastream_2.13/0.20.11/reactivemongo-akkastream_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="https://reactivemongo.github.io/ReactiveMongo-Streaming/0.12/akka-stream/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo-akkastream_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="7581" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-akkastream_2.13/srcs/reactivemongo-akkastream_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-akkastream_2.13/0.20.11/reactivemongo-akkastream_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
 		<module organisation="com.typesafe.play" name="play-logback_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025040" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="17">
+			<revision name="2.8.1" status="release" pubdate="20200201025040" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="21">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3298" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-logback_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-logback_2.13/2.8.1/play-logback_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -22,13 +58,181 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-reflect">
-			<revision name="2.13.2" status="release" pubdate="20200423080220" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-reflect/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="9">
+			<revision name="2.13.2" status="release" pubdate="20200423080220" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-reflect/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="12">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="2859" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.13.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.2/scala-reflect-2.13.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.13.2" rev-constraint-default="2.13.2" rev-constraint-dynamic="2.13.2" callerrev="1.0" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/scala-reflect/"/>
 				<artifacts>
 					<artifact name="scala-reflect" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="636583" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.13.2-sources.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.2/scala-reflect-2.13.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.mongodb.scala" name="mongo-scala-driver_2.13">
+			<revision name="2.9.0" status="release" pubdate="20200311164600" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://mongodb.github.io/mongo-scala-driver" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="6">
+				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3880" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb.scala/mongo-scala-driver_2.13/ivy-2.9.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/mongodb/scala/mongo-scala-driver_2.13/2.9.0/mongo-scala-driver_2.13-2.9.0.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.9.0" rev-constraint-default="2.9.0" rev-constraint-dynamic="2.9.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="mongo-scala-driver_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="139095" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb.scala/mongo-scala-driver_2.13/srcs/mongo-scala-driver_2.13-2.9.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/mongodb/scala/mongo-scala-driver_2.13/2.9.0/mongo-scala-driver_2.13-2.9.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.mongodb.scala" name="mongo-scala-bson_2.13">
+			<revision name="2.9.0" status="release" pubdate="20200311164542" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://mongodb.github.io/mongo-scala-driver" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="66">
+				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3717" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb.scala/mongo-scala-bson_2.13/ivy-2.9.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/mongodb/scala/mongo-scala-bson_2.13/2.9.0/mongo-scala-bson_2.13-2.9.0.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.9.0" rev-constraint-default="2.9.0" rev-constraint-dynamic="2.9.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="mongo-scala-bson_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="37117" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb.scala/mongo-scala-bson_2.13/srcs/mongo-scala-bson_2.13-2.9.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/mongodb/scala/mongo-scala-bson_2.13/2.9.0/mongo-scala-bson_2.13-2.9.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.mongodb" name="mongodb-driver-async">
+			<revision name="3.12.2" status="release" pubdate="20200305013523" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.mongodb.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="77">
+				<license name="The Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2953" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/mongodb-driver-async/ivy-3.12.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-async/3.12.2/mongodb-driver-async-3.12.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="3.12.2" rev-constraint-default="3.12.2" rev-constraint-dynamic="3.12.2" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="mongodb-driver-async" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="131916" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/mongodb-driver-async/srcs/mongodb-driver-async-3.12.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-async/3.12.2/mongodb-driver-async-3.12.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.mongodb" name="mongodb-driver-core">
+			<revision name="3.12.2" status="release" pubdate="20200305013534" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.mongodb.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="48">
+				<license name="The Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3784" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/mongodb-driver-core/ivy-3.12.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-core/3.12.2/mongodb-driver-core-3.12.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="3.12.2" rev-constraint-default="3.12.2" rev-constraint-dynamic="3.12.2" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="mongodb-driver-core" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="887757" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/mongodb-driver-core/srcs/mongodb-driver-core-3.12.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-core/3.12.2/mongodb-driver-core-3.12.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.mongodb" name="bson">
+			<revision name="3.12.2" status="release" pubdate="20200305013511" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://bsonspec.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="43">
+				<license name="The Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2618" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/bson/ivy-3.12.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/mongodb/bson/3.12.2/bson-3.12.2.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="3.12.2" rev-constraint-default="3.12.2" rev-constraint-dynamic="3.12.2" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="bson" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="392072" time="0" location="/Users/giancarlo/.ivy2/cache/org.mongodb/bson/srcs/bson-3.12.2-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/mongodb/bson/3.12.2/bson-3.12.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604192845" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="5">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="5060" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.13/0.20.11/reactivemongo_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="279143" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo_2.13/srcs/reactivemongo_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.13/0.20.11/reactivemongo_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.logging.log4j" name="log4j-api">
+			<revision name="2.13.0" status="release" pubdate="20191212064112" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="50">
+				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="30920" time="0" location="/Users/giancarlo/.ivy2/cache/org.apache.logging.log4j/log4j-api/ivy-2.13.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.13.0/log4j-api-2.13.0.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.13.0" rev-constraint-default="2.13.0" rev-constraint-dynamic="2.13.0" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="log4j-api" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="259916" time="0" location="/Users/giancarlo/.ivy2/cache/org.apache.logging.log4j/log4j-api/srcs/log4j-api-2.13.0-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.13.0/log4j-api-2.13.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="commons-codec" name="commons-codec">
+			<revision name="1.14" status="release" pubdate="20191231044423" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://commons.apache.org/proper/commons-codec/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="31">
+				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="16187" time="0" location="/Users/giancarlo/.ivy2/cache/commons-codec/commons-codec/ivy-1.14.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.14/commons-codec-1.14.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.14" rev-constraint-default="1.14" rev-constraint-dynamic="1.14" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="commons-codec" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="355956" time="0" location="/Users/giancarlo/.ivy2/cache/commons-codec/commons-codec/srcs/commons-codec-1.14-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/commons-codec/commons-codec/1.14/commons-codec-1.14-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="dnsjava" name="dnsjava">
+			<revision name="2.1.9" status="release" pubdate="20190525181454" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.dnsjava.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="34">
+				<license name="BSD-2-Clause" url="https://opensource.org/licenses/BSD-2-Clause"/>
+				<metadata-artifact status="no" details="" size="3542" time="0" location="/Users/giancarlo/.ivy2/cache/dnsjava/dnsjava/ivy-2.1.9.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/dnsjava/dnsjava/2.1.9/dnsjava-2.1.9.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.1.9" rev-constraint-default="2.1.9" rev-constraint-dynamic="2.1.9" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="dnsjava" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="211965" time="0" location="/Users/giancarlo/.ivy2/cache/dnsjava/dnsjava/srcs/dnsjava-2.1.9-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/dnsjava/dnsjava/2.1.9/dnsjava-2.1.9-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-bson-compat_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604192805" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="15">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3494" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson-compat_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson-compat_2.13/0.20.11/reactivemongo-bson-compat_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo-bson-compat_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="4537" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson-compat_2.13/srcs/reactivemongo-bson-compat_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson-compat_2.13/0.20.11/reactivemongo-bson-compat_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-core_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604192945" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="33">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3320" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-core_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-core_2.13/0.20.11/reactivemongo-core_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo-core_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="20396" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-core_2.13/srcs/reactivemongo-core_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-core_2.13/0.20.11/reactivemongo-core_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-bson-api_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604013043" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="78">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3999" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson-api_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson-api_2.13/0.20.11/reactivemongo-bson-api_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0"/>
+				<artifacts>
+					<artifact name="reactivemongo-bson-api_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="56408" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson-api_2.13/srcs/reactivemongo-bson-api_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson-api_2.13/0.20.11/reactivemongo-bson-api_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-bson_2.13">
+			<revision name="0.20.11" status="release" pubdate="20200604192708" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="7">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3499" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson_2.13/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson_2.13/0.20.11/reactivemongo-bson_2.13-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo-bson_2.13" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="35859" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-bson_2.13/srcs/reactivemongo-bson_2.13-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-bson_2.13/0.20.11/reactivemongo-bson_2.13-0.20.11-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo-shaded">
+			<revision name="0.20.11" status="release" pubdate="20200604005049" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://reactivemongo.org" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="71">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2648" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-shaded/ivy-0.20.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-shaded/0.20.11/reactivemongo-shaded-0.20.11.pom"/>
+				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.20.11" rev-constraint-default="0.20.11" rev-constraint-dynamic="0.20.11" callerrev="1.0" extra-info.apiURL="http://reactivemongo.org/release/1.x/api/"/>
+				<artifacts>
+					<artifact name="reactivemongo-shaded" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="261" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivemongo/reactivemongo-shaded/srcs/reactivemongo-shaded-0.20.11-sources.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/reactivemongo/reactivemongo-shaded/0.20.11/reactivemongo-shaded-0.20.11-sources.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
@@ -46,7 +250,7 @@
 			</revision>
 		</module>
 		<module organisation="com.adrianhurt" name="play-bootstrap-core_2.13">
-			<revision name="1.6.1-P28" status="release" pubdate="20200425004453" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://adrianhurt.github.io/play-bootstrap" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="15">
+			<revision name="1.6.1-P28" status="release" pubdate="20200425004453" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://adrianhurt.github.io/play-bootstrap" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="19">
 				<license name="Apache License" url="https://github.com/adrianhurt/play-bootstrap/blob/master/LICENSE"/>
 				<metadata-artifact status="no" details="" size="3086" time="0" location="/Users/giancarlo/.ivy2/cache/com.adrianhurt/play-bootstrap-core_2.13/ivy-1.6.1-P28.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/adrianhurt/play-bootstrap-core_2.13/1.6.1-P28/play-bootstrap-core_2.13-1.6.1-P28.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.6.1-P28" rev-constraint-default="1.6.1-P28" rev-constraint-dynamic="1.6.1-P28" callerrev="1.0"/>
@@ -58,7 +262,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="filters-helpers_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025128" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="22">
+			<revision name="2.8.1" status="release" pubdate="20200201025128" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="26">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3803" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/filters-helpers_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/filters-helpers_2.13/2.8.1/filters-helpers_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -70,7 +274,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-akka-http-server_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025126" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="29">
+			<revision name="2.8.1" status="release" pubdate="20200201025126" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="36">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3860" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-akka-http-server_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-akka-http-server_2.13/2.8.1/play-akka-http-server_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -82,7 +286,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-http-core_2.13">
-			<revision name="10.1.11" status="release" pubdate="20191202132402" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="58">
+			<revision name="10.1.11" status="release" pubdate="20191202132402" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="73">
 				<license name="Apache-2.0" url="https://opensource.org/licenses/Apache-2.0"/>
 				<metadata-artifact status="no" details="" size="3800" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-http-core_2.13/ivy-10.1.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-http-core_2.13/10.1.11/akka-http-core_2.13-10.1.11.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="10.1.11" rev-constraint-default="10.1.11" rev-constraint-dynamic="10.1.11" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/"/>
@@ -94,7 +298,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-parsing_2.13">
-			<revision name="10.1.11" status="release" pubdate="20191202132407" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="18">
+			<revision name="10.1.11" status="release" pubdate="20191202132407" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="22">
 				<license name="Apache-2.0" url="https://opensource.org/licenses/Apache-2.0"/>
 				<metadata-artifact status="no" details="" size="3180" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-parsing_2.13/ivy-10.1.11.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-parsing_2.13/10.1.11/akka-parsing_2.13-10.1.11.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="10.1.11" rev-constraint-default="10.1.11" rev-constraint-dynamic="10.1.11" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka-http/10.1.11/"/>
@@ -106,7 +310,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-server_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025124" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="46">
+			<revision name="2.8.1" status="release" pubdate="20200201025124" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="58">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3758" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-server_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-server_2.13/2.8.1/play-server_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -130,7 +334,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.inject.extensions" name="guice-assistedinject">
-			<revision name="4.2.2" status="release" pubdate="20181029212950" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="55">
+			<revision name="4.2.2" status="release" pubdate="20181029212950" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="69">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="5747" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.inject.extensions/guice-assistedinject/ivy-4.2.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/inject/extensions/guice-assistedinject/4.2.2/guice-assistedinject-4.2.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="4.2.2" rev-constraint-default="4.2.2" rev-constraint-dynamic="4.2.2" callerrev="1.0"/>
@@ -142,7 +346,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.inject" name="guice">
-			<revision name="4.2.2" status="release" pubdate="20181029212932" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="40">
+			<revision name="4.2.2" status="release" pubdate="20181029212932" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="52">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="6189" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.inject/guice/ivy-4.2.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/inject/guice/4.2.2/guice-4.2.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="4.2.2" rev-constraint-default="4.2.2" rev-constraint-dynamic="4.2.2" callerrev="1.0"/>
@@ -154,7 +358,7 @@
 			</revision>
 		</module>
 		<module organisation="aopalliance" name="aopalliance">
-			<revision name="1.0" status="release" pubdate="20070227024340" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://aopalliance.sourceforge.net" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="45">
+			<revision name="1.0" status="release" pubdate="20070227024340" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://aopalliance.sourceforge.net" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="57">
 				<license name="Public Domain"/>
 				<metadata-artifact status="no" details="" size="2417" time="0" location="/Users/giancarlo/.ivy2/cache/aopalliance/aopalliance/ivy-1.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/aopalliance/aopalliance/1.0/aopalliance-1.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.0" rev-constraint-default="1.0" rev-constraint-dynamic="1.0" callerrev="1.0"/>
@@ -166,7 +370,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025022" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="47">
+			<revision name="2.8.1" status="release" pubdate="20200201025022" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="59">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="8299" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play_2.13/2.8.1/play_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -178,7 +382,7 @@
 			</revision>
 		</module>
 		<module organisation="jakarta.transaction" name="jakarta.transaction-api">
-			<revision name="1.3.3" status="release" pubdate="20190803021644" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://projects.eclipse.org/projects/ee4j.jta" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="7">
+			<revision name="1.3.3" status="release" pubdate="20190803021644" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://projects.eclipse.org/projects/ee4j.jta" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="10">
 				<license name="EPL 2.0" url="http://www.eclipse.org/legal/epl-2.0"/>
 				<license name="GPL2 w/ CPE" url="https://www.gnu.org/software/classpath/license.html"/>
 				<metadata-artifact status="no" details="" size="4160" time="0" location="/Users/giancarlo/.ivy2/cache/jakarta.transaction/jakarta.transaction-api/ivy-1.3.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/transaction/jakarta.transaction-api/1.3.3/jakarta.transaction-api-1.3.3.pom"/>
@@ -191,7 +395,7 @@
 			</revision>
 		</module>
 		<module organisation="jakarta.xml.bind" name="jakarta.xml.bind-api">
-			<revision name="2.3.2" status="release" pubdate="20181227193107" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="35">
+			<revision name="2.3.2" status="release" pubdate="20181227193107" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="42">
 				<license name="Eclipse Distribution License - v 1.0" url="http://www.eclipse.org/org/documents/edl-v10.php"/>
 				<metadata-artifact status="no" details="" size="4662" time="0" location="/Users/giancarlo/.ivy2/cache/jakarta.xml.bind/jakarta.xml.bind-api/ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="1.0"/>
@@ -203,7 +407,7 @@
 			</revision>
 		</module>
 		<module organisation="io.jsonwebtoken" name="jjwt">
-			<revision name="0.9.1" status="release" pubdate="20180706025143" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/jwtk/jjwt" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="33">
+			<revision name="0.9.1" status="release" pubdate="20180706025143" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/jwtk/jjwt" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="40">
 				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="5937" time="0" location="/Users/giancarlo/.ivy2/cache/io.jsonwebtoken/jjwt/ivy-0.9.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.9.1" rev-constraint-default="0.9.1" rev-constraint-dynamic="0.9.1" callerrev="1.0"/>
@@ -215,7 +419,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.guava" name="guava">
-			<revision name="28.1-jre" status="release" pubdate="20190829005307" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="41">
+			<revision name="28.1-jre" status="release" pubdate="20190829005307" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="53">
 				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="7589" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.guava/guava/ivy-28.1-jre.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="28.1-jre" rev-constraint-default="28.1-jre" rev-constraint-dynamic="28.1-jre" callerrev="1.0"/>
@@ -227,7 +431,7 @@
 			</revision>
 		</module>
 		<module organisation="org.codehaus.mojo" name="animal-sniffer-annotations">
-			<revision name="1.18" status="release" pubdate="20190513035744" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="38">
+			<revision name="1.18" status="release" pubdate="20190513035744" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="49">
 				<license name="MIT license" url="http://www.opensource.org/licenses/mit-license.php"/>
 				<metadata-artifact status="no" details="" size="5135" time="0" location="/Users/giancarlo/.ivy2/cache/org.codehaus.mojo/animal-sniffer-annotations/ivy-1.18.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.18" rev-constraint-default="1.18" rev-constraint-dynamic="1.18" callerrev="1.0"/>
@@ -239,7 +443,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.j2objc" name="j2objc-annotations">
-			<revision name="1.3" status="release" pubdate="20170119030955" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/google/j2objc/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="49">
+			<revision name="1.3" status="release" pubdate="20170119030955" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/google/j2objc/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="61">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="3174" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.j2objc/j2objc-annotations/ivy-1.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.3" rev-constraint-default="1.3" rev-constraint-dynamic="1.3" callerrev="1.0"/>
@@ -251,7 +455,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.errorprone" name="error_prone_annotations">
-			<revision name="2.3.2" status="release" pubdate="20181010023652" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="37">
+			<revision name="2.3.2" status="release" pubdate="20181010023652" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="47">
 				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="4182" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.errorprone/error_prone_annotations/ivy-2.3.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.3.2" rev-constraint-default="2.3.2" rev-constraint-dynamic="2.3.2" callerrev="1.0"/>
@@ -263,7 +467,7 @@
 			</revision>
 		</module>
 		<module organisation="org.checkerframework" name="checker-qual">
-			<revision name="2.8.1" status="release" pubdate="20190502003240" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://checkerframework.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="51">
+			<revision name="2.8.1" status="release" pubdate="20190502003240" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://checkerframework.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="64">
 				<license name="The MIT License" url="http://opensource.org/licenses/MIT"/>
 				<metadata-artifact status="no" details="" size="2666" time="0" location="/Users/giancarlo/.ivy2/cache/org.checkerframework/checker-qual/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0"/>
@@ -275,7 +479,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.code.findbugs" name="jsr305">
-			<revision name="3.0.2" status="release" pubdate="20170331085548" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://findbugs.sourceforge.net/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="16">
+			<revision name="3.0.2" status="release" pubdate="20170331085548" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://findbugs.sourceforge.net/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="20">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="3268" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.code.findbugs/jsr305/ivy-3.0.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="3.0.2" rev-constraint-default="3.0.2" rev-constraint-dynamic="3.0.2" callerrev="1.0"/>
@@ -287,7 +491,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.guava" name="failureaccess">
-			<revision name="1.0.1" status="release" pubdate="20181119215727" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="42">
+			<revision name="1.0.1" status="release" pubdate="20181119215727" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="54">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="6356" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.guava/failureaccess/ivy-1.0.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.0.1" rev-constraint-default="1.0.1" rev-constraint-dynamic="1.0.1" callerrev="1.0"/>
@@ -299,7 +503,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-json_2.13">
-			<revision name="2.8.1" status="release" pubdate="20191212032359" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/play-json" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="24">
+			<revision name="2.8.1" status="release" pubdate="20191212032359" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/play-json" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="28">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="4986" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-json_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-json_2.13/2.8.1/play-json_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0"/>
@@ -311,7 +515,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-functional_2.13">
-			<revision name="2.8.1" status="release" pubdate="20191212032353" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/play-json" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="48">
+			<revision name="2.8.1" status="release" pubdate="20191212032353" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/play-json" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="60">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="2842" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-functional_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-functional_2.13/2.8.1/play-functional_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0"/>
@@ -335,7 +539,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.datatype" name="jackson-datatype-jdk8">
-			<revision name="2.10.1" status="release" pubdate="20191110033045" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="30">
+			<revision name="2.10.1" status="release" pubdate="20191110033045" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="37">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="30277" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/ivy-2.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.10.1/jackson-datatype-jdk8-2.10.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.1" rev-constraint-default="2.10.1" rev-constraint-dynamic="2.10.1" callerrev="1.0"/>
@@ -347,7 +551,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.core" name="jackson-databind">
-			<revision name="2.10.1" status="release" pubdate="20191110031246" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="50">
+			<revision name="2.10.1" status="release" pubdate="20191110031246" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="62">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="24522" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/ivy-2.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.10.1/jackson-databind-2.10.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.1" rev-constraint-default="2.10.1" rev-constraint-dynamic="2.10.1" callerrev="1.0"/>
@@ -359,7 +563,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.core" name="jackson-annotations">
-			<revision name="2.10.1" status="release" pubdate="20191110025822" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="60">
+			<revision name="2.10.1" status="release" pubdate="20191110025822" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="75">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="8106" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/ivy-2.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.10.1/jackson-annotations-2.10.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.1" rev-constraint-default="2.10.1" rev-constraint-dynamic="2.10.1" callerrev="1.0"/>
@@ -371,7 +575,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.core" name="jackson-core">
-			<revision name="2.10.1" status="release" pubdate="20191110030923" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/FasterXML/jackson-core" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="34">
+			<revision name="2.10.1" status="release" pubdate="20191110030923" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/FasterXML/jackson-core" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="41">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="23761" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/ivy-2.10.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.10.1/jackson-core-2.10.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.1" rev-constraint-default="2.10.1" rev-constraint-dynamic="2.10.1" callerrev="1.0"/>
@@ -383,7 +587,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-serialization-jackson_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128163504" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="21">
+			<revision name="2.6.3" status="release" pubdate="20200128163504" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="25">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="5362" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-serialization-jackson_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-serialization-jackson_2.13/2.6.3/akka-serialization-jackson_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -395,7 +599,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.dataformat" name="jackson-dataformat-cbor">
-			<revision name="2.10.2" status="release" pubdate="20200105071858" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson-dataformats-binary" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="43">
+			<revision name="2.10.2" status="release" pubdate="20200105071858" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/FasterXML/jackson-dataformats-binary" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="55">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="30573" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.10.2/jackson-dataformat-cbor-2.10.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="1.0"/>
@@ -407,7 +611,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.module" name="jackson-module-parameter-names">
-			<revision name="2.10.2" status="release" pubdate="20200105065417" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="54">
+			<revision name="2.10.2" status="release" pubdate="20200105065417" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="68">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="30906" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-parameter-names/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names/2.10.2/jackson-module-parameter-names-2.10.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="1.0"/>
@@ -419,7 +623,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.module" name="jackson-module-scala_2.13">
-			<revision name="2.10.2" status="release" pubdate="20200105123827" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://wiki.fasterxml.com/JacksonModuleScala" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="8">
+			<revision name="2.10.2" status="release" pubdate="20200105123827" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://wiki.fasterxml.com/JacksonModuleScala" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="11">
 				<license name="The Apache Software License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="4079" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-scala_2.13/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.10.2/jackson-module-scala_2.13-2.10.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="1.0"/>
@@ -431,7 +635,7 @@
 			</revision>
 		</module>
 		<module organisation="com.fasterxml.jackson.module" name="jackson-module-paranamer">
-			<revision name="2.10.2" status="release" pubdate="20200105065152" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/FasterXML/jackson-modules-base" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="12">
+			<revision name="2.10.2" status="release" pubdate="20200105065152" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/FasterXML/jackson-modules-base" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="16">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="30763" time="0" location="/Users/giancarlo/.ivy2/cache/com.fasterxml.jackson.module/jackson-module-paranamer/ivy-2.10.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-paranamer/2.10.2/jackson-module-paranamer-2.10.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.2" rev-constraint-default="2.10.2" rev-constraint-dynamic="2.10.2" callerrev="1.0"/>
@@ -455,7 +659,7 @@
 			</revision>
 		</module>
 		<module organisation="javax.inject" name="javax.inject">
-			<revision name="1" status="release" pubdate="20091014033500" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://code.google.com/p/atinject/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="59">
+			<revision name="1" status="release" pubdate="20091014033500" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://code.google.com/p/atinject/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="74">
 				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="2506" time="0" location="/Users/giancarlo/.ivy2/cache/javax.inject/javax.inject/ivy-1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/javax/inject/javax.inject/1/javax.inject-1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1" rev-constraint-default="1" rev-constraint-dynamic="1" callerrev="1.0"/>
@@ -467,7 +671,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-actor-typed_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128163203" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="10">
+			<revision name="2.6.3" status="release" pubdate="20200128163203" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="13">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3513" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-actor-typed_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor-typed_2.13/2.6.3/akka-actor-typed_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -479,7 +683,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-slf4j_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128163029" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="19">
+			<revision name="2.6.3" status="release" pubdate="20200128163029" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="23">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3605" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-slf4j_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-slf4j_2.13/2.6.3/akka-slf4j_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -491,7 +695,7 @@
 			</revision>
 		</module>
 		<module organisation="org.slf4j" name="jcl-over-slf4j">
-			<revision name="1.7.29" status="release" pubdate="20191031162558" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="31">
+			<revision name="1.7.29" status="release" pubdate="20191031162558" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="38">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="5434" time="0" location="/Users/giancarlo/.ivy2/cache/org.slf4j/jcl-over-slf4j/ivy-1.7.29.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/jcl-over-slf4j/1.7.29/jcl-over-slf4j-1.7.29.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.7.29" rev-constraint-default="1.7.29" rev-constraint-dynamic="1.7.29" callerrev="1.0"/>
@@ -503,7 +707,7 @@
 			</revision>
 		</module>
 		<module organisation="org.slf4j" name="jul-to-slf4j">
-			<revision name="1.7.29" status="release" pubdate="20191031162616" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="56">
+			<revision name="1.7.29" status="release" pubdate="20191031162616" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="70">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
 				<metadata-artifact status="no" details="" size="5408" time="0" location="/Users/giancarlo/.ivy2/cache/org.slf4j/jul-to-slf4j/ivy-1.7.29.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/jul-to-slf4j/1.7.29/jul-to-slf4j-1.7.29.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.7.29" rev-constraint-default="1.7.29" rev-constraint-dynamic="1.7.29" callerrev="1.0"/>
@@ -515,7 +719,7 @@
 			</revision>
 		</module>
 		<module organisation="org.slf4j" name="slf4j-api">
-			<revision name="1.7.29" status="release" pubdate="20191031162435" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="20">
+			<revision name="1.7.29" status="release" pubdate="20191031162435" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="24">
 				<license name="MIT License" url="http://www.opensource.org/licenses/mit-license.php"/>
 				<metadata-artifact status="no" details="" size="5347" time="0" location="/Users/giancarlo/.ivy2/cache/org.slf4j/slf4j-api/ivy-1.7.29.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.29/slf4j-api-1.7.29.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.7.29" rev-constraint-default="1.7.29" rev-constraint-dynamic="1.7.29" callerrev="1.0"/>
@@ -527,7 +731,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="twirl-api_2.13">
-			<revision name="1.5.0" status="release" pubdate="20191119224138" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="27">
+			<revision name="1.5.0" status="release" pubdate="20191119224138" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="32">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="2941" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/twirl-api_2.13/ivy-1.5.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/twirl-api_2.13/1.5.0/twirl-api_2.13-1.5.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.5.0" rev-constraint-default="1.5.0" rev-constraint-dynamic="1.5.0" callerrev="1.0"/>
@@ -539,7 +743,7 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang.modules" name="scala-xml_2.13">
-			<revision name="1.2.0" status="release" pubdate="20190607202354" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="32">
+			<revision name="1.2.0" status="release" pubdate="20190607202354" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="39">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="3264" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang.modules/scala-xml_2.13/ivy-1.2.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/1.2.0/scala-xml_2.13-1.2.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.2.0" rev-constraint-default="1.2.0" rev-constraint-dynamic="1.2.0" callerrev="1.0"/>
@@ -551,7 +755,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-streams_2.13">
-			<revision name="2.8.1" status="release" pubdate="20200201025107" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="36">
+			<revision name="2.8.1" status="release" pubdate="20200201025107" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="45">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="4304" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-streams_2.13/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-streams_2.13/2.8.1/play-streams_2.13-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -563,7 +767,7 @@
 			</revision>
 		</module>
 		<module organisation="ch.qos.logback" name="logback-classic">
-			<revision name="1.2.3" status="release" pubdate="20170331232753" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="26">
+			<revision name="1.2.3" status="release" pubdate="20170331232753" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="30">
 				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
 				<metadata-artifact status="no" details="" size="10412" time="0" location="/Users/giancarlo/.ivy2/cache/ch.qos.logback/logback-classic/ivy-1.2.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.pom"/>
@@ -576,7 +780,7 @@
 			</revision>
 		</module>
 		<module organisation="ch.qos.logback" name="logback-core">
-			<revision name="1.2.3" status="release" pubdate="20170331232715" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="57">
+			<revision name="1.2.3" status="release" pubdate="20170331232715" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="72">
 				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
 				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
 				<metadata-artifact status="no" details="" size="7917" time="0" location="/Users/giancarlo/.ivy2/cache/ch.qos.logback/logback-core/ivy-1.2.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.pom"/>
@@ -589,7 +793,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-stream_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128163246" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="6">
+			<revision name="2.6.3" status="release" pubdate="20200128163246" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="9">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3799" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-stream_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-stream_2.13/2.6.3/akka-stream_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -601,7 +805,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe" name="ssl-config-core_2.13">
-			<revision name="0.4.1" status="release" pubdate="20191115024535" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lightbend/ssl-config" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="44">
+			<revision name="0.4.1" status="release" pubdate="20191115024535" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lightbend/ssl-config" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="56">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="3716" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe/ssl-config-core_2.13/ivy-0.4.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/ssl-config-core_2.13/0.4.1/ssl-config-core_2.13-0.4.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.4.1" rev-constraint-default="0.4.1" rev-constraint-dynamic="0.4.1" callerrev="1.0"/>
@@ -613,7 +817,7 @@
 			</revision>
 		</module>
 		<module organisation="joda-time" name="joda-time">
-			<revision name="2.10.5" status="release" pubdate="20191024181112" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.joda.org/joda-time/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="61">
+			<revision name="2.10.5" status="release" pubdate="20191024181112" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.joda.org/joda-time/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="76">
 				<license name="Apache License, Version 2.0" url="https://www.apache.org/licenses/LICENSE-2.0.txt"/>
 				<metadata-artifact status="no" details="" size="6902" time="0" location="/Users/giancarlo/.ivy2/cache/joda-time/joda-time/ivy-2.10.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/joda-time/joda-time/2.10.5/joda-time-2.10.5.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.10.5" rev-constraint-default="2.10.5" rev-constraint-dynamic="2.10.5" callerrev="1.0"/>
@@ -625,7 +829,7 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang.modules" name="scala-parser-combinators_2.13">
-			<revision name="1.1.2" status="release" pubdate="20190607223535" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="53">
+			<revision name="1.1.2" status="release" pubdate="20190607223535" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="67">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="2927" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.13/ivy-1.1.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2/scala-parser-combinators_2.13-1.1.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.1.2" rev-constraint-default="1.1.2" rev-constraint-dynamic="1.1.2" callerrev="1.0"/>
@@ -637,7 +841,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-protobuf-v3_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128162632" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="39">
+			<revision name="2.6.3" status="release" pubdate="20200128162632" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="51">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="2941" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-protobuf-v3_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-protobuf-v3_2.13/2.6.3/akka-protobuf-v3_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -649,7 +853,7 @@
 			</revision>
 		</module>
 		<module organisation="com.google.protobuf" name="protobuf-java">
-			<revision name="3.10.0" status="release" pubdate="20190919045539" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="14">
+			<revision name="3.10.0" status="release" pubdate="20190919045539" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="18">
 				<license name="3-Clause BSD License" url="https://opensource.org/licenses/BSD-3-Clause"/>
 				<metadata-artifact status="no" details="" size="5771" time="0" location="/Users/giancarlo/.ivy2/cache/com.google.protobuf/protobuf-java/ivy-3.10.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/3.10.0/protobuf-java-3.10.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="3.10.0" rev-constraint-default="3.10.0" rev-constraint-dynamic="3.10.0" callerrev="1.0"/>
@@ -661,7 +865,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.akka" name="akka-actor_2.13">
-			<revision name="2.6.3" status="release" pubdate="20200128162747" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="11">
+			<revision name="2.6.3" status="release" pubdate="20200128162747" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io/" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="14">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="3362" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.akka/akka-actor_2.13/ivy-2.6.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.13/2.6.3/akka-actor_2.13-2.6.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.6.3" rev-constraint-default="2.6.3" rev-constraint-dynamic="2.6.3" callerrev="1.0" extra-info.apiURL="https://doc.akka.io/api/akka/2.6.3"/>
@@ -673,7 +877,7 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang.modules" name="scala-java8-compat_2.13">
-			<revision name="0.9.0" status="release" pubdate="20190608165219" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="28">
+			<revision name="0.9.0" status="release" pubdate="20190608165219" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="35">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="3031" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang.modules/scala-java8-compat_2.13/ivy-0.9.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/modules/scala-java8-compat_2.13/0.9.0/scala-java8-compat_2.13-0.9.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="0.9.0" rev-constraint-default="0.9.0" rev-constraint-dynamic="0.9.0" callerrev="1.0"/>
@@ -685,7 +889,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe" name="config">
-			<revision name="1.4.0" status="release" pubdate="20191012112341" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lightbend/config" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="23">
+			<revision name="1.4.0" status="release" pubdate="20191012112341" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/lightbend/config" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="27">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="3138" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe/config/ivy-1.4.0.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/config/1.4.0/config-1.4.0.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.4.0" rev-constraint-default="1.4.0" rev-constraint-dynamic="1.4.0" callerrev="1.0"/>
@@ -697,7 +901,7 @@
 			</revision>
 		</module>
 		<module organisation="org.reactivestreams" name="reactive-streams">
-			<revision name="1.0.3" status="release" pubdate="20190823125010" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.reactive-streams.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="52">
+			<revision name="1.0.3" status="release" pubdate="20190823125010" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.reactive-streams.org/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="65">
 				<license name="CC0" url="http://creativecommons.org/publicdomain/zero/1.0/"/>
 				<metadata-artifact status="no" details="" size="2523" time="0" location="/Users/giancarlo/.ivy2/cache/org.reactivestreams/reactive-streams/ivy-1.0.3.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="1.0.3" rev-constraint-default="1.0.3" rev-constraint-dynamic="1.0.3" callerrev="1.0"/>
@@ -709,7 +913,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="build-link">
-			<revision name="2.8.1" status="release" pubdate="20200201025017" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="25">
+			<revision name="2.8.1" status="release" pubdate="20200201025017" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="29">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="2864" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/build-link/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/build-link/2.8.1/build-link-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -721,7 +925,7 @@
 			</revision>
 		</module>
 		<module organisation="com.typesafe.play" name="play-exceptions">
-			<revision name="2.8.1" status="release" pubdate="20200201025035" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="13">
+			<revision name="2.8.1" status="release" pubdate="20200201025035" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://playframework.com" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="17">
 				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
 				<metadata-artifact status="no" details="" size="2695" time="0" location="/Users/giancarlo/.ivy2/cache/com.typesafe.play/play-exceptions/ivy-2.8.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/typesafe/play/play-exceptions/2.8.1/play-exceptions-2.8.1.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0" extra-info.apiURL="https://www.playframework.com/documentation/2.8.1/api/scala/index.html"/>
@@ -733,7 +937,7 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-library">
-			<revision name="2.13.2" status="release" pubdate="20200423080229" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="5">
+			<revision name="2.13.2" status="release" pubdate="20200423080229" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://www.scala-lang.org/" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="8">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
 				<metadata-artifact status="no" details="" size="2659" time="0" location="/Users/giancarlo/.ivy2/cache/org.scala-lang/scala-library/ivy-2.13.2.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.2/scala-library-2.13.2.pom"/>
 				<caller organisation="examsimulator" name="examsimulator$sources_2.13" conf="compile" rev="2.13.2" rev-constraint-default="2.13.2" rev-constraint-dynamic="2.13.2" callerrev="1.0" extra-info.apiURL="https://www.scala-lang.org/api/2.13.2/"/>

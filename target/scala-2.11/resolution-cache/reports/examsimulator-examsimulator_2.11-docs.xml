@@ -3,11 +3,18 @@
 <ivy-report version="1.0">
 	<info
 		organisation="examsimulator"
-		module="examsimulator$sources_2.13"
+		module="examsimulator_2.11"
 		revision="1.0"
-		conf="plugin"
+		conf="docs"
 		confs="universal, universal-docs, universal-src, compile, runtime, test, provided, optional, windows, docker, linux, web-assets, web-assets-test, web-plugin, rpm, debian, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20200727124658"/>
+		date="20200706143717"/>
 	<dependencies>
+		<module organisation="com.typesafe.play" name="play-docs_2.11">
+			<revision name="2.8.1" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="examsimulator" name="examsimulator_2.11" conf="docs" rev="2.8.1" rev-constraint-default="2.8.1" rev-constraint-dynamic="2.8.1" callerrev="1.0"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
 	</dependencies>
 </ivy-report>
