@@ -3,35 +3,33 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.FrontendController.index
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET     /api/message                    controllers.AsyncController.message
 
-GET     /summary                controllers.HomeController.appSummary
+GET     /api/summary                controllers.HomeController.appSummary
 
 
-GET     /exam            controllers.ExamSimulatorController.getExamList
+GET     /api/exam            controllers.ExamSimulatorController.getExamList
 
-PUT     /exam           controllers.ExamSimulatorController.importExam
+PUT     /api/exam           controllers.ExamSimulatorController.importExam
 
-GET    /assessment        controllers.ExamSimulatorController.getAllAssessment
+GET    /api/assessment        controllers.ExamSimulatorController.getAllAssessment
 
-POST    /assessment        controllers.ExamSimulatorController.createAssessment
+POST    /api/assessment        controllers.ExamSimulatorController.createAssessment
 
-GET     /assessment/:assessmentId/question/:questionId controllers.ExamSimulatorController.getQuestionByAssessment(assessmentId:java.util.UUID,questionId:Int)
+GET     /api/assessment/:assessmentId/question/:questionId controllers.ExamSimulatorController.getQuestionByAssessment(assessmentId:java.util.UUID,questionId:Int)
 
-PUT     /assessment/:assessmentId/question/:questionId  controllers.ExamSimulatorController.checkAnswerByAssessment(assessmentId:java.util.UUID,questionId:Int)
+PUT     /api/assessment/:assessmentId/question/:questionId  controllers.ExamSimulatorController.checkAnswerByAssessment(assessmentId:java.util.UUID,questionId:Int)
 
-GET     /assessment/:assessmentId/report    controllers.ExamSimulatorController.getAssessmentReport(assessmentId:java.util.UUID)
+GET     /api/assessment/:assessmentId/report    controllers.ExamSimulatorController.getAssessmentReport(assessmentId:java.util.UUID)
 
-GET     /assessment/:assessmentId/question              controllers.ExamSimulatorController.getAssessmentQuestions(assessmentId:java.util.UUID)
+GET     /api/assessment/:assessmentId/question              controllers.ExamSimulatorController.getAssessmentQuestions(assessmentId:java.util.UUID)
 
-GET     /assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:java.util.UUID,infoId:Int)
+GET     /api/assessment/:assessmentId/info/:infoId          controllers.ExamSimulatorController.getAssessmentReportInfo(assessmentId:java.util.UUID,infoId:Int)
 
-PUT    /assessment/:assessmentId                       controllers.ExamSimulatorController.collectAnswers(assessmentId:java.util.UUID)
+PUT    /api/assessment/:assessmentId                       controllers.ExamSimulatorController.collectAnswers(assessmentId:java.util.UUID)
 
-GET     /assessment/:assessmentId                      controllers.ExamSimulatorController.loadAssessment(assessmentId:java.util.UUID)
+GET     /api/assessment/:assessmentId                      controllers.ExamSimulatorController.loadAssessment(assessmentId:java.util.UUID)
 
 
 

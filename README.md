@@ -13,7 +13,7 @@ Scala , Play , MongoDb, ReactJS
 
 - [Installation](#installation)
 - [Features](#features)
-- [Contributing](#contributing)
+- [Roadmap](#roadmap)
 - [FAQ](#faq)
 - [Support](#support)
 - [License](#license)
@@ -66,7 +66,10 @@ runMain examData.initMongoDb "app/ExamData/"
 The backend is in Scala 2.13.2/ Play Framework with REST API approach. 
 The frontend is reactJS , located gui folder. 
 
-## Tests (Optional)
+## Roadmap
+- Improve CSS
+- Support graphical questions/answers
+- Improving external files support
 
 ## FAQ
 
@@ -79,9 +82,6 @@ The frontend is reactJS , located gui folder.
 
 Reach out to me at one of the following places!
 
-- Website at <a href="http://fvcproductions.com" target="_blank">`fvcproductions.com`</a>
-- Twitter at <a href="http://twitter.com/fvcproductions" target="_blank">`@fvcproductions`</a>
-- Insert more social links here.
 
 ---
 
@@ -90,4 +90,3 @@ Reach out to me at one of the following places!
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2015 © <a href="http://fvcproductions.com" target="_blank">FVCproductions</a>.
