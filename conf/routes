@@ -8,6 +8,7 @@ GET     /api/message                    controllers.AsyncController.message
 
 GET     /api/summary                controllers.HomeController.appSummary
 
+GET     /api/version            controllers.ExamSimulatorController.getVersion
 
 GET     /api/exam            controllers.ExamSimulatorController.getExamList
 

@@ -1,6 +1,5 @@
 import React,{Component} from "react";
 import { Link } from 'react-router-dom'
-import config from "./config";
 
 class Report extends Component {
     constructor(props) {
@@ -13,7 +12,7 @@ class Report extends Component {
 
     getAssessmentReport(assessmentId){
         // console.log("Getting data question"+questionId)
-        const url=config.baseUrl+'assessment/'+assessmentId+'/report'
+        const url='/assessment/'+assessmentId+'/report'
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({
@@ -33,7 +32,7 @@ class Report extends Component {
     }
 
     getAssessmentTime(assessmentId){
-        const url=config.baseUrl+'assessment/'+assessmentId+'/info/1'
+        const url='/assessment/'+assessmentId+'/info/1'
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({

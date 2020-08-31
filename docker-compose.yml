@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  examsim_network:
+    external: false
+
 services:
   ################################
   #   Setup react js container
@@ -8,7 +12,9 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: ExamSim_app
+    container_name: examsim_app
+    networks:
+      - examsim_network
     ports:
       - 9000:9000
   ################################
@@ -18,26 +24,32 @@ services:
     build:
       context: ./gui
       dockerfile: Dockerfile
-    container_name: ExamSim_gui
+    stdin_open: true # docker run -it
+    tty: true
+    container_name: examsim_gui
+    networks:
+      - examsim_network
     ports:
       - 3000:3000
-    volumes:
+#    volumes:
 #      - ./gui:/gui
-      - /gui/node_modules
+#      - /gui/node_modules
   ################################
   #   Setup nginx load balancer
   ################################
-  nginx:
-    image: nginx:latest
-    ports:
-      - 3080:3000
-    environment:
-      - TARGET_DOMAIN=localhost
+#  nginx:
+#    build:
+#      context: ./nginx
+#      dockerfile: Dockerfile
+#    container_name: examsim_proxy
+#    networks:
+#      - examsim_network
+#    ports:
+#      - 3080:3080
   ################################
   #   Setup mongo db
   ################################
   mongo:
-    container_name: ExamSim_mongo
     image: mongo:latest
     restart: always
     environment:
@@ -46,5 +58,9 @@ services:
       MONGO_INITDB_DATABASE: "examsim"
     ports:
       - 27017:27017
+    container_name: examsim_mongo
+    networks:
+      - examsim_network
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+

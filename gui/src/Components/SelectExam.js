@@ -1,7 +1,6 @@
 import React,{Component} from "react";
 import { Redirect } from 'react-router-dom'
 import {Tab,Row,Col,ListGroup,Toast} from 'react-bootstrap';
-import config from './config'
 
 class SelectExam extends Component{
     constructor() {
@@ -24,7 +23,7 @@ class SelectExam extends Component{
     }
 
     handleImportFile(e){
-        const  url=config.baseUrl+'exam'
+        const  url='/exam'
         fetch(url,{
             method: 'PUT',
             body: e.target.files[0],
@@ -51,7 +50,7 @@ class SelectExam extends Component{
     }
 
     fetchExams(){
-        fetch(config.baseUrl+'exam')
+        fetch('/exam')
             .then(res => res.json()).then(data => {
                 this.setState({
                     error:null,
@@ -69,7 +68,7 @@ class SelectExam extends Component{
     }
 
     fetchAssessments(){
-        fetch(config.baseUrl+'assessment')
+        fetch('/assessment')
             .then(res => res.json()).then(data => {
                 this.setState({
                     error:null,
@@ -88,7 +87,7 @@ class SelectExam extends Component{
     }
 
     loadAssessment(){
-        const  url=config.baseUrl+'assessment/'+this.state.selectedAssessmentId
+        const  url='/assessment/'+this.state.selectedAssessmentId
         fetch(url,{
             method: 'GET',
             headers: {
@@ -173,7 +172,6 @@ class SelectExam extends Component{
         const { error, isLoaded,exams,assessments } = this.state;
         let disableCreate=true
         let disableAssessmentButtons=true
-        let  showToastImport=false
         if (this.state.redirectToReferrer === true) {
             const url="/Question/"+this.state.selectedAssessmentId+"/"+this.state.questionId
             return <Redirect to={url} />

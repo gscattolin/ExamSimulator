@@ -10,6 +10,7 @@
     "braces": "^3.0.2",
     "formik": "^2.1.4",
     "html-react-parser": "^0.13.0",
+    "http-proxy-middleware": "^1.0.5",
     "immutability-helper": "^3.1.1",
     "jquery": "^3.5.1",
     "popper": "^1.0.1",
@@ -48,5 +49,5 @@
     "ncp": "^2.0.0",
     "rimraf": "^3.0.2"
   },
-  "proxy": "http://localhost:9000"
+  "proxy": "http://examsim_app:9000/api"
 }

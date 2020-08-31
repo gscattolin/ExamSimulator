@@ -1,7 +1,6 @@
 import React,{Component} from "react";
 import {Redirect}  from 'react-router-dom'
 import update from 'immutability-helper';
-import config from './config'
 import leftArrow from '../Images/icons8-previous-48.png';
 import rightArrow from '../Images/icons8-next-48.png';
 import pauseIcon from '../Images/icons8-pause-48.png';
@@ -57,7 +56,7 @@ class Question extends Component {
     getNewQuestion(questionId){
         this.setState({isLoaded:false})
         // console.log("Getting data question"+questionId)
-        const url=config.baseUrl+'assessment/'+this.state.assessmentId+'/question/'+questionId
+        const url='/assessment/'+this.state.assessmentId+'/question/'+questionId
         fetch(url)
             .then(res => res.json()).then(data => {
                 this.setState({
@@ -82,7 +81,7 @@ class Question extends Component {
 
     getTotalQuestions(assessmentId){
         // console.log("Getting data question"+questionId)
-        const url=config.baseUrl+'assessment/'+assessmentId+'/question'
+        const url='/assessment/'+assessmentId+'/question'
         fetch(url)
             .then(res => res.json()).then(data => {
                 let mapV=new Map()
@@ -151,7 +150,7 @@ class Question extends Component {
         if(event.target.name!==this.savingButtonName()){
             closeAssessment=true
         }
-        const url=config.baseUrl+'assessment/'+this.state.assessmentId
+        const url='/assessment/'+this.state.assessmentId
         const aws=this.state.answersUser
         const bodyT=JSON.stringify({"answers": Array.from(aws.entries())})
         fetch(url, {

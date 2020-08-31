@@ -169,4 +169,8 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     val res:Map[String,String]=Map("message"->"File imported successfully","questions" -> examImported.listQuestion.length.toString,"code" -> examImported.properties.Code)
     Ok(Json.toJson(res))
   }
+
+  def getVersion()=Action {
+    Ok(exs.getVersion())
+  }
 }

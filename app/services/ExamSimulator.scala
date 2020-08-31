@@ -8,7 +8,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 import models.SourceType.SourceType
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import repositories.RepoExamSimulator
 
 import scala.collection.mutable
@@ -20,6 +20,10 @@ import scala.collection.mutable.ListBuffer
 class ExamSimulator @Inject() (config:Configuration)
   extends GenExamSimulator {
 
+  protected val LOGGER: Logger = Logger(this.getClass)
+
+  private val configVersion="version"
+  private var version="1"
   private val configDataSources:String="datasources"
 
   private val configDataSourcesFile:String="files"
@@ -44,13 +48,18 @@ class ExamSimulator @Inject() (config:Configuration)
   lazy val repoExamSimulator= new RepoExamSimulator()
 
   def initService():SourceType={
+
     val source=config.getAndValidate(configDataSources,availableConfigSources)
+    version=config.get[String](configVersion)
+    LOGGER.info(s"Starting ExamSimulator $version")
     if (source==configDataSourcesDb){
       val f=config.get[Map[String,String]](configDataSourcesDb)
       val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
+      LOGGER.debug(s"Main source Mongo - Parameters= $d")
       repoExamSimulator.connect(d)
       SourceType.Dbs
     }else {
+      LOGGER.debug(s"Main source Files ")
       SourceType.Files
     }
   }
@@ -180,5 +189,9 @@ class ExamSimulator @Inject() (config:Configuration)
 
   override def importExamByFile(file: File): Either[Int,Exam] = {
     repoExamSimulator.importExamFromFile2Mongo(file)
+  }
+
+  override def getVersion(): String = {
+    version
   }
 }

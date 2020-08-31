@@ -21,4 +21,5 @@ trait GenExamSimulator extends Logging {
   def getAllAssessment():List[Assessment]
   def loadAssessment(assessmentId:UUID):Assessment
   def importExamByFile(file:File):Either[Int,Exam]
+  def getVersion():String
 }
