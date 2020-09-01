@@ -21,7 +21,7 @@ gui/node_modules/
 project/project/
 project/target/
 target/
-public/
+
 
 node_modules
 npm-debug.log
@@ -33,3 +33,4 @@ build
 app/examData/asset/
 
 app/filters/
+app/public/
