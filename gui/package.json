@@ -49,5 +49,5 @@
     "ncp": "^2.0.0",
     "rimraf": "^3.0.2"
   },
-  "proxy": "http://examsim_app:9000/api"
+  "proxy": "http://localhost:9000/api"
 }

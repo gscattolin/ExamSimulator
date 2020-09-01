@@ -6,7 +6,6 @@ import Question from "./Components/Question";
 import Report from "./Components/Report";
 
 
-
 function App() {
   return (
     <div className="App">
@@ -14,9 +13,12 @@ function App() {
             <div className="row">
                 <div className="col"/>
                 <div className="col">
-                    <h1>Exam Simulator v 0.1</h1>
+                    <h1>Exam Simulator </h1>
+
                 </div>
-                <div className="col"/>
+                <div className="col">
+                    <small>mode <b>{process.env.NODE_ENV}</b></small>
+                </div>
             </div>
             <div className="row">
             </div>

@@ -19,6 +19,7 @@ class SelectExam extends Component{
             assessments : [],
             selectedAssessmentId: 0,
             redirectToReferrer: false,
+            version: "0.9.9"
         }
     }
 
@@ -86,6 +87,21 @@ class SelectExam extends Component{
         )
     }
 
+    fetchVersion(){
+        fetch('/version')
+            .then(res => res.json()).then(data => {
+                console.log("Getting version "+data['version'])
+                this.setState({
+                    error:null,
+                    version:data['version']
+                })
+            },
+            (error) => {
+                console.log("ERROR fetchVersion = "+error)
+            }
+        )
+    }
+
     loadAssessment(){
         const  url='/assessment/'+this.state.selectedAssessmentId
         fetch(url,{
@@ -116,6 +132,7 @@ class SelectExam extends Component{
     }
 
     componentDidMount() {
+        this.fetchVersion()
         this.fetchExams()
         this.fetchAssessments()
         }
@@ -133,7 +150,6 @@ class SelectExam extends Component{
     handleSubmit(event) {
         event.preventDefault();
         let selectedExamId="0"
-        debugger
         if (this.TabExamsId.current){
             const idV=this.TabExamsId.current.id
             if (idV.split("#").length>1){
@@ -193,7 +209,7 @@ class SelectExam extends Component{
                         <div className="col-6">
                             <div className="card">
                                 <div className="card-body">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <h5 className="card-title">Exams List Available</h5>
                                         <Tab.Container id="list-group-tabs-exams" defaultActiveKey="#1">
                                             <Row>
@@ -217,16 +233,15 @@ class SelectExam extends Component{
                                                 </Col>
                                             </Row>
                                             <Row>
-                                                <div className="input-group mb-3">
+                                                <div className="input-group mb-2">
                                                     <div className="input-group-prepend">
                                                         <button type="submit" disabled={disableCreate} className="btn btn-primary" onClick={this.handleSubmit}>Create Assessment</button>
                                                     </div>
-                                                    <input className="w-25" id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" ref={this.questionsNumber}/>
+                                                    <input className="w-20" id="totalNumberQ" name="totalNumberQ" type="number" defaultValue="100" ref={this.questionsNumber}/>
                                                 </div>
-
                                             </Row>
-                                            <Row>
-                                                <div className="input-group mb-3">
+                                            <Row >
+                                                <div className="input-group mb-2">
                                                     <div className="custom-file">
                                                         <input type="file" className="custom-file-input"
                                                                id="file2Upload" accept=".json" onChange={this.handleImportFile}/>
@@ -283,11 +298,6 @@ class SelectExam extends Component{
                                left: 100,
                            }}>
                         <Toast.Header>
-                            <img
-                                src="holder.js/20x20?text=%20"
-                                className="rounded mr-2"
-                                alt=""
-                            />
                             <strong className="mr-auto">File Imported</strong>
                             <small>question imported ={this.state.fileImportedToast ? this.state.fileImportedToast.questions : ""}</small>
                         </Toast.Header>
@@ -298,6 +308,9 @@ class SelectExam extends Component{
                             {this.state.fileImportedToast ? "Total Question imported "+this.state.fileImportedToast.questions:""}
                         </Toast.Body>
                     </Toast>
+                    <div className="row my-lg-2">
+                        <small>Application backend version =  {this.state.version}</small>
+                    </div>
                 </div>
             )
         }

@@ -35,18 +35,6 @@ services:
 #      - ./gui:/gui
 #      - /gui/node_modules
   ################################
-  #   Setup nginx load balancer
-  ################################
-#  nginx:
-#    build:
-#      context: ./nginx
-#      dockerfile: Dockerfile
-#    container_name: examsim_proxy
-#    networks:
-#      - examsim_network
-#    ports:
-#      - 3080:3080
-  ################################
   #   Setup mongo db
   ################################
   mongo:

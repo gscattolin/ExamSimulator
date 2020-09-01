@@ -171,6 +171,6 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
   }
 
   def getVersion()=Action {
-    Ok(exs.getVersion())
+    Ok(Json.toJson(Map("version"->exs.getVersion())))
   }
 }

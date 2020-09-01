@@ -23,6 +23,7 @@ class ExamSimulator @Inject() (config:Configuration)
   protected val LOGGER: Logger = Logger(this.getClass)
 
   private val configVersion="version"
+  private val configDocker="inDocker"
   private var version="1"
   private val configDataSources:String="datasources"
 
@@ -31,7 +32,8 @@ class ExamSimulator @Inject() (config:Configuration)
   private val configFileExtension:String="extension"
 
   private val configDataSourcesDb:String="db"
-  private val configDbHost:String="host"
+  private val configDbHostDocker:String="hostDocker"
+  private val configDbHostLocal:String="hostLocal"
   private val configDbUser:String="username"
   private val configDbPwd:String="password"
   private val configDbName:String="dbName"
@@ -51,10 +53,12 @@ class ExamSimulator @Inject() (config:Configuration)
 
     val source=config.getAndValidate(configDataSources,availableConfigSources)
     version=config.get[String](configVersion)
+    val inDocker=config.get[Boolean](configDocker)
     LOGGER.info(s"Starting ExamSimulator $version")
     if (source==configDataSourcesDb){
       val f=config.get[Map[String,String]](configDataSourcesDb)
-      val d=dataDb(f(configDbHost),f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
+      val hostDb=if (inDocker) f(configDbHostDocker) else f(configDbHostLocal)
+      val d=dataDb(hostDb,f(configDbUser),f(configDbPwd),f(configDbName),f(configDbMainTable),f(configDbAssessmentTable))
       LOGGER.debug(s"Main source Mongo - Parameters= $d")
       repoExamSimulator.connect(d)
       SourceType.Dbs
