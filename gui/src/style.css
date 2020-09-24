@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url("./fonts/icomoon/icomoon.eot?srf3rx");
+  src: url("./fonts/icomoon/icomoon.eot?srf3rx#iefix") format("embedded-opentype"), url("./fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"), url("./fonts/icomoon/icomoon.woff?srf3rx") format("woff"), url("./fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* =======================================================
+*
+* 	Template Style 
+*
+* ======================================================= */
+body {
+  font-family: "Oxygen", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  color: gray;
+  background: #e8e8e8;
+}
+
+#page {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+.offcanvas #page {
+  overflow: hidden;
+  position: absolute;
+}
+.offcanvas #page:after {
+  -webkit-transition: 2s;
+  -o-transition: 2s;
+  transition: 2s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 101;
+  background: rgba(0, 0, 0, 0.7);
+  content: "";
+}
+
+a {
+  color: #66D37E;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+a:hover, a:active, a:focus {
+  color: #66D37E;
+  outline: none;
+  text-decoration: none;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+h1, h2, h3, h4, h5, h6, figure {
+  color: #000;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+::-moz-selection {
+  color: #fff;
+  background: #66D37E;
+}
+
+::selection {
+  color: #fff;
+  background: #66D37E;
+}
+
+.container-wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  background: #fff;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+

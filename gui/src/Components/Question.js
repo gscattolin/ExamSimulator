@@ -3,8 +3,8 @@ import {Redirect}  from 'react-router-dom'
 import update from 'immutability-helper';
 import leftArrow from '../Images/icons8-previous-48.png';
 import rightArrow from '../Images/icons8-next-48.png';
-import pauseIcon from '../Images/icons8-pause-48.png';
-import resumeIcon from '../Images/icons8-resume-button-48.png';
+import pauseIcon from '../Images/icons8-pause-16.png';
+import resumeIcon from '../Images/icons8-resume-button-16.png';
 import Timer from 'react-compound-timer'
 import parse from 'html-react-parser';
 
@@ -261,57 +261,57 @@ class Question extends Component {
             const htmlText=parse(this.state.question.Text)
             return (
                 <div className="form-group" >
-                    <div className="container-fluid ">
-                         <div className="row my-lg-2">
-                        <div className="col">
-                            <h5>Question N. {this.state.question.Id}/{this.state.totalQuestions}</h5>
-                        </div>
-                         <div className="col">
-                            <div className="progress" style={{height: '30px'}}>
-                                <div className="progress-bar" role="progressbar" style={{width: percQuestions+'%'}}
-                                     aria-valuenow={percQuestions} aria-valuemin="0" aria-valuemax="100" >{percQuestions}%</div>
-                            </div>
-                        </div>
-                         <div className="col">
-                                 <div className="row justify-content-md-center">
-                                     <Timer ref={this.TimerRef}
-                                            initialTime={this.state.TimerValue}>
-                                            <React.Fragment>
-                                                <div className="col">
-                                                    <div className={this.state.TimerValue>(36000*1000)?"visible":"invisible"}>
-                                                        <Timer.Hours /> h
-                                                    </div>
-                                                </div>
-                                                <div className="col">
-                                                    <Timer.Minutes className="m-3"/> m
-                                                </div>
-                                                <div className="col">
-                                                    <Timer.Seconds /> s
-                                                </div>
-                                                <div className="col">
-                                                    <div>
-                                                        <button type="button" className="btn btn-light" data-toggle="button"
-                                                                aria-pressed="false" onClick={this.onPauseResumeTime}>
-                                                            <img className="img-fluid w-90" src={iconForTimer} alt="pause"/>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div className="col-6"/>
-                                            </React.Fragment>
-                                    </Timer>
-                                </div>
+                    <div className="container-fluid h-100 d-flex flex-column justify-content-center">
+                         <div className="row ">
+                            <div className="col ">
+                                <h6 className="text-md-center"> Question N. {this.state.question.Id}/{this.state.totalQuestions}</h6>
                             </div>
                              <div className="col">
-                                 <button variant="secondary" disabled={this.state.isSaving} name={this.savingButtonName()} onClick={!this.state.isSaving ? this.handleSubmit : null} >
-                                     {this.state.isSaving ? 'is Saving…' : 'Save Assessment'}</button>
+                                <div className="progress" style={{height: '30px'}}>
+                                    <div className="progress-bar" role="progressbar" style={{width: percQuestions+'%'}}
+                                         aria-valuenow={percQuestions} aria-valuemin="0" aria-valuemax="100" >{percQuestions}%</div>
+                                </div>
+                            </div>
+                             <div className="col ml-lg-5">
+                                 <Timer ref={this.TimerRef}
+                                        initialTime={this.state.TimerValue}>
+                                        <React.Fragment>
+                                            <div className="input-group mb-3">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text" id="inputGroup-sizing-sm">
+                                                        <div className={this.state.TimerValue>(36000*1000)?"visible":"invisible"}>
+                                                            <Timer.Hours /> h
+                                                        </div>
+                                                    </span>
+                                                    <span className="input-group-text" id="inputGroup-sizing-sm">
+                                                    <Timer.Minutes className="m-3"/> m
+                                                    </span>
+                                                    <span className="input-group-text" id="inputGroup-sizing-sm">
+                                                    <Timer.Seconds /> s
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <button type="button" className="btn btn-light" data-toggle="button"
+                                                            aria-pressed="false" onClick={this.onPauseResumeTime}>
+                                                        <img class="img-thumbnail"  src={iconForTimer} alt="pause"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>
+                                </Timer>
                              </div>
                     </div>
                         <div className="row ml-lg-0">
-                            <div className="col m-3">
-                                {htmlText}
+                                <div className="panel panel-primary">
+                                    <div className="card">
+                                        <h5 className="card-text">
+                                            {htmlText}
+                                        </h5>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="row ml-lg-0">
+                        <div className="card-body">
+
                             <div className="col m-3">
                                     {question.Answers.map(aws => (
                                         <div key={aws.placeHolder} className="form-check my-3">
@@ -333,7 +333,10 @@ class Question extends Component {
                                     <img className="img-forward" src={rightArrow} alt="forward"/>
                                 </button>
                             </div>
-                            <div className="col"/>
+                            <div className="col">
+                                <button variant="secondary" disabled={this.state.isSaving} name={this.savingButtonName()} onClick={!this.state.isSaving ? this.handleSubmit : null} >
+                                    {this.state.isSaving ? 'is Saving…' : 'Save Assessment'}</button>
+                            </div>
                         </div>
                         <div className="row ml-lg-10">
                             <div className="col"/>
@@ -342,7 +345,9 @@ class Question extends Component {
                                     <button className="btn btn-outline-primary" onClick={this.handleSubmit} disabled={!submitEnable}>Submit Answers</button>
                                 </div>
                             </div>
-                            <div className="col"/>
+                            <div className="col">
+
+                            </div>
                         </div>
                     </div>
 

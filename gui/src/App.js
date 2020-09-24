@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom'
 import SelectExam from "./Components/SelectExam"
-
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+//import './style.css';
 import Question from "./Components/Question";
 import Report from "./Components/Report";
 

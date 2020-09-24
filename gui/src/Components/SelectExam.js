@@ -250,10 +250,6 @@ class SelectExam extends Component{
                                                                    aria-describedby="inputGroupFileAddon02">Choose
                                                                 file  to Import</label>
                                                     </div>
-                                                    <div className="input-group-append">
-                                                        <span className="input-group-text"
-                                                              id="file2Upload">Upload</span>
-                                                    </div>
                                                 </div>
                                             </Row>
                                         </Tab.Container>
