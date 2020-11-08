@@ -302,16 +302,13 @@ class Question extends Component {
                              </div>
                     </div>
                         <div className="row ml-lg-0">
-                                <div className="panel panel-primary">
-                                    <div className="card">
+                                    <div className="card-header border-primary  border-5 ">
                                         <h5 className="card-text">
                                             {htmlText}
                                         </h5>
                                     </div>
-                                </div>
                             </div>
                         <div className="card-body">
-
                             <div className="col m-3">
                                     {question.Answers.map(aws => (
                                         <div key={aws.placeHolder} className="form-check my-3">

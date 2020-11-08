@@ -304,9 +304,6 @@ class SelectExam extends Component{
                             {this.state.fileImportedToast ? "Total Question imported "+this.state.fileImportedToast.questions:""}
                         </Toast.Body>
                     </Toast>
-                    <div className="row my-lg-2">
-                        <small>Application backend version =  {this.state.version}</small>
-                    </div>
                 </div>
             )
         }
