@@ -4,7 +4,7 @@ import java.io.File
 import java.util.UUID
 
 import models.SourceType.SourceType
-import models.{Assessment, CandidateAnswer, CandidateAnswerReport, Exam, Question}
+import models.{Assessment, CandidateAnswer, CandidateAnswerReport, ErrorOnProcess, Exam, Question}
 import play.api.Logging
 
 
@@ -20,6 +20,6 @@ trait GenExamSimulator extends Logging {
   def saveAssessment(assessmentId:UUID):Long
   def getAllAssessment():List[Assessment]
   def loadAssessment(assessmentId:UUID):Assessment
-  def importExamByFile(file:File):Either[Int,Exam]
+  def importExamByFile(file:File):Either[ErrorOnProcess,Exam]
   def getVersion():String
 }

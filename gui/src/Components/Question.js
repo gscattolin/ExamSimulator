@@ -52,6 +52,13 @@ class Question extends Component {
         }
     }
 
+    handleError(error){
+        return {
+            errorId : error['errorId'],
+            errorMsg: error['errorMsg'],
+            isLoaded: true,
+        }
+    }
 
     getNewQuestion(questionId){
         this.setState({isLoaded:false})
@@ -71,10 +78,7 @@ class Question extends Component {
             },
             (error) => {
                 console.log("ERROR Getting data question"+error)
-                this.setState({
-                    isLoaded: true,
-                    error:error
-                });
+                this.setState(this.handleError(error));
             }
         )
     }
@@ -98,10 +102,7 @@ class Question extends Component {
             },
             (error) => {
                 console.log("ERROR Getting data question"+error)
-                this.setState({
-                    error:error,
-                    isLoaded: true
-                });
+                this.setState(this.handleError(error));
             }
         )
     }

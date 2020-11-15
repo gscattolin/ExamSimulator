@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 //import './style.css';
 import Question from "./Components/Question";
 import Report from "./Components/Report";
+import logo from "./Images/logo.svg"
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
                 <div className="col"/>
                 <div className="col">
                     <div className="media">
-                        <img class="m-2" src="./logo.svg" height="32" width="32" />
+                        <img class="m-2" src={logo} height="32" width="32" />
                         <div className="media-body">
                             <h1>Exam Simulator </h1>
                         </div>

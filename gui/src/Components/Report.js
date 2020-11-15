@@ -10,6 +10,15 @@ class Report extends Component {
         }
     }
 
+
+    handleError(error){
+        return {
+            errorId : error['errorId'],
+            errorMsg: error['errorMsg'],
+            isLoaded: true,
+        }
+    }
+
     getAssessmentReport(assessmentId){
         // console.log("Getting data question"+questionId)
         const url='/assessment/'+assessmentId+'/report'
@@ -24,9 +33,8 @@ class Report extends Component {
             },
             (error) => {
                 console.log("ERROR Getting data question"+error)
-                this.setState({
-                    error:error
-                });
+                this.setState(this.handleError(error)
+                );
             }
         )
     }
@@ -43,9 +51,7 @@ class Report extends Component {
             },
             (error) => {
                 console.log("ERROR Getting data question"+error)
-                this.setState({
-                    error:error
-                });
+                this.setState(this.handleError(error))
             }
         )
     }

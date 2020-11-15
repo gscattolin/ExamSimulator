@@ -4,17 +4,17 @@ import java.io.File
 import java.util.UUID
 
 import javax.inject.{Inject, Singleton}
-import models.{CandidateAnswer, CandidateAnswerReport, Exam, PossibleAnswer, Question, totalAnswers}
+import models.{CandidateAnswer, CandidateAnswerReport, ErrorOnProcess, Exam, PossibleAnswer, Question, totalAnswers}
 import play.api.Logger
 import play.api.libs.json.{JsArray, JsPath, JsResult, JsString, JsSuccess, JsValue, Json, Writes}
 import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
-import services.GenExamSimulator
+import services.{ErrorHandler, GenExamSimulator}
 
 
 
 @Singleton
-class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSimulator) extends AbstractController(cc) {
+class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSimulator,errorHandler:ErrorHandler) extends AbstractController(cc) {
 
   protected val LOGGER: Logger = Logger(this.getClass)
 
@@ -99,7 +99,6 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     else{
       convertJson2Answers((jsValue \ "answers").get)
     }
-
   }
 
   def collectAnswers(assessmentId:UUID)=Action { request =>
@@ -165,9 +164,17 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
     val tmpFolder=System.getProperty("java.io.tmpdir")
     val file2process = new File(s"${tmpFolder}file2Import.json")
     request.body.moveTo(file2process, replace = true)
-    val examImported=exs.importExamByFile(file2process).getOrElse(new Exam())
-    val res:Map[String,String]=Map("message"->"File imported successfully","questions" -> examImported.listQuestion.length.toString,"code" -> examImported.properties.Code)
-    Ok(Json.toJson(res))
+    val examImported=exs.importExamByFile(file2process)
+    examImported match {
+    case Right(value) => {
+      val res: Map[String, String] = Map("message" -> "File imported successfully", "questions" -> value.listQuestion.length.toString, "code" -> value.properties.Code)
+      Ok(Json.toJson(res))
+    }
+    case Left(value:ErrorOnProcess) =>{
+      UnprocessableEntity(errorHandler.jsonSingleResponse(value))
+    }
+    }
+
   }
 
   def getVersion()=Action {

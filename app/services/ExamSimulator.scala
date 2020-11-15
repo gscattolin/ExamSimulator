@@ -25,7 +25,7 @@ class ExamSimulator @Inject() (config:Configuration)
   private val configVersion="version"
   private val configDocker="inDocker"
   private var version="1"
-  private val configDataSources:String="datasources"
+  private val configDataSources:String="datasource"
 
   private val configDataSourcesFile:String="files"
   private val configFileFolder:String="folder"
@@ -191,7 +191,7 @@ class ExamSimulator @Inject() (config:Configuration)
     }
   }
 
-  override def importExamByFile(file: File): Either[Int,Exam] = {
+  override def importExamByFile(file: File): Either[ErrorOnProcess,Exam] = {
     repoExamSimulator.importExamFromFile2Mongo(file)
   }
 

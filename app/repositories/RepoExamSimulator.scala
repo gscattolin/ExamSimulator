@@ -11,6 +11,7 @@ import org.mongodb.scala.{Completed, MongoClient, MongoCollection, MongoDatabase
 import play.api.Logger
 import play.api.libs.json.{JsArray, JsValue, Json}
 
+import scala.Left
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -29,7 +30,7 @@ class RepoExamSimulator(){
   protected val LOGGER: Logger = Logger(this.getClass)
 
 
-  def loadExamFromFile(fileName:File):Exam={
+  def loadExamFromFile(fileName:File):Either[ErrorOnProcess,Exam]={
     def mapAnswer(value:JsValue):PossibleAnswer={
       PossibleAnswer((value \ "placeHolder").as[String].take(1),(value \ "choiceValue").as[String])
     }
@@ -43,27 +44,29 @@ class RepoExamSimulator(){
     }
     var exam=new Exam()
     val src=Source.fromFile(fileName)
-
     try{
-      val json=Json.parse(src.getLines().mkString)
-      var uid=UUID.randomUUID()
-      if ((json \ "Id").isDefined) {
-        uid=UUID.fromString((json \ "Id").validate[String].get)
+        val json=Json.parse(src.getLines().mkString)
+        var uid=UUID.randomUUID()
+        if ((json \ "Id").isDefined) {
+          uid=UUID.fromString((json \ "Id").validate[String].get)
+        }
+        val title=(json \ "Title").validate[String].getOrElse("")
+        val code=(json \ "Code").validate[String].getOrElse("")
+        val version=(json \ "Version").validate[String].getOrElse("")
+        val timeLimit=(json \ "TimeLimit").validate[Int].getOrElse(0)
+        val instruction=(json \ "Instructions").validate[String].getOrElse("")
+        val questionsJson= (json \ "Questions").as[List[JsValue]]
+        val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)})
+        val prop=ExamProperties(title,code,version,timeLimit,instruction)
+        exam=Exam(uid,prop,questions)
       }
-      val title=(json \ "Title").validate[String].getOrElse("")
-      val code=(json \ "Code").validate[String].getOrElse("")
-      val version=(json \ "Version").validate[String].getOrElse("")
-      val timeLimit=(json \ "TimeLimit").validate[Int].getOrElse(0)
-      val instruction=(json \ "Instructions").validate[String].getOrElse("")
-      val questionsJson= (json \ "Questions").as[List[JsValue]]
-      val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)})
-      val prop=ExamProperties(title,code,version,timeLimit,instruction)
-      exam=Exam(uid,prop,questions)
-    }finally {
+      catch {
+        case e: RuntimeException => LOGGER.error(s"Error on importing file $fileName Err0r=${e.getMessage}"); Left(ErrorOnProcess(120,e.getMessage))
+      }
+    finally {
       src.close()
     }
-
-    exam
+    Right(exam)
   }
 
   def getExamFolder(relFolder:String):File={
@@ -77,7 +80,7 @@ class RepoExamSimulator(){
     val d = getExamFolder(folder)
     if (d.exists && d.isDirectory) {
       val filesInFolder:List[File]=d.listFiles.filter(_.isFile).filter(f => extractExtension(f.toString)==extension).toList
-      val availableExams=filesInFolder.map({x=>loadExamFromFile(x)})
+      val availableExams=filesInFolder.map({x=>loadExamFromFile(x)}).collect({case Right(value) => value})
       availableExams
     } else {
       LOGGER.warn(s"Cannot find the folder ${d.getCanonicalPath} . Return empty exam list")
@@ -191,14 +194,17 @@ class RepoExamSimulator(){
     applyFutureSingle(f)
   }
 
-  def importExamFromFile2Mongo(file: java.io.File): Either[Int,Exam] = {
+  def importExamFromFile2Mongo(file: java.io.File): Either[ErrorOnProcess,Exam] = {
     if (!file.isFile) {
       LOGGER.error(s"Cannot load file ${file.getName} for importing")
-      return Left(-1)
+      return Left(ErrorOnProcess(404,s"Cannot load file ${file.getName} for importing"))
     }
     val exam=loadExamFromFile(file)
-    saveExam(exam)
-    Right(exam)
+    exam match {
+      case Right(value) => saveExam(value)
+      case Left(_) =>
+    }
+    exam
   }
 
   implicit def b2s(v: BsonValue): String = {

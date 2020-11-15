@@ -23,6 +23,14 @@ class SelectExam extends Component{
         }
     }
 
+    handleError(error){
+        return {
+            errorId : error['errorId'],
+            errorMsg: error['errorMsg'],
+            isLoaded: true,
+        }
+    }
+
     handleImportFile(e){
         const  url='/exam'
         fetch(url,{
@@ -42,10 +50,7 @@ class SelectExam extends Component{
             },
             (error) => {
                 console.log("ERROR"+error.message)
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
+                this.setState(this.handleError(error));
             }
         )
     }
@@ -60,10 +65,7 @@ class SelectExam extends Component{
             },
             (error) => {
                 console.log("ERROR"+error.message)
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
+                this.setState(this.handleError(error));
             }
         )
     }
@@ -79,10 +81,7 @@ class SelectExam extends Component{
             },
             (error) => {
                 console.log("ERROR"+error.message)
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
+                this.setState(this.handleError(error));
             }
         )
     }
@@ -98,6 +97,7 @@ class SelectExam extends Component{
             },
             (error) => {
                 console.log("ERROR fetchVersion = "+error)
+                this.setState(this.handleError(error))
             }
         )
     }
@@ -123,10 +123,7 @@ class SelectExam extends Component{
             },
             (error) => {
                 console.log("ERROR"+error.message)
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
+                this.setState(this.handleError(error));
             }
         )
     }
@@ -175,10 +172,7 @@ class SelectExam extends Component{
                 })},
                 (error) => {
                     console.log("ERROR" + error.message)
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
+                    this.setState(this.handleError(error));
                 }
             )
     }
