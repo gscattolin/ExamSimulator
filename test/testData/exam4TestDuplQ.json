@@ -1,0 +1,64 @@
+{
+	"Title": "Test Importing",
+	"Code": "SAA-DD",
+	"Version": "2.5",
+	"TimeLimit": 125,
+	"Instructions": "Test Instructions",
+	"Questions": [{
+		"number": 1,
+		"question": "A Solutions Architect is designing an application that will encrypt all data in an Amazon Redshift cluster.Which action will encrypt the data at rest?",
+		"choices": [{
+			"placeHolder": "A.",
+			"choiceValue": "Place the Redshift cluster in a private subnet."
+		}, {
+			"placeHolder": "B.",
+			"choiceValue": "Use the AWS KMS Default Customer master key."
+		}, {
+			"placeHolder": "C.",
+			"choiceValue": "Encrypt the Amazon EBS volumes."
+		}, {
+			"placeHolder": "D.",
+			"choiceValue": "Encrypt the data using SSL/TLS."
+		}],
+		"answers": ["B"],
+		"reference": null,
+		"valid": true
+	}, {
+		"question": "A Solutions Architect is designing an application that will encrypt all data in an Amazon Redshift cluster.Which action will encrypt the data at rest?",
+		"choices": [{
+			"placeHolder": "A.",
+			"choiceValue": "Place the Redshift cluster in a private subnet."
+		}, {
+			"placeHolder": "B.",
+			"choiceValue": "Use the AWS KMS Default Customer master key."
+		}, {
+			"placeHolder": "C.",
+			"choiceValue": "Encrypt the Amazon EBS volumes."
+		}, {
+			"placeHolder": "D.",
+			"choiceValue": "Encrypt the data using SSL/TLS."
+		}],
+		"answers": ["B"],
+		"reference": null,
+		"valid": true
+	}, {
+		"number": 3,
+		"question": "A Solutions Architect is designing an application that will encrypt all data in an Amazon Redshift cluster.Which action will encrypt the data at rest?",
+		"choices": [{
+			"placeHolder": "A.",
+			"choiceValue": "Place the Redshift cluster in a private subnet."
+		}, {
+			"placeHolder": "B.",
+			"choiceValue": "Use the AWS KMS Default Customer master key."
+		}, {
+			"placeHolder": "C.",
+			"choiceValue": "Encrypt the Amazon EBS volumes."
+		}, {
+			"placeHolder": "D.",
+			"choiceValue": "Encrypt the data using SSL/TLS."
+		}],
+		"answers": ["B"],
+		"reference": null,
+		"valid": true
+	}]
+}

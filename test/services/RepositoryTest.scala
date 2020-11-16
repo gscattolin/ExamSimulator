@@ -77,4 +77,13 @@ class RepositoryTest extends PlaySpec{
     }
   }
 
+  "RepoExamSimulator.loadExamFromFile" must {
+    "removeDuplicates in Load Exams from file" in {
+      val file2Import=new File("test/testData/exam4TestDuplQ.json")
+      val examX=repo.loadExamFromFile(file2Import)
+      val ex=examX.getOrElse(new Exam())
+      ex.listQuestion.length mustBe 1
+    }
+  }
+
 }

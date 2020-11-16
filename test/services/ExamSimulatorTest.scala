@@ -97,8 +97,6 @@ class ExamSimulatorTest extends PlaySpec{
     }
   }
 
-
-
   "ExamSimulator.json convertor" must {
     "convert map results using basic " in {
       val json: JsValue = Json.parse(
@@ -159,7 +157,6 @@ class ExamSimulatorTest extends PlaySpec{
       userAnswersRes.size mustBe (3)
     }
   }
-
 
 
 

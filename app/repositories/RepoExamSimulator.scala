@@ -56,7 +56,7 @@ class RepoExamSimulator(){
         val timeLimit=(json \ "TimeLimit").validate[Int].getOrElse(0)
         val instruction=(json \ "Instructions").validate[String].getOrElse("")
         val questionsJson= (json \ "Questions").as[List[JsValue]]
-        val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)})
+        val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)}).distinctBy(_.Text)
         val prop=ExamProperties(title,code,version,timeLimit,instruction)
         exam=Exam(uid,prop,questions)
       }
@@ -68,6 +68,7 @@ class RepoExamSimulator(){
     }
     Right(exam)
   }
+
 
   def getExamFolder(relFolder:String):File={
     val examFolder=new File(new File(".").getAbsolutePath).getCanonicalPath+"/"+relFolder
