@@ -171,7 +171,7 @@ class ExamSimulatorController @Inject() (cc: ControllerComponents,exs: GenExamSi
       Ok(Json.toJson(res))
     }
     case Left(value:ErrorOnProcess) =>{
-      UnprocessableEntity(errorHandler.jsonSingleResponse(value))
+      UnprocessableEntity(Json.toJson(value))
     }
     }
 

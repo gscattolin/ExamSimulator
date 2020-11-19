@@ -1,17 +1,18 @@
 package repositories
 
 import java.io.File
+import java.security.InvalidKeyException
 import java.util.UUID
 
+import com.fasterxml.jackson.core.JsonParseException
 import models.{Assessment, _}
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonValue}
 import org.mongodb.scala.bson.collection.immutable.Document
 import org.mongodb.scala.result.{DeleteResult, UpdateResult}
-import org.mongodb.scala.{Completed, MongoClient, MongoCollection, MongoDatabase, bson}
+import org.mongodb.scala.{Completed, MongoClient, MongoCollection, MongoDatabase}
 import play.api.Logger
 import play.api.libs.json.{JsArray, JsValue, Json}
 
-import scala.Left
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -51,7 +52,7 @@ class RepoExamSimulator(){
           uid=UUID.fromString((json \ "Id").validate[String].get)
         }
         val title=(json \ "Title").validate[String].getOrElse("")
-        val code=(json \ "Code").validate[String].getOrElse("")
+        val code=(json \ "Code").validate[String].getOrElse(throw new NoSuchFieldException(s"Missing Code in json structure exam"))
         val version=(json \ "Version").validate[String].getOrElse("")
         val timeLimit=(json \ "TimeLimit").validate[Int].getOrElse(0)
         val instruction=(json \ "Instructions").validate[String].getOrElse("")
@@ -59,14 +60,15 @@ class RepoExamSimulator(){
         val questions:List[Question]=questionsJson.zipWithIndex.map({case (x,valIndex) =>mapJson2Question(x,valIndex+1)}).distinctBy(_.Text)
         val prop=ExamProperties(title,code,version,timeLimit,instruction)
         exam=Exam(uid,prop,questions)
+        Right(exam)
       }
       catch {
-        case e: RuntimeException => LOGGER.error(s"Error on importing file $fileName Err0r=${e.getMessage}"); Left(ErrorOnProcess(120,e.getMessage))
+        case e @ (_ : RuntimeException | _ : NoSuchFieldException)=> LOGGER.error(s"Error on importing file $fileName Error=${e.getMessage}"); Left(ErrorOnProcess(120,e.getMessage))
+        case e : JsonParseException   => LOGGER.error(s"Error on parsing json file $fileName Error=${e.getMessage}"); Left(ErrorOnProcess(130,e.getMessage))
       }
     finally {
       src.close()
     }
-    Right(exam)
   }
 
 
@@ -208,7 +210,7 @@ class RepoExamSimulator(){
     exam
   }
 
-  implicit def b2s(v: BsonValue): String = {
+  private implicit def b2s(v: BsonValue): String = {
     v.asString().getValue
   }
 

@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import {Redirect}  from 'react-router-dom'
+import axios from 'axios';
 import update from 'immutability-helper';
 import leftArrow from '../Images/icons8-previous-48.png';
 import rightArrow from '../Images/icons8-next-48.png';
@@ -64,18 +65,18 @@ class Question extends Component {
         this.setState({isLoaded:false})
         // console.log("Getting data question"+questionId)
         const url='/assessment/'+this.state.assessmentId+'/question/'+questionId
-        fetch(url)
-            .then(res => res.json()).then(data => {
+        axios.get(url)
+            .then(res => {
                 this.setState({
                     error:null,
-                    question:data,
+                    question:res.data,
                     questionId:questionId,
                     redirect:false,
                     isLoaded: true,
                     render:true,
                     })
             // console.log("received question Id "+questionId+" data "+JSON.stringify(data))
-            },
+            }).catch(
             (error) => {
                 console.log("ERROR Getting data question"+error)
                 this.setState(this.handleError(error));
@@ -86,20 +87,20 @@ class Question extends Component {
     getTotalQuestions(assessmentId){
         // console.log("Getting data question"+questionId)
         const url='/assessment/'+assessmentId+'/question'
-        fetch(url)
-            .then(res => res.json()).then(data => {
+        axios.get(url)
+            .then(res => {
                 let mapV=new Map()
-                for(let n=0; n<data.AnswersUser.length; n++){
-                    mapV.set((data.AnswersUser[n][0]).toString(),data.AnswersUser[n][1])
+                for(let n=0; n<res.data.AnswersUser.length; n++){
+                    mapV.set((res.data.AnswersUser[n][0]).toString(),res.data.AnswersUser[n][1])
                 }
                 this.setState({
                         error: null,
                         submitEnable:false,
                         answersUser: mapV,
-                        totalQuestions: data.TotalQuestions,
+                        totalQuestions: res.data.TotalQuestions,
                     }
                 )
-            },
+            }).catch(
             (error) => {
                 console.log("ERROR Getting data question"+error)
                 this.setState(this.handleError(error));
@@ -153,15 +154,8 @@ class Question extends Component {
         }
         const url='/assessment/'+this.state.assessmentId
         const aws=this.state.answersUser
-        const bodyT=JSON.stringify({"answers": Array.from(aws.entries())})
-        fetch(url, {
-            method: 'PUT',
-            body: bodyT,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        }).then(res => {if (res.status>300)
+        axios.put(url, {"answers": Array.from(aws.entries())},{headers: { 'Accept': 'application/json','Content-Type': 'application/json'}}).
+        then(res => {if (res.status>300)
         {
             console.error("Error Getting data question ="+JSON.stringify(res))
         }
@@ -294,7 +288,7 @@ class Question extends Component {
                                                 <div>
                                                     <button type="button" className="btn btn-light" data-toggle="button"
                                                             aria-pressed="false" onClick={this.onPauseResumeTime}>
-                                                        <img class="img-thumbnail"  src={iconForTimer} alt="pause"/>
+                                                        <img className="img-thumbnail"  src={iconForTimer} alt="pause"/>
                                                     </button>
                                                 </div>
                                             </div>

@@ -9,7 +9,6 @@ import play.api.Configuration
 import repositories.RepoExamSimulator
 
 class RepositoryTest extends PlaySpec{
-
   val db=dataDb("localhost:27017","mongoadmin","mongoadmin","examsim","exams","assessments")
   val repo = new RepoExamSimulator()
   val dataB=repo.connect(db)
@@ -83,6 +82,28 @@ class RepositoryTest extends PlaySpec{
       val examX=repo.loadExamFromFile(file2Import)
       val ex=examX.getOrElse(new Exam())
       ex.listQuestion.length mustBe 1
+    }
+    "corrupted file json exception" in {
+      val file2Import=new File("test/testData/examTestCorrupted1.json")
+      val examX=repo.loadExamFromFile(file2Import)
+      examX.isLeft mustBe true
+      examX match {
+        case Right(value)=> ;
+        case Left(value) => value.Message.nonEmpty mustBe true ; value.Id must be > 0
+      }
+    }
+    "corrupted file json parsing exception" in {
+      val file2Import=new File("test/testData/examTestCorrupted2.json")
+      val examX=repo.loadExamFromFile(file2Import)
+      examX.isLeft mustBe true
+      examX match {
+        case Right(value)=> ;
+        case Left(value) => {
+          value.Message.nonEmpty mustBe true
+          value.Message.contains("Unexpected") mustBe true
+          value.Id must be > 0
+        }
+      }
     }
   }
 

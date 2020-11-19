@@ -17,7 +17,7 @@ function App() {
                 <div className="col"/>
                 <div className="col">
                     <div className="media">
-                        <img class="m-2" src={logo} height="32" width="32" />
+                        <img className="m-2" src={logo} height="32" width="32" />
                         <div className="media-body">
                             <h1>Exam Simulator </h1>
                         </div>
@@ -33,17 +33,6 @@ function App() {
                 <Route path="/Report/:assessmentId" component={Report} />
             </div>
             <div className="row">
-                <div className={this ? 'visible': 'invisible'}>
-                    <div className="alert alert-danger" role="alert" >
-                        <h4 className="alert-heading">Error</h4>
-                        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a
-                            bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                        <hr/>
-                            <p className="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice
-                                and tidy.</p>
-                        {this ? this.state.error : 'Nothing'}
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 class Report extends Component {
     constructor(props) {
@@ -22,15 +23,15 @@ class Report extends Component {
     getAssessmentReport(assessmentId){
         // console.log("Getting data question"+questionId)
         const url='/assessment/'+assessmentId+'/report'
-        fetch(url)
-            .then(res => res.json()).then(data => {
+        axios.get(url)
+            .then(res => {
                 this.setState({
                         error: null,
                         isLoaded:true,
-                        lstReport: data,
+                        lstReport: res.data,
                     }
                 )
-            },
+            }).catch(
             (error) => {
                 console.log("ERROR Getting data question"+error)
                 this.setState(this.handleError(error)
@@ -41,14 +42,14 @@ class Report extends Component {
 
     getAssessmentTime(assessmentId){
         const url='/assessment/'+assessmentId+'/info/1'
-        fetch(url)
-            .then(res => res.json()).then(data => {
+        axios.get(url)
+            .then(res => {
                 this.setState({
                         error: null,
-                        timeInSec: data['timeinseconds'],
+                        timeInSec: res.data['timeinseconds'],
                     }
                 )
-            },
+            }).catch(
             (error) => {
                 console.log("ERROR Getting data question"+error)
                 this.setState(this.handleError(error))
@@ -92,13 +93,13 @@ class Report extends Component {
                     </div>
                     <div className="row ml-lg-0">
                         <div className="col-sm">
-                            Total Correct/Total Questions={nCorrectQ}/{lstReport.length}
+                            <h6>Total Correct/Total Questions={nCorrectQ}/{lstReport.length}</h6>
                         </div>
                         <div className="col-sm">
-                            % Total Correct={this.FloorDigit(nCorrectQ/lstReport.length*100,2)}%
+                            <h6>% Total Correct={this.FloorDigit(nCorrectQ/lstReport.length*100,2)}%</h6>
                         </div>
                         <div className="col-sm">
-                            Time Spent={passedTime}
+                            <h6>Time Spent={passedTime}</h6>
                         </div>
                     </div>
                     <div className="row ml-lg-0">
@@ -118,7 +119,7 @@ class Report extends Component {
                             ))}
                         </ul>
                     </div>
-                    <div className="row ml-lg-5">
+                    <div className="row mt-3">
                         <Link to={`/start`}>
                             <button type="button" className="btn btn-info">Back to Main</button>
                         </Link>

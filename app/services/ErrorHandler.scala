@@ -38,10 +38,10 @@ class ErrorHandler extends HttpErrorHandler {
 
   def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
     Future.successful( statusCode match {
-      case NOT_FOUND => {
-        LOGGER.error("Client Error Page not found URL=" + request)
-        MovedPermanently("/start")
-      }
+//      case NOT_FOUND => {
+//        LOGGER.error("Client Error Page not found URL=" + request)
+//        MovedPermanently("/start")
+//      }
       case _ => Status (statusCode)("A client error occurred: " + message)
     }
     )

@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^10.4.9",
     "@testing-library/user-event": "^12.2.0",
+    "axiom": "^0.1.6",
     "bootstrap": "^4.5.3",
     "braces": "^3.0.2",
     "formik": "^2.2.3",
@@ -46,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "axios": "^0.21.0",
     "ncp": "^2.0.0",
     "rimraf": "^3.0.2"
   },

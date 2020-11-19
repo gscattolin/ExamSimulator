@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import { Redirect } from 'react-router-dom'
-import {Tab,Row,Col,ListGroup,Toast} from 'react-bootstrap';
+import axios from 'axios'
+import {Tab,Row,Col,ListGroup,Toast} from 'react-bootstrap'
 
 class SelectExam extends Component{
     constructor() {
@@ -25,76 +26,69 @@ class SelectExam extends Component{
 
     handleError(error){
         return {
-            errorId : error['errorId'],
-            errorMsg: error['errorMsg'],
+            showToastImport:true,
+            toastImportData: {"code":error['code'] ? "Code "+error['code']:"","message":"Error "+error['message'] ? error['message']:""},
             isLoaded: true,
         }
     }
 
     handleImportFile(e){
         const  url='/exam'
-        fetch(url,{
-            method: 'PUT',
-            body: e.target.files[0],
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => res.json()).then(data => {
-                this.setState({
-                    showToastImport:true,
-                    fileImportedToast:data,
-                })
-                console.log("file imported successfully="+data['message'])
-            },
-            (error) => {
-                console.log("ERROR"+error.message)
-                this.setState(this.handleError(error));
+        axios.put(url,e.target.files[0],{headers:{'Accept':'application/json','Content-Type':'application/json'}})
+        .then(data => {
+                    this.setState({
+                        showToastImport:true,
+                        toastImportData: {"code":data.code ? "Code "+data.code:"","message":data.questions ? "Total Question imported "+data.questions:""}
+                    })
+                    console.log("file imported successfully="+data['message'])
+                    }
+            )
+        .catch( (error)=> {
+            console.log("ERROR Intercepted = " + error)
+            this.setState(this.handleError({"code":error.response.data.Id,"message":error.response.data.Message}));
             }
         )
     }
 
     fetchExams(){
-        fetch('/exam')
-            .then(res => res.json()).then(data => {
+        axios.get('/exam')
+            .then((res) =>
                 this.setState({
                     error:null,
                     questions:0,
-                    exams:data})
-            },
+                    exams:res.data})
+        ).catch(
             (error) => {
                 console.log("ERROR"+error.message)
-                this.setState(this.handleError(error));
+                this.setState(this.handleError(error))
             }
         )
     }
 
     fetchAssessments(){
-        fetch('/assessment')
-            .then(res => res.json()).then(data => {
+        axios.get('/assessment')
+            .then((data) => {
                 this.setState({
                     error:null,
                     isLoaded: true,
                     questions:0,
-                    assessments:data})
-            },
-            (error) => {
+                    assessments:data.data})})
+            .catch((error) => {
                 console.log("ERROR"+error.message)
-                this.setState(this.handleError(error));
+                this.setState(this.handleError(error))
             }
         )
     }
 
     fetchVersion(){
-        fetch('/version')
-            .then(res => res.json()).then(data => {
-                console.log("Getting version "+data['version'])
+        axios.get('/version')
+            .then(res => {
+                console.log("Getting version "+res.version)
                 this.setState({
                     error:null,
-                    version:data['version']
+                    version:res.version
                 })
-            },
+            }).catch(
             (error) => {
                 console.log("ERROR fetchVersion = "+error)
                 this.setState(this.handleError(error))
@@ -104,23 +98,17 @@ class SelectExam extends Component{
 
     loadAssessment(){
         const  url='/assessment/'+this.state.selectedAssessmentId
-        fetch(url,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-            }
-        })
-            .then(res => res.json()).then(data => {
+        axios.get(url,{headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}})
+            .then(data => {
                 this.setState({
                     error:null,
                     isLoaded: true,
-                    questionId:data['questionId'],
+                    questionId:data.data['questionId'],
                     redirectToReferrer : true
                 })
                 this.fetchExams()
-                console.log("Get last question="+data['questionId'])
-            },
+                console.log("Get last question="+data.data['questionId'])
+            }).catch(
             (error) => {
                 console.log("ERROR"+error.message)
                 this.setState(this.handleError(error));
@@ -158,23 +146,21 @@ class SelectExam extends Component{
         if (this.questionsNumber.current){
             totalExams=parseInt(this.questionsNumber.current.value)
         }
-        fetch('/assessment', {
-            method: 'POST',
-            body: JSON.stringify({"examId": selectedExamId, "questions": totalExams}),
-            headers: {
+        axios.post('/assessment', {"examId": selectedExamId, "questions": totalExams},{headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-        }).then(res => res.json()).then(data => {
+        }).then(res => {
             this.setState({
-                    selectedAssessmentId: data.assessmentId,
+                    selectedAssessmentId: res.data.assessmentId,
                     redirectToReferrer : true
-                })},
-                (error) => {
-                    console.log("ERROR" + error.message)
-                    this.setState(this.handleError(error));
-                }
-            )
+                })})
+        .catch(
+            (error) => {
+                console.log("ERROR" + error.message)
+                this.setState(this.handleError(error));
+            }
+        )
     }
 
 
@@ -281,21 +267,21 @@ class SelectExam extends Component{
                             </div>
                         </div>
                     </div>
-                    <Toast onClose={() => {window.location.reload()}} show={!!this.state.fileImportedToast} delay={6000} autohide={true} animation={true}
+                    <Toast onClose={() => {window.location.reload()}} show={!!this.state.showToastImport} delay={12000} autohide={true} animation={true}
                            style={{
                                position: 'relative',
                                top: 100,
                                left: 100,
                            }}>
                         <Toast.Header>
-                            <strong className="mr-auto">File Imported</strong>
-                            <small>question imported ={this.state.fileImportedToast ? this.state.fileImportedToast.questions : ""}</small>
+                                <strong className="mr-auto text-light bg-danger">File Imported</strong>
+                                {/*<small className="mr-auto text-light bg-danger">question imported ={this.state.toastImportData ? this.state.toastImportData.questions : ""}</small>*/}
                         </Toast.Header>
-                        <Toast.Body>{this.state.fileImportedToast ? this.state.fileImportedToast.message :""}
+                        <Toast.Body>
                         <br/>
-                        {this.state.fileImportedToast ? "Code "+this.state.fileImportedToast.code:""}
+                            {this.state.toastImportData ? (this.state.toastImportData.code ? this.state.toastImportData.code:""):""}
                         <br/>
-                            {this.state.fileImportedToast ? "Total Question imported "+this.state.fileImportedToast.questions:""}
+                            {this.state.toastImportData ? (this.state.toastImportData.message ? this.state.toastImportData.message:""):""}
                         </Toast.Body>
                     </Toast>
                 </div>
