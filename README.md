@@ -130,8 +130,7 @@ The frontend is reactJS , located gui folder.
 
 ## Support
 
-Reach out to me at one of the following places!
-
+📫 Reach out to me at devel0pingsec0nday  at gmail dot com
 
 ---
 
