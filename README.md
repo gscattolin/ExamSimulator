@@ -23,7 +23,10 @@ Scala , Play , MongoDb, ReactJS
 ## Installation ans Setup
 
 - Install [Docker](https://hub.docker.com/)  on your machine.
+- Install [sbt](https://www.scala-sbt.org/1.x/docs/Setup.html) 
 - Clone this [repo](https://github.com/gscattolin/ExamSimulator)
+- run the command sbt in your local shell where your repo has been copied
+- run dist in the sbt console - this command will create a file target/universal/examsimulator-1.0.zip. Exit from the console typing exit cmd.
 - Run all containers with `docker-compose up`
 - Launch your browser and type `http://localhost:3000/start`
 
